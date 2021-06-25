@@ -13,12 +13,18 @@ public class Hopper{
     
     public void HopperLoop(Joystick controller){
         if(controller.getRawButton(0)){
-            leftHopper.set(.6);
-            rightHopper.set(.6);
-            hopperSpinning = true;
+            ManualHopper();
         }else{
+            leftHopper.stopMotor();
+            rightHopper.stopMotor();
             hopperSpinning = false;
         }
+    }
+
+    public void ManualHopper(){
+        leftHopper.set(.6);
+        rightHopper.set(.6);
+        hopperSpinning = true;
     }
     
 }
