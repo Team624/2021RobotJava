@@ -10,16 +10,16 @@ public class Intake {
     public Solenoid intakeSolenoid = new Solenoid(0);
     public TalonSRX intakeMotor = new TalonSRX(11);
     
-    public void IntakeLoop(Joystick controller){
+    public void intakeLoop(Joystick controller){
         if(controller.getRawButton(1) == true){
-            DropIntake();
+            dropIntake();
         }
         if(controller.getRawButton(1) == false){
-            RaiseIntake();
+            raiseIntake();
         }
     }
 
-    public void DropIntake(){
+    public void dropIntake(){
         intakeSolenoid.set(true);
         try
         {
@@ -32,12 +32,12 @@ public class Intake {
         intakeMotor.set(ControlMode.PercentOutput,.3);
     }
 
-    public void RaiseIntake(){
+    public void raiseIntake(){
         intakeSolenoid.set(false);
         intakeMotor.set(ControlMode.PercentOutput, 0);
     }
 
-    public void AgitateIntake(){
+    public void agitateIntake(){
         intakeMotor.set(ControlMode.PercentOutput, .1);
     }
 

@@ -17,11 +17,11 @@ public class Shooter {
     public Solenoid hoodSolenoid = new Solenoid(1);
     public Spark feeder = new Spark(4);
 
-    public void ShooterLoop(Joystick controller, Hopper hopper, Intake intake){
+    public void shooterLoop(Joystick controller, Hopper hopper, Intake intake){
         if(controller.getRawButton(3) == true){
-            Prime();
+            prime();
             if(isPrimed() == true && controller.getRawAxis(0)>.2){
-                Shoot(hopper, intake);
+                shoot(hopper, intake);
             }
         }else{
             leftFlywheel.set(ControlMode.Velocity, 0);
@@ -30,7 +30,7 @@ public class Shooter {
         }
     }
 
-    public void Prime(){
+    public void prime(){
         double targetVelocity_UnitsPer100ms = targetRPM * 2048.0 / 600.0;
         leftFlywheel.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
         rightFlywheel.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
@@ -46,10 +46,10 @@ public class Shooter {
         }
     }
 
-    public void Shoot(Hopper hopper, Intake intake){
+    public void shoot(Hopper hopper, Intake intake){
         feeder.set(.5);
-        hopper.Shoot();
-        intake.AgitateIntake();
+        hopper.shoot();
+        intake.agitateIntake();
     }
 
 }

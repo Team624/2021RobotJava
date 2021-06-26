@@ -8,14 +8,20 @@ import frc.robot.Subsytems.Shooter;
 public class Music {
     Orchestra _orchestra;
     TalonFX [] _fxes =  {};
-    public void MusicLoop(Joystick controller, Shooter shooter){
-        _fxes[0] = shooter.leftFlywheel;
-        _fxes[1] = shooter.rightFlywheel;
+
+    public void musicLoop(Joystick controller){
         if(controller.getRawButton(5)){
-            Play();
+            play();
         }
     }
-    private void Play(){
+
+    public void assignInstruments(Shooter shooter){
+        _fxes[0] = shooter.leftFlywheel;
+        _fxes[1] = shooter.rightFlywheel;
+    }
+
+    private void play(){
         _orchestra.loadMusic("Pirate.chrp");
     }
+
 }

@@ -11,9 +11,9 @@ public class Hopper{
 
     public boolean hopperSpinning;
     
-    public void HopperLoop(Joystick controller){
+    public void hopperLoop(Joystick controller){
         if(controller.getRawButton(0)){
-            ManualHopper();
+            manualHopper();
         }else{
             leftHopper.set(ControlMode.PercentOutput,0);
             rightHopper.set(ControlMode.PercentOutput,0);
@@ -21,13 +21,13 @@ public class Hopper{
         }
     }
 
-    public void ManualHopper(){
+    public void manualHopper(){
         leftHopper.set(ControlMode.PercentOutput,.6);
         rightHopper.set(ControlMode.PercentOutput,-.6);
         hopperSpinning = true;
     }
 
-    public void Shoot(){
+    public void shoot(){
         leftHopper.set(ControlMode.PercentOutput,-.6);
         rightHopper.set(ControlMode.PercentOutput,.6);
     }

@@ -69,14 +69,16 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {}
   
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    music.assignInstruments(shooter);
+  }
 
   @Override
   public void teleopPeriodic() {
-    shooter.ShooterLoop(m_stick, hopper, intake);
-    hopper.HopperLoop(m_stick);
-    intake.IntakeLoop(m_stick);
-    music.MusicLoop(m_stick, shooter);
+    shooter.shooterLoop(m_stick, hopper, intake);
+    hopper.hopperLoop(m_stick);
+    intake.intakeLoop(m_stick);
+    music.musicLoop(m_stick);
   }
 
 }
