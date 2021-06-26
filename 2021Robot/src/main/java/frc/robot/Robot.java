@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
   public Hopper hopper = new Hopper();
   public Intake intake = new Intake();
   public Shooter shooter = new Shooter();
+  public Music music = new Music();
 
   @Override
   public void robotInit() {
@@ -75,6 +76,7 @@ public class Robot extends TimedRobot {
     shooter.ShooterLoop(m_stick, hopper, intake);
     hopper.HopperLoop(m_stick);
     intake.IntakeLoop(m_stick);
+    music.MusicLoop(m_stick, shooter);
   }
 
 }
