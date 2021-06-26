@@ -1,13 +1,13 @@
 package frc.robot.Subsytems;
-
-
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PWMTalonSRX;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class Hopper{
 
-    public PWMTalonSRX leftHopper = new PWMTalonSRX(6);
-    public PWMTalonSRX rightHopper = new PWMTalonSRX(9);
+    public TalonSRX leftHopper = new TalonSRX(6);
+    public TalonSRX rightHopper = new TalonSRX(9);
 
     public boolean hopperSpinning;
     
@@ -15,21 +15,21 @@ public class Hopper{
         if(controller.getRawButton(0)){
             ManualHopper();
         }else{
-            leftHopper.stopMotor();
-            rightHopper.stopMotor();
+            leftHopper.set(ControlMode.PercentOutput,0);
+            rightHopper.set(ControlMode.PercentOutput,0);
             hopperSpinning = false;
         }
     }
 
     public void ManualHopper(){
-        leftHopper.set(.6);
-        rightHopper.set(.6);
+        leftHopper.set(ControlMode.PercentOutput,.6);
+        rightHopper.set(ControlMode.PercentOutput,-.6);
         hopperSpinning = true;
     }
 
     public void Shoot(){
-        leftHopper.set(-.6);
-        rightHopper.set(.6);
+        leftHopper.set(ControlMode.PercentOutput,-.6);
+        rightHopper.set(ControlMode.PercentOutput,.6);
     }
     
 }
