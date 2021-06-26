@@ -1,22 +1,19 @@
-package frc.robot;
+package frc.robot.Subsytems;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
 
 public class Intake {
-    
-    public Solenoid intakeSolenoid = new Solenoid(0)    ;
-    public PWMTalonSRX intakeMotor = new PWMTalonSRX(11);
 
-    public void IntakeLoop(Joystick controller, Hopper hopper){
+    public Solenoid intakeSolenoid = new Solenoid(0);
+    public PWMTalonSRX intakeMotor = new PWMTalonSRX(11);
+    
+    public void IntakeLoop(Joystick controller){
         if(controller.getRawButton(1) == true){
             DropIntake();
         }
         if(controller.getRawButton(1) == false){
             RaiseIntake();
-        }
-        if(hopper.hopperSpinning == true){
-            AgitateIntake();
         }
     }
 
@@ -40,6 +37,10 @@ public class Intake {
 
     public void AgitateIntake(){
         intakeMotor.set(.1);
+    }
+
+    public PWMTalonSRX getIntakeMotor(){
+        return intakeMotor;
     }
 
 }

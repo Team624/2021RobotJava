@@ -3,9 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import frc.robot.Subsytems.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import com.ctre.phoenix.motorcontrol.*;
 
 
 /**
@@ -16,47 +18,63 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class Robot extends TimedRobot {
   
-  public final Joystick m_stick = new Joystick(0);
+  public final Joystick d_stick = new Joystick(0);
+  public final Joystick m_stick = new Joystick(1);
   private final Timer m_timer = new Timer();
 
   public Hopper hopper = new Hopper();
   public Intake intake = new Intake();
+  public Shooter shooter = new Shooter();
 
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
   @Override
-  public void robotInit() {}
+  public void robotInit() {
+    shooter.leftFlywheel.configFactoryDefault();
+    shooter.rightFlywheel.configFactoryDefault();
 
-  /** This function is run once each time the robot enters autonomous mode. */
+    shooter.leftFlywheel.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+    shooter.rightFlywheel.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+
+    shooter.leftFlywheel.setSensorPhase(true);
+    shooter.rightFlywheel.setSensorPhase(true);
+
+    shooter.leftFlywheel.configNominalOutputForward(0, Constants.kTimeoutMs);
+		shooter.leftFlywheel.configNominalOutputReverse(0, Constants.kTimeoutMs);
+		shooter.leftFlywheel.configPeakOutputForward(1, Constants.kTimeoutMs);
+    shooter.leftFlywheel.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+    
+    shooter.rightFlywheel.configNominalOutputForward(0, Constants.kTimeoutMs);
+		shooter.rightFlywheel.configNominalOutputReverse(0, Constants.kTimeoutMs);
+		shooter.rightFlywheel.configPeakOutputForward(1, Constants.kTimeoutMs);
+    shooter.rightFlywheel.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+    
+    shooter.leftFlywheel.config_kF(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kF, Constants.kTimeoutMs);
+		shooter.leftFlywheel.config_kP(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kP, Constants.kTimeoutMs);
+		shooter.leftFlywheel.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
+    shooter.leftFlywheel.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kD, Constants.kTimeoutMs);
+    
+    shooter.rightFlywheel.config_kF(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kF, Constants.kTimeoutMs);
+		shooter.rightFlywheel.config_kP(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kP, Constants.kTimeoutMs);
+		shooter.rightFlywheel.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
+		shooter.rightFlywheel.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kD, Constants.kTimeoutMs);
+  }
+
   @Override
   public void autonomousInit() {
     m_timer.reset();
     m_timer.start();
   }
 
-  /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {}
-
-  /** This function is called once each time the robot enters teleoperated mode. */
+  
   @Override
   public void teleopInit() {}
 
-  /** This function is called periodically during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
+    shooter.ShooterLoop(m_stick, hopper, intake);
     hopper.HopperLoop(m_stick);
-    intake.IntakeLoop(m_stick, hopper);
+    intake.IntakeLoop(m_stick);
   }
-
-  /** This function is called once each time the robot enters test mode. */
-  @Override
-  public void testInit() {}
-
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {}
 
 }

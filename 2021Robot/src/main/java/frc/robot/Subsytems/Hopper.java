@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.Subsytems;
 
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -25,6 +25,11 @@ public class Hopper{
         leftHopper.set(.6);
         rightHopper.set(.6);
         hopperSpinning = true;
+    }
+
+    public void Shoot(){
+        leftHopper.set(-.6);
+        rightHopper.set(.6);
     }
     
 }
