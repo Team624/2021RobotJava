@@ -73,6 +73,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     shooter.ShooterLoop(m_stick, hopper, intake);
+    
     hopper.HopperLoop(m_stick);
     intake.IntakeLoop(m_stick);
   }
