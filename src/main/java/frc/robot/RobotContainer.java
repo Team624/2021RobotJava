@@ -36,6 +36,7 @@ public class RobotContainer {
   }
 
   public boolean getManipulatorButton(int axis) {
+    System.out.println(axis);
     return this.manipulator.getRawButton(axis);
   }
 
@@ -48,6 +49,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     Robot.driveTrain.setDefaultCommand(new SwerveDrive());
+    Robot.hopper.setDefaultCommand(new ManualHopper());
     configureButtonBindings();
   }
 
@@ -58,7 +60,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    oButtonX.whenPressed(new ManualHopper());
+    //oButtonX.whenPressed(new ManualHopper());
   }
 
   /**

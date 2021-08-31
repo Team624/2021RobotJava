@@ -9,7 +9,8 @@ import frc.robot.Robot;
 import frc.robot.Constants;
 
 public class ManualHopper extends CommandBase {
-  boolean xDown = Robot.m_robotContainer.getManipulatorButton(Constants.OI.xButton);
+  boolean xDown = false;
+  //boolean xDown = Robot.m_robotContainer.getManipulatorButton(Constants.OI.xButton);
   /** Creates a new ManualHopper. */
   public ManualHopper() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,10 +34,10 @@ public class ManualHopper extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(xDown == true){
-      return false;
-    }else{
+    if(0 == 1){
       return true;
+    }else{
+      return false;
     }
   }
 }
