@@ -21,8 +21,8 @@ public class SwerveDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double leftStickY = Robot.m_robotContainer.GetDriverRawAxis(Constants.OI.LeftStickYID);
-    Robot.driveTrain.setDrives(leftStickY);
+    double leftStickY = Robot.m_robotContainer.getDriverRawAxis(Constants.OI.LeftStickYID);
+    Robot.driveTrain.setSteers(leftStickY);
   }
 
   // Called once the command ends or is interrupted.

@@ -26,12 +26,14 @@ public final class Constants {
         
         public static final int LeftHopper = 6;
         public static final int RightHopper = 9;
+
+        public static final int Intake = 11;
     }
 
     public static class OI{
         public static final int driverUSB = 0;
         public static final int manipulatorUSB = 1;
-        public static final int LeftStickYID = 0;
+        public static final int LeftStickYID = 1;
 
         //no clue if this is accurate
         public static final int xButton = 3;

@@ -1,19 +1,21 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import edu.wpi.first.wpilibj.Spark;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 
 
 public class DriveTrain extends SubsystemBase {
   
-    public Spark frontLeftDrive = new Spark(Constants.CAN.FrontLeftDriveID);
-    public Spark frontLeftSteer = new Spark(Constants.CAN.FrontLeftSteerID);
-    public Spark frontRightDrive = new Spark(Constants.CAN.FrontRightDriveID);
-    public Spark frontRightSteer = new Spark(Constants.CAN.FrontRightSteerID);
-    public Spark backLeftDrive = new Spark(Constants.CAN.BackLeftDriveID);
-    public Spark backLeftSteer = new Spark(Constants.CAN.BackLeftSteerID);
-    public Spark backRightDrive = new Spark(Constants.CAN.BackRightDriveID);
-    public Spark backRightSteer = new Spark(Constants.CAN.BackRightSteerID);
+    public CANSparkMax frontLeftDrive = new CANSparkMax(Constants.CAN.FrontLeftDriveID, MotorType.kBrushless);
+    public CANSparkMax frontLeftSteer = new CANSparkMax(Constants.CAN.FrontLeftSteerID, MotorType.kBrushless);
+    public CANSparkMax frontRightDrive = new CANSparkMax(Constants.CAN.FrontRightDriveID, MotorType.kBrushless);
+    public CANSparkMax frontRightSteer = new CANSparkMax(Constants.CAN.FrontRightSteerID, MotorType.kBrushless);
+    public CANSparkMax backLeftDrive = new CANSparkMax(Constants.CAN.BackLeftDriveID, MotorType.kBrushless);
+    public CANSparkMax backLeftSteer = new CANSparkMax(Constants.CAN.BackLeftSteerID, MotorType.kBrushless);
+    public CANSparkMax backRightDrive = new CANSparkMax(Constants.CAN.BackRightDriveID, MotorType.kBrushless);
+    public CANSparkMax backRightSteer = new CANSparkMax(Constants.CAN.BackRightSteerID, MotorType.kBrushless);
   
   public DriveTrain() {
   }
@@ -21,6 +23,13 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void setSteers(double speed){
+    frontLeftSteer.set(speed);
+    backLeftSteer.set(speed);
+    frontRightSteer.set(speed);
+    backRightSteer.set(speed);
   }
 
   public void setDrives(double speed){

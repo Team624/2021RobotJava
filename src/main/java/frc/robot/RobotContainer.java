@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ManualHopper;
+import frc.robot.commands.StopHopper;
+import frc.robot.commands.DeployIntake;
 //Bruh why don't i have to import constants
 import frc.robot.commands.SwerveDrive;
 
@@ -25,18 +27,17 @@ public class RobotContainer {
   Joystick driver = new Joystick(Constants.OI.driverUSB);
   Joystick manipulator = new Joystick(Constants.OI.manipulatorUSB);
 
-  JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButton);
+  JoystickButton oButtonX = new JoystickButton(manipulator, 3);
 
-  public double GetDriverRawAxis(int axis){
+  public double getDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);
   }
 
-  public double GetManipulatorRawAxis(int axis){
+  public double getManipulatorRawAxis(int axis){
     return this.manipulator.getRawAxis(axis);
   }
 
   public boolean getManipulatorButton(int axis) {
-    System.out.println(axis);
     return this.manipulator.getRawButton(axis);
   }
 
@@ -49,7 +50,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     Robot.driveTrain.setDefaultCommand(new SwerveDrive());
-    Robot.hopper.setDefaultCommand(new ManualHopper());
+    Robot.hopper.setDefaultCommand(new StopHopper());
+    Robot.intake.setDefaultCommand(new DeployIntake());
     configureButtonBindings();
   }
 
@@ -60,7 +62,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //oButtonX.whenPressed(new ManualHopper());
+    oButtonX.whenPressed(new ManualHopper());
   }
 
   /**
