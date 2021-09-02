@@ -16,7 +16,17 @@ public class SwerveDrive extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    Robot.driveTrain.setDrivePID(Robot.driveTrain.d_pidBackLeft);
+    Robot.driveTrain.setDrivePID(Robot.driveTrain.d_pidBackRight);
+    Robot.driveTrain.setDrivePID(Robot.driveTrain.d_pidFrontLeft);
+    Robot.driveTrain.setDrivePID(Robot.driveTrain.d_pidFrontRight);
+
+    Robot.driveTrain.setSteerPID(Robot.driveTrain.s_pidBackLeft);
+    Robot.driveTrain.setSteerPID(Robot.driveTrain.s_pidBackRight);
+    Robot.driveTrain.setSteerPID(Robot.driveTrain.s_pidFrontLeft);
+    Robot.driveTrain.setSteerPID(Robot.driveTrain.s_pidFrontRight);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
