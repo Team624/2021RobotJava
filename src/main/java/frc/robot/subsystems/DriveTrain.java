@@ -3,6 +3,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 
 
 
@@ -17,12 +19,23 @@ public class DriveTrain extends SubsystemBase {
     public CANSparkMax backRightDrive = new CANSparkMax(Constants.CAN.BackRightDriveID, MotorType.kBrushless);
     public CANSparkMax backRightSteer = new CANSparkMax(Constants.CAN.BackRightSteerID, MotorType.kBrushless);
   
+    public AHRS imu = new AHRS(SPI.Port.kMXP);
+
   public DriveTrain() {
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public double getRotation() {
+    double angle = imu.getAngle();
+    return angle;
+  }
+
+  public void resetImu() {
+    imu.reset();
   }
 
   public void setSteers(double speed){
