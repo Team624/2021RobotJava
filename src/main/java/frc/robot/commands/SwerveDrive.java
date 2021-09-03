@@ -17,6 +17,7 @@ public class SwerveDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("TEST");
     Robot.driveTrain.setDrivePID(Robot.driveTrain.d_pidBackLeft);
     Robot.driveTrain.setDrivePID(Robot.driveTrain.d_pidBackRight);
     Robot.driveTrain.setDrivePID(Robot.driveTrain.d_pidFrontLeft);
@@ -31,8 +32,8 @@ public class SwerveDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double leftStickY = Robot.m_robotContainer.getDriverRawAxis(Constants.OI.LeftStickYID);
-    Robot.driveTrain.setSteers(leftStickY);
+    Robot.driveTrain.updateSteerPID(Robot.driveTrain.s_pidBackLeft, 0);
+    System.out.println(Robot.driveTrain.s_encoderBackLeft.getPosition());
   }
 
   // Called once the command ends or is interrupted.

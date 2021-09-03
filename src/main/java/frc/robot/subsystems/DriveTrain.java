@@ -50,11 +50,11 @@ public class DriveTrain extends SubsystemBase {
     public AHRS imu = new AHRS(SPI.Port.kMXP);
 
     // PIDs for the drive motors
-    private double d_kP = 0;
+    private double d_kP = 0.00015;
     private double d_kI = 0;
     private double d_kD = 0;
     private double d_kIz = 0;
-    private double d_kFF = 0;
+    private double d_kFF = .000168;
     private double d_kMaxOutput = 1;
     private double d_kMinOutput = -1;
     // private int d_maxRPM = 5700;
@@ -62,7 +62,7 @@ public class DriveTrain extends SubsystemBase {
     // private int d_maxAcc = 1500;
 
     // PIDs for the steer motors
-    private double s_kP = 0;
+    private double s_kP = 1;
     private double s_kI = 0;
     private double s_kD = 0;
     private double s_kIz = 0;
@@ -85,22 +85,22 @@ public class DriveTrain extends SubsystemBase {
   // Set PID values
   public void setDrivePID(CANPIDController d_pid){
     d_pid.setP(d_kP);
-    d_pid.setP(d_kI);
-    d_pid.setP(d_kD);
+    d_pid.setI(d_kI);
+    d_pid.setD(d_kD);
 
-    d_pid.setP(d_kIz);
-    d_pid.setP(d_kFF);
+    d_pid.setIZone(d_kIz);
+    d_pid.setFF(d_kFF);
 
     d_pid.setOutputRange(d_kMinOutput, d_kMaxOutput);
   }
 
   public void setSteerPID(CANPIDController s_pid){
     s_pid.setP(s_kP);
-    s_pid.setP(s_kI);
-    s_pid.setP(s_kD);
+    s_pid.setI(s_kI);
+    s_pid.setD(s_kD);
 
-    s_pid.setP(s_kIz);
-    s_pid.setP(s_kFF);
+    s_pid.setIZone(s_kIz);
+    s_pid.setFF(s_kFF);
 
     s_pid.setOutputRange(s_kMinOutput, s_kMaxOutput);
   }
@@ -112,7 +112,7 @@ public class DriveTrain extends SubsystemBase {
 
   // Control PID's (Rotations)
   public void updateSteerPID(CANPIDController s_pid, double setPoint){
-    s_pid.setReference(setPoint, ControlType.kSmartMotion);
+    s_pid.setReference(setPoint, ControlType.kPosition);
   }
 
   // Testing

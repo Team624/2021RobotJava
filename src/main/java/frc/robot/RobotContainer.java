@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ManualHopper;
 import frc.robot.commands.StopHopper;
+import frc.robot.commands.StopIntake;
 import frc.robot.commands.DeployIntake;
 //Bruh why don't i have to import constants
 import frc.robot.commands.SwerveDrive;
@@ -51,7 +52,7 @@ public class RobotContainer {
     // Configure the button bindings
     Robot.driveTrain.setDefaultCommand(new SwerveDrive());
     Robot.hopper.setDefaultCommand(new StopHopper());
-    Robot.intake.setDefaultCommand(new DeployIntake());
+    Robot.intake.setDefaultCommand(new StopIntake());
     configureButtonBindings();
   }
 
