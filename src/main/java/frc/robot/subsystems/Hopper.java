@@ -12,8 +12,8 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Hopper extends SubsystemBase {
-  private final CANSparkMax leftMotor = new CANSparkMax(Constants.CAN.LeftHopper, MotorType.kBrushless);
-  private final CANSparkMax rightMotor = new CANSparkMax(Constants.CAN.RightHopper, MotorType.kBrushless);
+  private final CANSparkMax leftMotor = new CANSparkMax(Constants.CAN.LeftHopperID, MotorType.kBrushless);
+  private final CANSparkMax rightMotor = new CANSparkMax(Constants.CAN.RightHopperID, MotorType.kBrushless);
   /** Creates a new Hopper. */
   public Hopper() {}
 
@@ -27,10 +27,4 @@ public class Hopper extends SubsystemBase {
     leftMotor.set(speed);
     rightMotor.set(-speed);
   }
-
-  public void stopMotors(){
-    leftMotor.set(0);
-    rightMotor.set(0);
-  }
-
 }

@@ -24,16 +24,17 @@ public final class Constants {
 	    public static final int BackRightDriveID = 13;
         public static final int BackRightSteerID = 12;
         
-        public static final int LeftHopper = 6;
-        public static final int RightHopper = 9;
+        public static final int LeftHopperID = 6;
+        public static final int RightHopperID = 9;
 
-        public static final int Intake = 11;
+        public static final int leftFlywheelID = 7;
+        public static final int rightFlywheelID = 8;
     }
 
     public static class OI{
         public static final int driverUSB = 0;
         public static final int manipulatorUSB = 1;
-        public static final int LeftStickYID = 1;
+        public static final int LeftStickYID = 0;
 
         //no clue if this is accurate
         public static final int xButton = 3;

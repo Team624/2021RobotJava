@@ -5,10 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 
-public class DeployIntake extends CommandBase {
-  /** Creates a new DeployIntake. */
-  public DeployIntake() {
+
+public class ManualFlywheel extends CommandBase {
+  /** Creates a new ManualShooter. */
+  public ManualFlywheel() {
+    addRequirements(Robot.flywheel);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -18,7 +21,9 @@ public class DeployIntake extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    Robot.flywheel.setFlywheel(.5);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

@@ -6,11 +6,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.Constants;
+
 
 public class ManualHopper extends CommandBase {
-  //Robot.m_robotContainer.getManipulatorButton(Constants.OI.xButton)
-  boolean xDown = true;
+  //boolean xDown = Robot.m_robotContainer.getManipulatorButton(Constants.OI.xButton);
   /** Creates a new ManualHopper. */
   public ManualHopper() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,7 +23,6 @@ public class ManualHopper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("hello");
     Robot.hopper.setHopper(.5);
   }
 
@@ -35,10 +33,10 @@ public class ManualHopper extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(xDown == false){
-      return true;
-    }else{
+    if(0 == 1){
       return false;
+    }else{
+      return true;
     }
   }
 }
