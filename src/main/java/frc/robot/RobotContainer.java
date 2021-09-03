@@ -14,7 +14,6 @@ import frc.robot.commands.ManualHopper;
 import frc.robot.commands.SwerveDrive;
 import frc.robot.commands.ManualFlywheel;
 import frc.robot.commands.StopHopper;
-import frc.robot.commands.StopFlywheel;
 import frc.robot.commands.StopIntake;
 
 
