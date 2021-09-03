@@ -11,7 +11,7 @@ import frc.robot.Robot;
 public class SwerveDrive extends CommandBase {
   /** Creates a new SwerveDrive. */
   public SwerveDrive() {
-    addRequirements(Robot.driveTrain);
+    addRequirements(Robot.drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -22,13 +22,13 @@ public class SwerveDrive extends CommandBase {
   @Override
   public void execute() {
     double leftStickY = Robot.m_robotContainer.GetDriverRawAxis(Constants.OI.LeftStickYID);
-    Robot.driveTrain.setDrives(leftStickY);
+    Robot.drivetrain.setDrives(leftStickY);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.driveTrain.stopMotors();
+    Robot.drivetrain.stopMotors();
   }
 
   // Returns true when the command should end.

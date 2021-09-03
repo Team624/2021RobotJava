@@ -15,6 +15,8 @@ import frc.robot.commands.SwerveDrive;
 import frc.robot.commands.ManualFlywheel;
 import frc.robot.commands.StopHopper;
 import frc.robot.commands.StopFlywheel;
+import frc.robot.commands.StopIntake;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,7 +32,7 @@ public class RobotContainer {
   JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButton);
 
   public double GetDriverRawAxis(int axis){
-      return this.driver.getRawAxis(axis);
+      return this.driver.getRawAxis(axis);  
   }
 
   public double GetManipulatorRawAxis(int axis){
@@ -49,10 +51,10 @@ public class RobotContainer {
 
   public RobotContainer() {
     // Configure the button bindings
-    Robot.driveTrain.setDefaultCommand(new SwerveDrive());
-    Robot.flywheel.setDefaultCommand(new StopFlywheel());
+    Robot.drivetrain.setDefaultCommand(new SwerveDrive());
+    Robot.flywheel.setDefaultCommand(new ManualFlywheel());
     Robot.hopper.setDefaultCommand(new StopHopper());
-    Robot.flywheel.setDefaultCommand(new StopFlywheel());
+    Robot.intake.setDefaultCommand(new StopIntake());
     configureButtonBindings();
   }
 

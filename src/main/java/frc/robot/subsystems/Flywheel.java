@@ -6,15 +6,13 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import com.revrobotics.CANPIDController;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
 public class Flywheel extends SubsystemBase {
   public TalonFX leftFlywheel = new TalonFX(Constants.CAN.leftFlywheelID);
   public TalonFX rightFlywheel = new TalonFX(Constants.CAN.rightFlywheelID);
-  //private final CANPIDController frontController = new CANPIDController(this.front_climber);
-  //private final CANPIDController backController = new CANPIDController(this.back_climber);
+
   /** Creates a new Flywheel. */
   public Flywheel() {
     leftFlywheel.setInverted(true);
@@ -25,13 +23,13 @@ public class Flywheel extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void stopFlywheel(){
-    leftFlywheel.set(ControlMode.PercentOutput, 0);
-    rightFlywheel.set(ControlMode.PercentOutput, 0);
+  public void stopFlywheel(TalonFXControlMode mode){
+    leftFlywheel.set(mode, 0);
+    rightFlywheel.set(mode, 0);
   }
 
-  public void setFlywheel(double speed){
-    leftFlywheel.set(ControlMode.PercentOutput, speed);
-    rightFlywheel.set(ControlMode.PercentOutput, speed);
+  public void setFlywheel(TalonFXControlMode mode, double speed){
+    leftFlywheel.set(mode, speed);
+    rightFlywheel.set(mode, speed);
   }
 }

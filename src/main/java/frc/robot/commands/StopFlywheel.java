@@ -5,10 +5,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 
 public class StopFlywheel extends CommandBase {
   /** Creates a new StopFlywheel. */
   public StopFlywheel() {
+    addRequirements(Robot.flywheel);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

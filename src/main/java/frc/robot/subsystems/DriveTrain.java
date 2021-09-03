@@ -6,7 +6,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 
 
-public class DriveTrain extends SubsystemBase {
+public class Drivetrain extends SubsystemBase {
   
     public Spark frontLeftDrive = new Spark(Constants.CAN.FrontLeftDriveID);
     public Spark frontLeftSteer = new Spark(Constants.CAN.FrontLeftSteerID);
@@ -19,7 +19,7 @@ public class DriveTrain extends SubsystemBase {
   
     public AHRS imu = new AHRS(SPI.Port.kMXP);
 
-  public DriveTrain() {
+  public Drivetrain() {
   }
 
   @Override

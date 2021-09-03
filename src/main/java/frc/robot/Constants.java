@@ -3,6 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import frc.Gains;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -29,15 +31,23 @@ public final class Constants {
 
         public static final int leftFlywheelID = 7;
         public static final int rightFlywheelID = 8;
+
+        public static final int intakeMotorID = 11;
     }
 
     public static class OI{
         public static final int driverUSB = 0;
         public static final int manipulatorUSB = 1;
+
         public static final int LeftStickYID = 0;
 
-        //no clue if this is accurate
-        public static final int xButton = 3;
+        public static final int xButton = 2;
     }
 
+    public static class FlywheelConstants{
+        public static final int kSlotIdx = 0;
+        public static final int kPIDLoopIdx = 0;
+        public static final int kTimeoutMs = 30;
+        public final static Gains kGains_Velocit  = new Gains( 0.1, 0.001, 5, 1023.0/20660.0,  300,  1.00);
 }
+    }

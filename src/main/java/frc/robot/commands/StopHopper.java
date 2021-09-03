@@ -5,10 +5,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 
 public class StopHopper extends CommandBase {
   /** Creates a new StopHopper. */
   public StopHopper() {
+    addRequirements(Robot.hopper);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
