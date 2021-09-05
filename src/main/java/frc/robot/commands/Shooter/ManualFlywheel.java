@@ -2,18 +2,18 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
 
-public class ManualHopper extends CommandBase {
-  //boolean xDown = Robot.m_robotContainer.getManipulatorButton(Constants.OI.xButton);
-  /** Creates a new ManualHopper. */
-  public ManualHopper() {
+public class ManualFlywheel extends CommandBase {
+  /** Creates a new ManualShooter. */
+  public ManualFlywheel() {
+    addRequirements(Robot.flywheel);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.hopper);
   }
 
   // Called when the command is initially scheduled.
@@ -23,7 +23,8 @@ public class ManualHopper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.hopper.setHopper(.5);
+    Robot.flywheel.setFlywheel(TalonFXControlMode.Velocity, 5000);
+    System.out.println(Robot.flywheel.leftFlywheel.getClosedLoopError());
   }
 
   // Called once the command ends or is interrupted.
@@ -33,10 +34,7 @@ public class ManualHopper extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(0 == 1){
-      return false;
-    }else{
-      return true;
-    }
+    return false;
   }
 }
+

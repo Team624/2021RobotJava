@@ -6,26 +6,23 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
-
-public class ManualFlywheel extends CommandBase {
-  /** Creates a new ManualShooter. */
-  public ManualFlywheel() {
+public class PlayMusic extends CommandBase {
+  /** Creates a new PlayMusic. */
+  public PlayMusic() {
     addRequirements(Robot.flywheel);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    Robot.flywheel.play();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    Robot.flywheel.setFlywheel(TalonFXControlMode.Velocity, 5000);
-    System.out.println(Robot.flywheel.leftFlywheel.getClosedLoopError());
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -37,4 +34,3 @@ public class ManualFlywheel extends CommandBase {
     return false;
   }
 }
-

@@ -10,12 +10,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ManualHopper;
-import frc.robot.commands.SwerveDrive;
-import frc.robot.commands.ManualFlywheel;
-import frc.robot.commands.StopHopper;
-import frc.robot.commands.StopFlywheel;
-import frc.robot.commands.StopIntake;
+import frc.robot.commands.Hopper.ManualHopper;
+import frc.robot.commands.PlayMusic;
+import frc.robot.commands.Drive.SwerveDrive;
+import frc.robot.commands.Hopper.StopHopper;
+import frc.robot.commands.Intake.StopIntake;
 
 
 /**
@@ -39,12 +38,12 @@ public class RobotContainer {
     return this.manipulator.getRawAxis(axis);
   }
 
-  public boolean getManipulatorButton(int axis) {
-    return this.manipulator.getRawButton(axis);
+  public boolean getManipulatorButton(int button) {
+    return this.manipulator.getRawButton(button);
   }
 
-  public boolean getDriverButton(int axis) {
-    return this.driver.getRawButton(axis);
+  public boolean getDriverButton(int button) {
+    return this.driver.getRawButton(button);
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -52,7 +51,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     Robot.drivetrain.setDefaultCommand(new SwerveDrive());
-    Robot.flywheel.setDefaultCommand(new ManualFlywheel());
+    Robot.flywheel.setDefaultCommand(new PlayMusic());
     Robot.hopper.setDefaultCommand(new StopHopper());
     Robot.intake.setDefaultCommand(new StopIntake());
     configureButtonBindings();
