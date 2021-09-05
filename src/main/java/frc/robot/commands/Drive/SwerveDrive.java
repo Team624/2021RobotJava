@@ -5,7 +5,6 @@
 package frc.robot.commands.Drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class SwerveDrive extends CommandBase {
@@ -16,13 +15,23 @@ public class SwerveDrive extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    Robot.drivetrain.setDrivePID(Robot.drivetrain.d_pidBackLeft);
+    Robot.drivetrain.setDrivePID(Robot.drivetrain.d_pidBackRight);
+    Robot.drivetrain.setDrivePID(Robot.drivetrain.d_pidFrontLeft);
+    Robot.drivetrain.setDrivePID(Robot.drivetrain.d_pidFrontRight);
+
+    Robot.drivetrain.setSteerPID(Robot.drivetrain.s_pidBackLeft);
+    Robot.drivetrain.setSteerPID(Robot.drivetrain.s_pidBackRight);
+    Robot.drivetrain.setSteerPID(Robot.drivetrain.s_pidFrontLeft);
+    Robot.drivetrain.setSteerPID(Robot.drivetrain.s_pidFrontRight);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double leftStickY = Robot.m_robotContainer.GetDriverRawAxis(Constants.OI.LeftStickYID);
-    Robot.drivetrain.setDrives(leftStickY);
+    Robot.drivetrain.updateSteerPID(Robot.drivetrain.s_pidBackLeft, 0);
+    System.out.println(Robot.drivetrain.s_encoderBackLeft.getPosition());
   }
 
   // Called once the command ends or is interrupted.
