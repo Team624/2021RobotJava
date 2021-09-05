@@ -22,8 +22,12 @@ public class Hopper extends SubsystemBase {
   }
 
   public void setHopper(double speed){
-    //idk if this is percent but i hope so
     leftMotor.set(speed);
     rightMotor.set(-speed);
+  }
+
+  public void stopHopper(){
+    leftMotor.set(0);
+    rightMotor.set(0);
   }
 }

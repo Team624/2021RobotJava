@@ -11,6 +11,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj.Compressor;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -18,10 +19,13 @@ import frc.robot.subsystems.Intake;
  * project.
  */
 public class Robot extends TimedRobot {
+
   public static Drivetrain drivetrain = new Drivetrain();
   public static Hopper hopper = new Hopper();
   public static Flywheel flywheel = new Flywheel();
   public static Intake intake = new Intake();
+
+  Compressor compressor = new Compressor(0);
 
   //private Command m_autonomousCommand;
   public static RobotContainer m_robotContainer;
@@ -35,6 +39,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    compressor.setClosedLoopControl(true);
 
     Robot.flywheel.leftFlywheel.configFactoryDefault();
     Robot.flywheel.rightFlywheel.configFactoryDefault();

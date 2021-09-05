@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Hopper.ManualHopper;
-import frc.robot.commands.PlayMusic;
 import frc.robot.commands.Drive.SwerveDrive;
 import frc.robot.commands.Hopper.StopHopper;
 import frc.robot.commands.Intake.StopIntake;
+import frc.robot.commands.Shooter.StopFlywheel;
 
 
 /**
@@ -51,7 +51,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     Robot.drivetrain.setDefaultCommand(new SwerveDrive());
-    Robot.flywheel.setDefaultCommand(new PlayMusic());
+    Robot.flywheel.setDefaultCommand(new StopFlywheel());
     Robot.hopper.setDefaultCommand(new StopHopper());
     Robot.intake.setDefaultCommand(new StopIntake());
     configureButtonBindings();

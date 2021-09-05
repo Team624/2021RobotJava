@@ -34,6 +34,11 @@ public final class Constants {
         public static final int intakeMotorID = 11;
     }
 
+    public static class Solenoid{
+        public static final int intakeID = 0;
+        public static final int hoodID = 1;
+    }
+
     public static class OI{
         public static final int driverUSB = 0;
         public static final int manipulatorUSB = 1;
