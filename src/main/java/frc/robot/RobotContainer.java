@@ -15,6 +15,7 @@ import frc.robot.commands.Drive.SwerveDrive;
 import frc.robot.commands.Hopper.StopHopper;
 import frc.robot.commands.Intake.StopIntake;
 import frc.robot.commands.Shooter.StopFlywheel;
+import frc.robot.commands.Shooter.StopHood;
 
 
 /**
@@ -54,6 +55,7 @@ public class RobotContainer {
     Robot.flywheel.setDefaultCommand(new StopFlywheel());
     Robot.hopper.setDefaultCommand(new StopHopper());
     Robot.intake.setDefaultCommand(new StopIntake());
+    Robot.hood.setDefaultCommand(new StopHood());
     configureButtonBindings();
   }
 

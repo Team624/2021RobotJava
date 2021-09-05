@@ -6,10 +6,8 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.Solenoid;
 
 public class DeployIntake extends CommandBase {
-  private final Solenoid intakeSolenoid = new Solenoid(0);
   /** Creates a new DeployIntake. */
   public DeployIntake() {
     addRequirements(Robot.intake);
@@ -23,8 +21,8 @@ public class DeployIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.intake.setIntake(.5);
-    intakeSolenoid.set(true);
+    Robot.intake.setIntake(.5, true);
+    
   }
 
   // Called once the command ends or is interrupted.

@@ -6,12 +6,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   public TalonSRX intakeMotor = new TalonSRX(Constants.CAN.intakeMotorID);
+  private final Solenoid intakeSolenoid = new Solenoid(Constants.Solenoid.intakeID);
   /** Creates a new Intake. */
   public Intake() {}
 
@@ -20,7 +21,8 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setIntake(double speed){
+  public void setIntake(double speed, boolean actuate){
+    intakeSolenoid.set(actuate);
     intakeMotor.set(TalonSRXControlMode.PercentOutput, speed);
   }
 
