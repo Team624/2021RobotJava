@@ -10,13 +10,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Hopper.ManualHopper;
-import frc.robot.commands.PlayMusic;
-import frc.robot.commands.Drive.SwerveDrive;
+import frc.robot.commands.Drive.StopDrive;
 import frc.robot.commands.Hopper.StopHopper;
+import frc.robot.commands.Intake.DeployIntake;
 import frc.robot.commands.Intake.StopIntake;
-import frc.robot.commands.Shooter.StopFlywheel;
-import frc.robot.commands.Shooter.StopHood;
+import frc.robot.commands.Shooter.StopShooter;
 
 
 /**
@@ -26,11 +24,14 @@ import frc.robot.commands.Shooter.StopHood;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
   // The robot's subsystems and commands are defined here...
   Joystick driver = new Joystick(Constants.OI.driverUSB);
   Joystick manipulator = new Joystick(Constants.OI.manipulatorUSB);
 
-  JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButton);
+  JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
+  JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
+  JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
 
   public double GetDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);  
@@ -51,12 +52,10 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
-    // Configure the button bindings
-    Robot.drivetrain.setDefaultCommand(new SwerveDrive());
-    Robot.flywheel.setDefaultCommand(new StopFlywheel());
+    Robot.drivetrain.setDefaultCommand(new StopDrive());
+    Robot.shooter.setDefaultCommand(new StopShooter());
     Robot.hopper.setDefaultCommand(new StopHopper());
     Robot.intake.setDefaultCommand(new StopIntake());
-    Robot.hood.setDefaultCommand(new StopHood());
     configureButtonBindings();
   }
 
@@ -67,7 +66,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    oButtonX.whenPressed(new ManualHopper());
+    oButtonX.whenHeld(new DeployIntake());
   }
 
   /**

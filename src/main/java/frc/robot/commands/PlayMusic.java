@@ -10,14 +10,14 @@ import frc.robot.Robot;
 public class PlayMusic extends CommandBase {
   /** Creates a new PlayMusic. */
   public PlayMusic() {
-    addRequirements(Robot.flywheel);
+    addRequirements(Robot.shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.flywheel.play();
+    Robot.shooter.play();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

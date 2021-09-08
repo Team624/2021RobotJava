@@ -4,13 +4,15 @@
 
 package frc.robot.commands.Shooter;
 
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class StopHood extends CommandBase {
-  /** Creates a new StopHood. */
-  public StopHood() {
-    addRequirements(Robot.hood);
+public class ManualShoot extends CommandBase {
+  /** Creates a new ManualShoot. */
+  public ManualShoot() {
+    addRequirements(Robot.shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -21,7 +23,8 @@ public class StopHood extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.hood.actuate(false);
+    Robot.shooter.setFlywheel(TalonFXControlMode.Velocity, Robot.shooter.getSetRPM());
+    Robot.shooter.actuate(Robot.shooter.getSetHood());
   }
 
   // Called once the command ends or is interrupted.

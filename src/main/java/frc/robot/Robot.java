@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hopper;
-import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Hood;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Compressor;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -23,9 +23,8 @@ public class Robot extends TimedRobot {
 
   public static Drivetrain drivetrain = new Drivetrain();
   public static Hopper hopper = new Hopper();
-  public static Flywheel flywheel = new Flywheel();
+  public static Shooter shooter = new Shooter();
   public static Intake intake = new Intake();
-  public static Hood hood = new Hood();
 
   Compressor compressor = new Compressor(0);
 
@@ -44,30 +43,30 @@ public class Robot extends TimedRobot {
 
     compressor.setClosedLoopControl(true);
 
-    Robot.flywheel.leftFlywheel.configFactoryDefault();
-    Robot.flywheel.rightFlywheel.configFactoryDefault();
+    Robot.shooter.leftFlywheel.configFactoryDefault();
+    Robot.shooter.rightFlywheel.configFactoryDefault();
 
-    Robot.flywheel.leftFlywheel.configNeutralDeadband(0.001);
-    Robot.flywheel.rightFlywheel.configNeutralDeadband(0.001);
+    Robot.shooter.leftFlywheel.configNeutralDeadband(0.001);
+    Robot.shooter.rightFlywheel.configNeutralDeadband(0.001);
 
-    Robot.flywheel.leftFlywheel.configNominalOutputForward(0, Constants.FlywheelConstants.kTimeoutMs);
-		Robot.flywheel.leftFlywheel.configNominalOutputReverse(0, Constants.FlywheelConstants.kTimeoutMs);
-		Robot.flywheel.leftFlywheel.configPeakOutputForward(1, Constants.FlywheelConstants.kTimeoutMs);
-    Robot.flywheel.leftFlywheel.configPeakOutputReverse(-1, Constants.FlywheelConstants.kTimeoutMs);
-    Robot.flywheel.rightFlywheel.configNominalOutputForward(0, Constants.FlywheelConstants.kTimeoutMs);
-		Robot.flywheel.rightFlywheel.configNominalOutputReverse(0, Constants.FlywheelConstants.kTimeoutMs);
-		Robot.flywheel.rightFlywheel.configPeakOutputForward(1, Constants.FlywheelConstants.kTimeoutMs);
-    Robot.flywheel.rightFlywheel.configPeakOutputReverse(-1, Constants.FlywheelConstants.kTimeoutMs);
+    Robot.shooter.leftFlywheel.configNominalOutputForward(0, Constants.PID.FlywheelConstants.kTimeoutMs);
+		Robot.shooter.leftFlywheel.configNominalOutputReverse(0, Constants.PID.FlywheelConstants.kTimeoutMs);
+		Robot.shooter.leftFlywheel.configPeakOutputForward(1, Constants.PID.FlywheelConstants.kTimeoutMs);
+    Robot.shooter.leftFlywheel.configPeakOutputReverse(-1, Constants.PID.FlywheelConstants.kTimeoutMs);
+    Robot.shooter.rightFlywheel.configNominalOutputForward(0, Constants.PID.FlywheelConstants.kTimeoutMs);
+		Robot.shooter.rightFlywheel.configNominalOutputReverse(0, Constants.PID.FlywheelConstants.kTimeoutMs);
+		Robot.shooter.rightFlywheel.configPeakOutputForward(1, Constants.PID.FlywheelConstants.kTimeoutMs);
+    Robot.shooter.rightFlywheel.configPeakOutputReverse(-1, Constants.PID.FlywheelConstants.kTimeoutMs);
     
-    Robot.flywheel.leftFlywheel.config_kF(Constants.FlywheelConstants.kPIDLoopIdx, Constants.FlywheelConstants.kGains_Velocit.kF, Constants.FlywheelConstants.kTimeoutMs);
-		Robot.flywheel.leftFlywheel.config_kP(Constants.FlywheelConstants.kPIDLoopIdx, Constants.FlywheelConstants.kGains_Velocit.kP, Constants.FlywheelConstants.kTimeoutMs);
-		Robot.flywheel.leftFlywheel.config_kI(Constants.FlywheelConstants.kPIDLoopIdx, Constants.FlywheelConstants.kGains_Velocit.kI, Constants.FlywheelConstants.kTimeoutMs);
-		Robot.flywheel.leftFlywheel.config_kD(Constants.FlywheelConstants.kPIDLoopIdx, Constants.FlywheelConstants.kGains_Velocit.kD, Constants.FlywheelConstants.kTimeoutMs);
+    Robot.shooter.leftFlywheel.config_kF(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kF, Constants.PID.FlywheelConstants.kTimeoutMs);
+		Robot.shooter.leftFlywheel.config_kP(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kP, Constants.PID.FlywheelConstants.kTimeoutMs);
+		Robot.shooter.leftFlywheel.config_kI(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kI, Constants.PID.FlywheelConstants.kTimeoutMs);
+		Robot.shooter.leftFlywheel.config_kD(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kD, Constants.PID.FlywheelConstants.kTimeoutMs);
    
-    Robot.flywheel.rightFlywheel.config_kF(Constants.FlywheelConstants.kPIDLoopIdx, Constants.FlywheelConstants.kGains_Velocit.kF, Constants.FlywheelConstants.kTimeoutMs);
-		Robot.flywheel.rightFlywheel.config_kP(Constants.FlywheelConstants.kPIDLoopIdx, Constants.FlywheelConstants.kGains_Velocit.kP, Constants.FlywheelConstants.kTimeoutMs);
-		Robot.flywheel.rightFlywheel.config_kI(Constants.FlywheelConstants.kPIDLoopIdx, Constants.FlywheelConstants.kGains_Velocit.kI, Constants.FlywheelConstants.kTimeoutMs);
-		Robot.flywheel.rightFlywheel.config_kD(Constants.FlywheelConstants.kPIDLoopIdx, Constants.FlywheelConstants.kGains_Velocit.kD, Constants.FlywheelConstants.kTimeoutMs);
+    Robot.shooter.rightFlywheel.config_kF(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kF, Constants.PID.FlywheelConstants.kTimeoutMs);
+		Robot.shooter.rightFlywheel.config_kP(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kP, Constants.PID.FlywheelConstants.kTimeoutMs);
+		Robot.shooter.rightFlywheel.config_kI(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kI, Constants.PID.FlywheelConstants.kTimeoutMs);
+		Robot.shooter.rightFlywheel.config_kD(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kD, Constants.PID.FlywheelConstants.kTimeoutMs);
    
 
   }

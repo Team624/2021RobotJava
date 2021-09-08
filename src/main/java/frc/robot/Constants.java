@@ -40,43 +40,51 @@ public final class Constants {
     }
 
     public static class OI{
+        //BUTTON INDEXING STARTS AT 1 IN JAVA
         public static final int driverUSB = 0;
         public static final int manipulatorUSB = 1;
 
         public static final int LeftStickYID = 0;
 
-        public static final int xButton = 2;
+        public static final int yButtonID = 4;
+        public static final int xButtonID = 3;
+        public static final int leftBumperID = 5;
     }
 
-    public static class FlywheelConstants{
-        public static final int kSlotIdx = 0;
-        public static final int kPIDLoopIdx = 0;
-        public static final int kTimeoutMs = 30;
-        public final static Gains kGains_Velocit  = new Gains( 0.1, 0.001, 5, 1023.0/20660.0,  300,  1.00);
+    public static class PID{
+
+        public static class FlywheelConstants{
+            public static final int kSlotIdx = 0;
+            public static final int kPIDLoopIdx = 0;
+            public static final int kTimeoutMs = 30;
+            public final static Gains kGains_Velocit  = new Gains( 0.3, 0.0001, 0, 0.05,  10,  1.00);
+        }
+
+        public static class SwerveConstants{
+            public static final double d_kP = 0.00015;
+            public static final double d_kI = 0;
+            public static final double d_kD = 0;
+            public static final double d_kIz = 0;
+            public static final double d_kFF = .000168;
+            public static final double d_kMaxOutput = 1;
+            public static final double d_kMinOutput = -1;
+            public static final int d_maxRPM = 5700;
+            public static final int d_maxVel = 2000;
+            public static final int d_maxAcc = 1500;
+    
+            // PIDs for the steer motors
+            public static final double s_kP = 1;
+            public static final double s_kI = 0;
+            public static final double s_kD = 0;
+            public static final double s_kIz = 0;
+            public static final double s_kFF = 0;
+            public static final double s_kMaxOutput = 1;
+            public static final double s_kMinOutput = -1;
+            public static final int s_maxRPM = 5700;
+            public static final int s_maxVel = 2000;
+            public static final int s_maxAcc = 1500;
+        }
+        
     }
 
-    public static class SwerveConstants{
-        public static final double d_kP = 0.00015;
-        public static final double d_kI = 0;
-        public static final double d_kD = 0;
-        public static final double d_kIz = 0;
-        public static final double d_kFF = .000168;
-        public static final double d_kMaxOutput = 1;
-        public static final double d_kMinOutput = -1;
-        public static final int d_maxRPM = 5700;
-        public static final int d_maxVel = 2000;
-        public static final int d_maxAcc = 1500;
-
-        // PIDs for the steer motors
-        public static final double s_kP = 1;
-        public static final double s_kI = 0;
-        public static final double s_kD = 0;
-        public static final double s_kIz = 0;
-        public static final double s_kFF = 0;
-        public static final double s_kMaxOutput = 1;
-        public static final double s_kMinOutput = -1;
-        public static final int s_maxRPM = 5700;
-        public static final int s_maxVel = 2000;
-        public static final int s_maxAcc = 1500;
-    }
 }
