@@ -25,6 +25,8 @@ public class Shooter extends SubsystemBase {
   private boolean manualShoot;
   private boolean setHood;
   private double setRPM;
+  private boolean dashHood;
+  private double dashRPM;
   private double currentRPM;
   private boolean prime;
 
@@ -61,8 +63,8 @@ public class Shooter extends SubsystemBase {
 
   public void flywheelDash(){
     manualShoot = shootManual.getBoolean(false);
-    setHood = manualHood.getBoolean(false);
-    setRPM = manualFlywheel.getDouble(0);
+    dashHood = manualHood.getBoolean(false);
+    dashRPM = manualFlywheel.getDouble(0);
     shooterTab.add("Flywheel RPM", currentRPM);
     shooterTab.add("Flywheel Set RPM", setRPM);
   }
@@ -106,6 +108,14 @@ public class Shooter extends SubsystemBase {
 
   public boolean getSetHood(){
     return setHood;
+  }
+
+  public boolean getDashHood(){
+    return dashHood;
+  }
+
+  public double getDashRPM(){
+    return dashRPM;
   }
 
   public void play(){
