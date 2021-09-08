@@ -37,7 +37,7 @@ public class Shooter extends SubsystemBase {
   public static Orchestra orchestra;
   /** Creates a new Shooter. */
   public Shooter() {
-    flywheelDefaulDash();
+    flywheelDefaultDash();
 
     leftFlywheel.setInverted(true);
 
@@ -67,7 +67,7 @@ public class Shooter extends SubsystemBase {
     shooterTab.add("Flywheel Set RPM", setRPM);
   }
 
-  public void flywheelDefaulDash(){
+  public void flywheelDefaultDash(){
     shooterTab.addPersistent("PID P", Constants.PID.FlywheelConstants.kGains_Velocit.kP);
     shooterTab.addPersistent("PID I", Constants.PID.FlywheelConstants.kGains_Velocit.kI);
     shooterTab.addPersistent("PID D", Constants.PID.FlywheelConstants.kGains_Velocit.kD);
