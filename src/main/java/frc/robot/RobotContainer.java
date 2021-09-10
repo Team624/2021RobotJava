@@ -15,6 +15,8 @@ import frc.robot.commands.Hopper.StopHopper;
 import frc.robot.commands.Intake.DeployIntake;
 import frc.robot.commands.Intake.StopIntake;
 import frc.robot.commands.Shooter.StopShooter;
+import frc.robot.commands.Hopper.ManualHopper;
+
 
 
 /**
@@ -52,6 +54,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
+
     Robot.drivetrain.setDefaultCommand(new StopDrive());
     Robot.shooter.setDefaultCommand(new StopShooter());
     Robot.hopper.setDefaultCommand(new StopHopper());

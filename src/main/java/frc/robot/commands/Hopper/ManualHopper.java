@@ -10,7 +10,7 @@ import frc.robot.Robot;
 public class ManualHopper extends CommandBase {
   /** Creates a new ManualHopper. */
   public ManualHopper() {
-    addRequirements(Robot.intake);
+    addRequirements(Robot.hopper);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -21,6 +21,7 @@ public class ManualHopper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Robot.hopper.onHopper();
   }
 
   // Called once the command ends or is interrupted.

@@ -22,19 +22,36 @@ public class Shooter extends SubsystemBase {
   public TalonFX leftFlywheel = new TalonFX(Constants.CAN.leftFlywheelID);
   public TalonFX rightFlywheel = new TalonFX(Constants.CAN.rightFlywheelID);
   
+  //Are we shooting manually?
   private boolean manualShoot;
+  //Should hood be up right now?
   private boolean setHood;
+  //What should rpm be right now?
   private double setRPM;
-  private boolean dashHood;
-  private double dashRPM;
+  //Does dash say to put hood up while manual shooting?
+  private boolean manualHood;
+  //What RPM does the manual dash say?
+  private double manualRPM;
+  //What is rpm right now?
   private double currentRPM;
+  //Should we be priming right now?
   private boolean prime;
 
   private ShuffleboardTab shooterTab = Shuffleboard.getTab("Shooter");
+  //shows dashboard what the rpm should be
+  private NetworkTableEntry dashSetRPM = shooterTab.add("Set RPM", 0).getEntry();
+  //shows dashboard what the rpm is
+  private NetworkTableEntry dashRPM = shooterTab.add("Current RPM", 0).getEntry();
+  //gets from dashboard to manual shoot
+  private NetworkTableEntry dashShootManual = shooterTab.add("Shoot Manual", false).getEntry();
+  //gets from dashboard whether hood should be up while manual
+  private NetworkTableEntry dashHood = shooterTab.add("Dash Hood", false).getEntry();
+  //gets from dashboard what rpm should be while manually shooting
+  private NetworkTableEntry dashFlywheel = shooterTab.add("Dash RPM", 0).getEntry();
+  //tells dashboard if the robot is priming
+  private NetworkTableEntry dashPriming = shooterTab.add("Priming", false).getEntry();
 
-  private NetworkTableEntry shootManual = shooterTab.add("Shoot Manual", false).getEntry();
-  private NetworkTableEntry manualHood = shooterTab.add("Set Hood", false).getEntry();
-  private NetworkTableEntry manualFlywheel = shooterTab.add("Set RPM", 0).getEntry();
+  public boolean test = true;
 
   public static Orchestra orchestra;
   /** Creates a new Shooter. */
@@ -52,21 +69,22 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    currentRPM = getRPM();
-    prime = Robot.m_robotContainer.getManipulatorButton(Constants.OI.yButtonID);
-    flywheelDash();
-    while(manualShoot == true && prime == true){
-      new ManualShoot();
-    }
-    // This method will be called once per scheduler run
+    getStatus();
+    shooterDash();
   }
 
-  public void flywheelDash(){
-    manualShoot = shootManual.getBoolean(false);
-    dashHood = manualHood.getBoolean(false);
-    dashRPM = manualFlywheel.getDouble(0);
-    shooterTab.add("Flywheel RPM", currentRPM);
-    shooterTab.add("Flywheel Set RPM", setRPM);
+  public void getStatus(){
+    prime = Robot.m_robotContainer.getManipulatorButton(Constants.OI.yButtonID);
+    currentRPM = getRPM();
+  }
+
+  public void shooterDash(){
+    manualShoot = dashShootManual.getBoolean(false);
+    manualHood = dashHood.getBoolean(false);
+    manualRPM = dashFlywheel.getDouble(0);
+    dashSetRPM.setDouble(setRPM);
+    dashRPM.setDouble(currentRPM);
+    dashPriming.setBoolean(prime);
   }
 
   public void flywheelDefaultDash(){
@@ -111,11 +129,19 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean getDashHood(){
-    return dashHood;
+    return manualHood;
   }
 
   public double getDashRPM(){
-    return dashRPM;
+    return manualRPM;
+  }
+
+  public boolean getManualShoot(){
+    boolean val = false;
+    if(prime == true && manualShoot == true){
+      val = true;
+    }
+    return val;
   }
 
   public void play(){
