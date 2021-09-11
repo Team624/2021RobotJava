@@ -21,12 +21,13 @@ public class Hopper extends SubsystemBase {
 
   private ShuffleboardTab hopperTab = Shuffleboard.getTab("Hopper");
 
-  private NetworkTableEntry dashSetHopperSpeed = hopperTab.add("Set Speed", 0).getEntry();
+  private NetworkTableEntry dashSetHopperSpeed = hopperTab.addPersistent("Set Speed", 0).getEntry();
   /** Creates a new Hopper. */
   public Hopper() {}
 
   @Override
   public void periodic() {
+    rightMotor.setInverted(true);
     hopperDash();
     // This method will be called once per scheduler run
   }
@@ -37,11 +38,12 @@ public class Hopper extends SubsystemBase {
 
   public void onHopper(){
     leftMotor.set(hopperSpeed);
-    rightMotor.set(-hopperSpeed);
+    rightMotor.set(hopperSpeed);
   }
 
   public void stopHopper(){
     leftMotor.set(0);
     rightMotor.set(0);
   }
+
 }

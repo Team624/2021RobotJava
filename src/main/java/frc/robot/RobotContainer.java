@@ -15,7 +15,7 @@ import frc.robot.commands.Hopper.StopHopper;
 import frc.robot.commands.Intake.DeployIntake;
 import frc.robot.commands.Intake.StopIntake;
 import frc.robot.commands.Shooter.StopShooter;
-import frc.robot.commands.Hopper.ManualHopper;
+import frc.robot.commands.Shooter.Shoot;
 
 
 
@@ -59,7 +59,11 @@ public class RobotContainer {
     Robot.shooter.setDefaultCommand(new StopShooter());
     Robot.hopper.setDefaultCommand(new StopHopper());
     Robot.intake.setDefaultCommand(new StopIntake());
+
+
     configureButtonBindings();
+    
+
   }
 
   /**
@@ -68,8 +72,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
+  public void configureButtonBindings() {
     oButtonX.whenHeld(new DeployIntake());
+    oButtonY.whenHeld(new Shoot());
   }
 
   /**

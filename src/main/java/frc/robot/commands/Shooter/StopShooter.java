@@ -23,12 +23,7 @@ public class StopShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Robot.shooter.getManualShoot() == true){
-      new ManualShoot();
-    }else{
-      Robot.shooter.stopAll(TalonFXControlMode.PercentOutput);
-    }
-    
+    Robot.shooter.stopAll(TalonFXControlMode.PercentOutput);
   }
 
   // Called once the command ends or is interrupted.

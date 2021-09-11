@@ -15,7 +15,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Solenoid;
-import frc.robot.commands.Shooter.ManualShoot;
+import frc.robot.Gains;
 
 public class Shooter extends SubsystemBase {
   private final Solenoid hoodSolenoid = new Solenoid(Constants.Solenoid.hoodID);
@@ -37,26 +37,39 @@ public class Shooter extends SubsystemBase {
   //Should we be priming right now?
   private boolean prime;
 
-  private ShuffleboardTab shooterTab = Shuffleboard.getTab("Shooter");
-  //shows dashboard what the rpm should be
-  private NetworkTableEntry dashSetRPM = shooterTab.add("Set RPM", 0).getEntry();
-  //shows dashboard what the rpm is
-  private NetworkTableEntry dashRPM = shooterTab.add("Current RPM", 0).getEntry();
-  //gets from dashboard to manual shoot
-  private NetworkTableEntry dashShootManual = shooterTab.add("Shoot Manual", false).getEntry();
-  //gets from dashboard whether hood should be up while manual
-  private NetworkTableEntry dashHood = shooterTab.add("Dash Hood", false).getEntry();
-  //gets from dashboard what rpm should be while manually shooting
-  private NetworkTableEntry dashFlywheel = shooterTab.add("Dash RPM", 0).getEntry();
-  //tells dashboard if the robot is priming
-  private NetworkTableEntry dashPriming = shooterTab.add("Priming", false).getEntry();
+  private boolean tunePID;
+
+  private double Pconstant;
+  private double Iconstant;
+  private double Dconstant;
+  private double Fconstant;
+  private int I_Zone;
+  private double MaxOutput;
 
   public boolean test = true;
+
+  private ShuffleboardTab shooterTab = Shuffleboard.getTab("Shooter");
+
+  private NetworkTableEntry dashTunePid = shooterTab.add("Tune PID", false).getEntry();
+  
+  private NetworkTableEntry dashShootManual = shooterTab.add("Shoot Manual", false).getEntry();
+  private NetworkTableEntry dashHood = shooterTab.add("Dash Hood", false).getEntry();
+  private NetworkTableEntry dashRPM = shooterTab.add("Dash RPM", 0).getEntry();
+
+  private NetworkTableEntry dashSetRPM = shooterTab.add("Set RPM", 0).getEntry();
+  private NetworkTableEntry dashCurrentRPM = shooterTab.add("Current RPM", 0).getEntry();
+  private NetworkTableEntry dashPriming = shooterTab.add("Priming", false).getEntry();
+
+  private NetworkTableEntry PID_P = shooterTab.addPersistent("PID P", Constants.PID.FlywheelConstants.kGains_Velocit.kP).getEntry();
+  private NetworkTableEntry PID_I = shooterTab.addPersistent("PID I", Constants.PID.FlywheelConstants.kGains_Velocit.kI).getEntry();
+  private NetworkTableEntry PID_D = shooterTab.addPersistent("PID D", Constants.PID.FlywheelConstants.kGains_Velocit.kD).getEntry();
+  private NetworkTableEntry PID_F = shooterTab.addPersistent("PID F", Constants.PID.FlywheelConstants.kGains_Velocit.kF).getEntry();
+  private NetworkTableEntry PID_Izone = shooterTab.addPersistent("PID I-Zone", Constants.PID.FlywheelConstants.kGains_Velocit.kIzone).getEntry();
+  private NetworkTableEntry PID_MaxOutput = shooterTab.addPersistent("PID Peak Output", Constants.PID.FlywheelConstants.kGains_Velocit.kPeakOutput).getEntry();
 
   public static Orchestra orchestra;
   /** Creates a new Shooter. */
   public Shooter() {
-    flywheelDefaultDash();
 
     leftFlywheel.setInverted(true);
 
@@ -67,38 +80,58 @@ public class Shooter extends SubsystemBase {
     orchestra = new Orchestra(instruments);
   }
 
+
   @Override
   public void periodic() {
     getStatus();
     shooterDash();
+    updatePID();
   }
 
   public void getStatus(){
-    prime = Robot.m_robotContainer.getManipulatorButton(Constants.OI.yButtonID);
+    prime = getPrime();
     currentRPM = getRPM();
   }
 
   public void shooterDash(){
+    Pconstant = PID_P.getDouble(0);
+    Iconstant = PID_I.getDouble(0);
+    Dconstant = PID_D.getDouble(0);
+    Fconstant = PID_F.getDouble(0);
+    I_Zone = (int)PID_Izone.getDouble(0);
+    MaxOutput = PID_MaxOutput.getDouble(0);
+
     manualShoot = dashShootManual.getBoolean(false);
     manualHood = dashHood.getBoolean(false);
-    manualRPM = dashFlywheel.getDouble(0);
+    manualRPM = dashRPM.getDouble(0);
+
     dashSetRPM.setDouble(setRPM);
-    dashRPM.setDouble(currentRPM);
+    dashCurrentRPM.setDouble(currentRPM);
     dashPriming.setBoolean(prime);
+
+    tunePID = dashTunePid.getBoolean(false);
   }
 
-  public void flywheelDefaultDash(){
-    shooterTab.addPersistent("PID P", Constants.PID.FlywheelConstants.kGains_Velocit.kP);
-    shooterTab.addPersistent("PID I", Constants.PID.FlywheelConstants.kGains_Velocit.kI);
-    shooterTab.addPersistent("PID D", Constants.PID.FlywheelConstants.kGains_Velocit.kD);
-    shooterTab.addPersistent("PID F", Constants.PID.FlywheelConstants.kGains_Velocit.kF);
-    shooterTab.addPersistent("PID I Zone", Constants.PID.FlywheelConstants.kGains_Velocit.kIzone);
-    shooterTab.addPersistent("Max Output", Constants.PID.FlywheelConstants.kGains_Velocit.kPeakOutput);
+  public void updatePID(){
+    if(tunePID == true){
+      //bruh my dumbass can fix this sometime
+      Gains newGains = new Gains(getP(), getI(), getD(), getF(), getIzone(), getMaxOutput());
+
+      Robot.shooter.leftFlywheel.config_kF(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kF, Constants.PID.FlywheelConstants.kTimeoutMs);
+      Robot.shooter.leftFlywheel.config_kP(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kP, Constants.PID.FlywheelConstants.kTimeoutMs);
+      Robot.shooter.leftFlywheel.config_kI(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kI, Constants.PID.FlywheelConstants.kTimeoutMs);
+      Robot.shooter.leftFlywheel.config_kD(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kD, Constants.PID.FlywheelConstants.kTimeoutMs);
+    
+      Robot.shooter.rightFlywheel.config_kF(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kF, Constants.PID.FlywheelConstants.kTimeoutMs);
+      Robot.shooter.rightFlywheel.config_kP(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kP, Constants.PID.FlywheelConstants.kTimeoutMs);
+      Robot.shooter.rightFlywheel.config_kI(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kI, Constants.PID.FlywheelConstants.kTimeoutMs);
+      Robot.shooter.rightFlywheel.config_kD(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kD, Constants.PID.FlywheelConstants.kTimeoutMs);
+    }
   }
 
   public void stopAll(TalonFXControlMode mode){
     stopFlywheel(mode);
-    actuate(false);
+    autoActuate(false);
   }
 
   public void stopFlywheel(TalonFXControlMode mode){
@@ -106,14 +139,28 @@ public class Shooter extends SubsystemBase {
     rightFlywheel.set(mode, 0);
   }
 
-  public void setFlywheel(TalonFXControlMode mode, double speed){
+  public void autoFlywheel(TalonFXControlMode mode, double speed){
     setRPM = speed;
     leftFlywheel.set(mode, speed);
     rightFlywheel.set(mode, speed);
   }
 
-  public void actuate(boolean actuate){
+  public void manualFlywheel(TalonFXControlMode mode){
+    setRPM = manualRPM;
+    leftFlywheel.set(mode, manualRPM);
+    rightFlywheel.set(mode, manualRPM);
+  }
+
+  public void manualActuate(){
+    hoodSolenoid.set(manualHood);
+  }
+
+  public void autoActuate(boolean actuate){
     hoodSolenoid.set(actuate);
+  }
+
+  public boolean getPrime(){
+    return Robot.m_robotContainer.getManipulatorButton(Constants.OI.yButtonID);
   }
 
   public double getRPM(){
@@ -137,11 +184,30 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean getManualShoot(){
-    boolean val = false;
-    if(prime == true && manualShoot == true){
-      val = true;
-    }
-    return val;
+    return manualShoot;
+  }
+
+  public double getP(){
+    return Pconstant;
+  }
+
+  public double getI(){
+    return Iconstant;
+  }
+
+  public double getD(){
+    return Dconstant;
+  }
+
+  public double getF(){
+    return Fconstant;
+  }
+
+  public int getIzone(){
+    return I_Zone;
+  }
+  public double getMaxOutput(){
+    return MaxOutput;
   }
 
   public void play(){

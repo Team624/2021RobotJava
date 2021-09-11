@@ -58,6 +58,7 @@ public final class Constants {
             public static final int kPIDLoopIdx = 0;
             public static final int kTimeoutMs = 30;
             public final static Gains kGains_Velocit  = new Gains( 0.3, 0.0001, 0, 0.05,  10,  1.00);
+            
         }
 
         public static class SwerveConstants{
