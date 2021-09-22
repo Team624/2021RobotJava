@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.SPI;
 import com.revrobotics.ControlType;
 
 
-public class Drivetrain extends SubsystemBase {
+public class DriveTrain extends SubsystemBase {
   
     // Motors
     public CANSparkMax frontLeftDrive = new CANSparkMax(Constants.CAN.FrontLeftDriveID, MotorType.kBrushless);
@@ -71,7 +71,7 @@ public class Drivetrain extends SubsystemBase {
     // private int d_maxAcc = Constants.SwerveConstants.s_maxAcc;
 
 
-  public Drivetrain() {
+  public DriveTrain() {
   }
 
   @Override
