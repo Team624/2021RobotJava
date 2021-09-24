@@ -6,6 +6,10 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
+
+import javax.swing.JToggleButton.ToggleButtonModel;
+
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -16,6 +20,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.Gains;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 
 public class Shooter extends SubsystemBase {
   private final Solenoid hoodSolenoid = new Solenoid(Constants.Solenoid.hoodID);
@@ -48,10 +53,10 @@ public class Shooter extends SubsystemBase {
 
   private ShuffleboardTab shooterTab = Shuffleboard.getTab("Shooter");
 
-  private NetworkTableEntry dashTunePid = shooterTab.add("Tune PID", false).withPosition(0, 0).getEntry();
+  private NetworkTableEntry dashTunePid = shooterTab.add("Tune PID", false).withPosition(0, 0).withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
   
-  private NetworkTableEntry dashShootManual = shooterTab.add("Shoot Manual", false).withPosition(1, 0).getEntry();
-  private NetworkTableEntry dashHood = shooterTab.add("Dash Hood", false).withPosition(2, 0).getEntry();
+  private NetworkTableEntry dashShootManual = shooterTab.add("Shoot Manual", false).withPosition(1, 0).withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
+  private NetworkTableEntry dashHood = shooterTab.add("Dash Hood", false).withPosition(2, 0).withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
   private NetworkTableEntry dashRPM = shooterTab.add("Dash RPM", 0).withPosition(3, 0).getEntry();
 
   private NetworkTableEntry dashSetRPM = shooterTab.add("Set RPM", 0).withPosition(0, 1).getEntry();
