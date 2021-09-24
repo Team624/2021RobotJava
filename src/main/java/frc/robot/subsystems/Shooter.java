@@ -46,31 +46,28 @@ public class Shooter extends SubsystemBase {
   private int I_Zone;
   private double MaxOutput;
 
-  public boolean test = true;
-
   private ShuffleboardTab shooterTab = Shuffleboard.getTab("Shooter");
 
-  private NetworkTableEntry dashTunePid = shooterTab.add("Tune PID", false).getEntry();
+  private NetworkTableEntry dashTunePid = shooterTab.add("Tune PID", false).withPosition(0, 0).getEntry();
   
-  private NetworkTableEntry dashShootManual = shooterTab.add("Shoot Manual", false).getEntry();
-  private NetworkTableEntry dashHood = shooterTab.add("Dash Hood", false).getEntry();
-  private NetworkTableEntry dashRPM = shooterTab.add("Dash RPM", 0).getEntry();
+  private NetworkTableEntry dashShootManual = shooterTab.add("Shoot Manual", false).withPosition(1, 0).getEntry();
+  private NetworkTableEntry dashHood = shooterTab.add("Dash Hood", false).withPosition(2, 0).getEntry();
+  private NetworkTableEntry dashRPM = shooterTab.add("Dash RPM", 0).withPosition(3, 0).getEntry();
 
-  private NetworkTableEntry dashSetRPM = shooterTab.add("Set RPM", 0).getEntry();
-  private NetworkTableEntry dashCurrentRPM = shooterTab.add("Current RPM", 0).getEntry();
-  private NetworkTableEntry dashPriming = shooterTab.add("Priming", false).getEntry();
+  private NetworkTableEntry dashSetRPM = shooterTab.add("Set RPM", 0).withPosition(0, 1).getEntry();
+  private NetworkTableEntry dashCurrentRPM = shooterTab.add("Current RPM", 0).withPosition(1, 1).getEntry();
+  private NetworkTableEntry dashPriming = shooterTab.add("Priming", false).withPosition(2, 1).getEntry();
 
-  private NetworkTableEntry PID_P = shooterTab.addPersistent("PID P", Constants.PID.FlywheelConstants.kGains_Velocit.kP).getEntry();
-  private NetworkTableEntry PID_I = shooterTab.addPersistent("PID I", Constants.PID.FlywheelConstants.kGains_Velocit.kI).getEntry();
-  private NetworkTableEntry PID_D = shooterTab.addPersistent("PID D", Constants.PID.FlywheelConstants.kGains_Velocit.kD).getEntry();
-  private NetworkTableEntry PID_F = shooterTab.addPersistent("PID F", Constants.PID.FlywheelConstants.kGains_Velocit.kF).getEntry();
-  private NetworkTableEntry PID_Izone = shooterTab.addPersistent("PID I-Zone", Constants.PID.FlywheelConstants.kGains_Velocit.kIzone).getEntry();
-  private NetworkTableEntry PID_MaxOutput = shooterTab.addPersistent("PID Peak Output", Constants.PID.FlywheelConstants.kGains_Velocit.kPeakOutput).getEntry();
+  private NetworkTableEntry PID_P = shooterTab.addPersistent("PID P", Constants.PID.FlywheelConstants.kGains_Velocit.kP).withPosition(0, 2).getEntry();
+  private NetworkTableEntry PID_I = shooterTab.addPersistent("PID I", Constants.PID.FlywheelConstants.kGains_Velocit.kI).withPosition(1, 2).getEntry();
+  private NetworkTableEntry PID_D = shooterTab.addPersistent("PID D", Constants.PID.FlywheelConstants.kGains_Velocit.kD).withPosition(2, 2).getEntry();
+  private NetworkTableEntry PID_F = shooterTab.addPersistent("PID F", Constants.PID.FlywheelConstants.kGains_Velocit.kF).withPosition(3, 2).getEntry();
+  private NetworkTableEntry PID_Izone = shooterTab.addPersistent("PID I Range", Constants.PID.FlywheelConstants.kGains_Velocit.kIzone).withPosition(4, 2).getEntry();
+  private NetworkTableEntry PID_MaxOutput = shooterTab.addPersistent("PID Peak Output", Constants.PID.FlywheelConstants.kGains_Velocit.kPeakOutput).withPosition(5, 2).getEntry();
 
   public static Orchestra orchestra;
   /** Creates a new Shooter. */
   public Shooter() {
-
     leftFlywheel.setInverted(true);
 
     //music code
