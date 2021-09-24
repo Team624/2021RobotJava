@@ -31,7 +31,6 @@ public class SwerveDrive extends CommandBase {
   @Override
   public void execute() {
     Robot.drivetrain.updateSteerPID(Robot.drivetrain.s_pidBackLeft, 0);
-    System.out.println(Robot.drivetrain.s_encoderBackLeft.getPosition());
   }
 
   // Called once the command ends or is interrupted.

@@ -9,25 +9,41 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import frc.robot.Constants;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class Hopper extends SubsystemBase {
   private final CANSparkMax leftMotor = new CANSparkMax(Constants.CAN.LeftHopperID, MotorType.kBrushless);
   private final CANSparkMax rightMotor = new CANSparkMax(Constants.CAN.RightHopperID, MotorType.kBrushless);
+
+  private double hopperSpeed;
+
+  private ShuffleboardTab hopperTab = Shuffleboard.getTab("Hopper");
+  private NetworkTableEntry dashSetHopperSpeed = hopperTab.addPersistent("Hopper Speed", 0).withPosition(0, 0).getEntry();
+  
   /** Creates a new Hopper. */
   public Hopper() {}
 
   @Override
   public void periodic() {
+    rightMotor.setInverted(true);
+    hopperDash();
     // This method will be called once per scheduler run
   }
 
-  public void setHopper(double speed){
-    leftMotor.set(speed);
-    rightMotor.set(-speed);
+  public void hopperDash(){
+    hopperSpeed = dashSetHopperSpeed.getDouble(0);
+  }
+
+  public void onHopper(){
+    leftMotor.set(hopperSpeed);
+    rightMotor.set(hopperSpeed);
   }
 
   public void stopHopper(){
     leftMotor.set(0);
     rightMotor.set(0);
   }
+
 }
