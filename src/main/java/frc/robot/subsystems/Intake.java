@@ -9,8 +9,18 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class Intake extends SubsystemBase {
+
+  private double dashSpeed;
+
+  private ShuffleboardTab intakeTab = Shuffleboard.getTab("Intake");
+
+  private NetworkTableEntry dashIntakeSpeed = intakeTab.add("Intake Speed", 0).withPosition(0, 0).getEntry();
+
   public TalonSRX intakeMotor = new TalonSRX(Constants.CAN.intakeMotorID);
   private final Solenoid intakeSolenoid = new Solenoid(Constants.Solenoid.intakeID);
   /** Creates a new Intake. */
@@ -18,7 +28,12 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    hopperDash();
     // This method will be called once per scheduler run
+  }
+
+  public void hopperDash(){
+    dashSpeed = dashIntakeSpeed.getDouble(0);
   }
 
   public void setIntake(double speed, boolean actuate){
@@ -28,5 +43,9 @@ public class Intake extends SubsystemBase {
 
   public void stopIntake(){
     intakeMotor.set(TalonSRXControlMode.PercentOutput, 0);
+  }
+
+  public double getDashSpeed(){
+    return dashSpeed;
   }
 }

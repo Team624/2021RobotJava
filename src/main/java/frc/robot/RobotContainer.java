@@ -16,6 +16,7 @@ import frc.robot.commands.Intake.DeployIntake;
 import frc.robot.commands.Intake.StopIntake;
 import frc.robot.commands.Shooter.StopShooter;
 import frc.robot.commands.Shooter.Shoot;
+import frc.robot.commands.Hopper.ManualHopper;
 
 
 

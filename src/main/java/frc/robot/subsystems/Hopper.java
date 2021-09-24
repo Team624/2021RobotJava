@@ -20,8 +20,8 @@ public class Hopper extends SubsystemBase {
   private double hopperSpeed;
 
   private ShuffleboardTab hopperTab = Shuffleboard.getTab("Hopper");
-
-  private NetworkTableEntry dashSetHopperSpeed = hopperTab.addPersistent("Set Speed", 0).getEntry();
+  private NetworkTableEntry dashSetHopperSpeed = hopperTab.addPersistent("Hopper Speed", 0).withPosition(0, 0).getEntry();
+  
   /** Creates a new Hopper. */
   public Hopper() {}
 
