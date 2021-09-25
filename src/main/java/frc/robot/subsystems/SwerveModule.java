@@ -60,14 +60,14 @@ public class SwerveModule {
     // resolution.
 
     // Set whether drive encoder should be reversed or not
-    m_driveEncoder.setInverted(driveEncoderReversed);
+    m_driveMotor.setInverted(driveEncoderReversed);
 
     // Set the distance (in this case, angle) per pulse for the turning encoder.
     // This is the the angle through an entire rotation (2 * wpi::math::pi)
     // divided by the encoder resolution.
 
     // Set whether turning encoder should be reversed or not
-    m_turningEncoder.setInverted(turningEncoderReversed);
+    m_turningMotor.setInverted(turningEncoderReversed);
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
@@ -92,11 +92,11 @@ public class SwerveModule {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(getTurnPosition()));
-
+    
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
         m_drivePIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
-
+    System.out.println(getDriveVelocity() + " " + state.speedMetersPerSecond + " " + driveOutput);
     // Calculate the turning motor output from the turning PID controller.
     final var turnOutput =
         m_turningPIDController.calculate(getTurnPosition(), state.angle.getRadians());
@@ -113,10 +113,13 @@ public class SwerveModule {
   }
 
   public double getDriveVelocity(){
-    return m_driveEncoder.getVelocity() * ModuleConstants.kWheelDiameterMeters * Math.PI;
+    return (m_driveEncoder.getVelocity()/6.0/60.0) * ModuleConstants.kWheelDiameterMeters * Math.PI;
   }
 
   public double getTurnPosition(){
-    return (m_turningEncoder.getPosition()/40) * Math.PI * 2.0;
+    double angle = (m_turningEncoder.getPosition()/40) * Math.PI * 2.0;
+    angle = angle % (2*Math.PI);
+    
+    return angle;
   }
 }
