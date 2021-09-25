@@ -6,7 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.Compressor;
  */
 public class Robot extends TimedRobot {
 
-  public static DriveTrain drivetrain = new DriveTrain();
+  public static DriveSubsystem drivetrain = new DriveSubsystem();
   public static Hopper hopper = new Hopper();
   public static Shooter shooter = new Shooter();
   public static Intake intake = new Intake();

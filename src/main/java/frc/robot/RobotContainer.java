@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Drive.StopDrive;
 import frc.robot.commands.Hopper.StopHopper;
 import frc.robot.commands.Intake.DeployIntake;
 import frc.robot.commands.Intake.StopIntake;
 import frc.robot.commands.Shooter.StopShooter;
 import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Hopper.ManualHopper;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 
 
@@ -35,6 +35,7 @@ public class RobotContainer {
   JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
   JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
   JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
+  
 
   public double GetDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);  
@@ -56,10 +57,20 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    Robot.drivetrain.setDefaultCommand(new StopDrive());
     Robot.shooter.setDefaultCommand(new StopShooter());
     Robot.hopper.setDefaultCommand(new StopHopper());
     Robot.intake.setDefaultCommand(new StopIntake());
+
+    Robot.drivetrain.setDefaultCommand(
+        // A split-stick arcade command, with forward/backward controlled by the left
+        // hand, and turning controlled by the right.
+        new RunCommand(
+            () ->
+                Robot.drivetrain.drive(
+                    driver.getRawAxis(1),
+                    m_driverController.getX(GenericHID.Hand.kRight),
+                    m_driverController.getX(GenericHID.Hand.kLeft),
+                    false)));
 
 
     configureButtonBindings();
