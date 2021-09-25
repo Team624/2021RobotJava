@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
   public static Hopper hopper = new Hopper();
   public static Shooter shooter = new Shooter();
   public static Intake intake = new Intake();
+  
 
   Compressor compressor = new Compressor(0);
 
