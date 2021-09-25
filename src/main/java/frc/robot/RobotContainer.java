@@ -35,7 +35,6 @@ public class RobotContainer {
   JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
   JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
   JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
-  Joystick
 
   public double GetDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);  
