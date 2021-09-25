@@ -35,7 +35,7 @@ public class RobotContainer {
   JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
   JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
   JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
-  
+  Joystick
 
   public double GetDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);  
@@ -67,9 +67,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 Robot.drivetrain.drive(
-                    driver.getRawAxis(1),
-                    m_driverController.getX(GenericHID.Hand.kRight),
-                    m_driverController.getX(GenericHID.Hand.kLeft),
+                    driver.getY(GenericHID.Hand.kLeft),
+                    driver.getX(GenericHID.Hand.kRight),
+                    driver.getX(GenericHID.Hand.kLeft),
                     false)));
 
 
