@@ -96,7 +96,6 @@ public class SwerveModule {
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
         m_drivePIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
-    System.out.println(getDriveVelocity() + " " + state.speedMetersPerSecond + " " + driveOutput);
     // Calculate the turning motor output from the turning PID controller.
     final var turnOutput =
         m_turningPIDController.calculate(getTurnPosition(), state.angle.getRadians());
@@ -113,12 +112,18 @@ public class SwerveModule {
   }
 
   public double getDriveVelocity(){
-    return (m_driveEncoder.getVelocity()/6.0/60.0) * ModuleConstants.kWheelDiameterMeters * Math.PI;
+    return (m_driveEncoder.getVelocity()/(ModuleConstants.driveMotorRatio * 60.0)) * ModuleConstants.kWheelDiameterMeters * Math.PI;
   }
 
   public double getTurnPosition(){
-    double angle = (m_turningEncoder.getPosition()/40) * Math.PI * 2.0;
+    double angle = (m_turningEncoder.getPosition()/ModuleConstants.turningMotorRatio) * Math.PI * 2.0;
+    // Between -2pi and 2pi
     angle = angle % (2*Math.PI);
+    // Return between -pi and pi
+    if (angle < -Math.PI)
+      angle += (Math.PI * 2);
+    else if (angle > Math.PI)
+      angle -= (Math.PI * 2);
     
     return angle;
   }

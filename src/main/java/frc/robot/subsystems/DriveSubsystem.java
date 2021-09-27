@@ -104,6 +104,8 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    System.out.println(xSpeed + " - " + ySpeed + " - " + rot);
+
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -147,10 +149,10 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * Returns the heading of the robot.
    *
-   * @return the robot's heading in degrees, from -180 to 180
+   * @return the robot's heading in radians, from -pi to pi
    */
   public double getHeading() {
-    return m_gyro.getRotation2d().getDegrees();
+    return m_gyro.getRotation2d().getRadians();
   }
 
   /**

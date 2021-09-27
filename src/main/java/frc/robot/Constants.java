@@ -145,6 +145,10 @@ public final class Constants {
     
         public static final int kEncoderCPR = 1024;
         public static final double kWheelDiameterMeters = 0.1016;
+
+        public static final double turningMotorRatio = 40.0;
+        public static final double driveMotorRatio = 6.0;
+
         public static final double kDriveEncoderDistancePerPulse =
             // Assumes the encoders are directly mounted on the wheel shafts
             (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
@@ -173,6 +177,10 @@ public final class Constants {
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
             new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+    }
+
+    public static final class TrackingConstants {
+        public static final double kPTrackingController = 0;
     }
 
 }
