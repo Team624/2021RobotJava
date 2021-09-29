@@ -66,9 +66,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 Robot.drivetrain.drive(
-                    0, //-GetDriverRawAxis(1)
-                    0.5, //GetDriverRawAxis(0)
-                    0, //GetDriverRawAxis(4)
+                    0,//GetDriverRawAxis(1),
+                    0,//GetDriverRawAxis(0),
+                    .5,//GetDriverRawAxis(4),
                     true),
                     Robot.drivetrain));
 
@@ -79,14 +79,15 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
+   * Use this method to define your butto
+   * n->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   public void configureButtonBindings() {
-    oButtonX.whenHeld(new DeployIntake());
-    oButtonY.whenHeld(new Shoot());
+    //oButtonX.whenHeld(new DeployIntake());
+    //oButtonY.whenHeld(new Shoot());
   }
 
   /**

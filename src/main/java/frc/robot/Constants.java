@@ -83,14 +83,14 @@ public final class Constants {
 
     // COPY
     public static final class DriveConstants {
-        public static final int kFrontLeftDriveMotorPort = 14;
+        public static final int kFrontLeftDriveMotorPort = 16;
         public static final int kRearLeftDriveMotorPort = 2;
-        public static final int kFrontRightDriveMotorPort = 16;
+        public static final int kFrontRightDriveMotorPort = 14;
         public static final int kRearRightDriveMotorPort = 13;
     
-        public static final int kFrontLeftTurningMotorPort = 15;
+        public static final int kFrontLeftTurningMotorPort = 1;
         public static final int kRearLeftTurningMotorPort = 3;
-        public static final int kFrontRightTurningMotorPort = 1;
+        public static final int kFrontRightTurningMotorPort = 15;
         public static final int kRearRightTurningMotorPort = 12;
     
         public static final int[] kFrontLeftTurningEncoderPorts = new int[] {0, 1};
@@ -98,10 +98,10 @@ public final class Constants {
         public static final int[] kFrontRightTurningEncoderPorts = new int[] {4, 5};
         public static final int[] kRearRightTurningEncoderPorts = new int[] {5, 6};
     
-        public static final boolean kFrontLeftTurningEncoderReversed = false;
-        public static final boolean kRearLeftTurningEncoderReversed = true;
-        public static final boolean kFrontRightTurningEncoderReversed = false;
-        public static final boolean kRearRightTurningEncoderReversed = true;
+        public static final boolean kFrontLeftTurningEncoderReversed = true;
+        public static final boolean kRearLeftTurningEncoderReversed = false;
+        public static final boolean kFrontRightTurningEncoderReversed = true;
+        public static final boolean kRearRightTurningEncoderReversed = false;
     
         public static final int[] kFrontLeftDriveEncoderPorts = new int[] {7, 8};
         public static final int[] kRearLeftDriveEncoderPorts = new int[] {9, 10};
@@ -109,9 +109,9 @@ public final class Constants {
         public static final int[] kRearRightDriveEncoderPorts = new int[] {13, 14};
     
         public static final boolean kFrontLeftDriveEncoderReversed = false;
-        public static final boolean kRearLeftDriveEncoderReversed = true;
+        public static final boolean kRearLeftDriveEncoderReversed = false;
         public static final boolean kFrontRightDriveEncoderReversed = false;
-        public static final boolean kRearRightDriveEncoderReversed = true;
+        public static final boolean kRearRightDriveEncoderReversed = false;
     
         public static final double kTrackWidth = 1.0;
         // Distance between centers of right and left wheels on robot

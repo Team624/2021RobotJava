@@ -104,8 +104,10 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    System.out.println(xSpeed + " - " + ySpeed + " - " + rot);
-
+    //System.out.println(xSpeed + " - " + ySpeed + " - " + rot);
+    //System.out.println(m_frontLeft.getEncoderVal());
+    System.out.println("Front: " + m_frontLeft.getEncoderVal());
+    System.out.println("Back: " + m_rearLeft.getEncoderVal());
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -113,6 +115,8 @@ public class DriveSubsystem extends SubsystemBase {
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.normalizeWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+    //System.out.println("Front module: "+ m_frontLeft.getEncoderVal() + ", " + swerveModuleStates[0].toString());
+    //System.out.println("Back module: " + m_rearLeft.getEncoderVal() + ", " + swerveModuleStates[2].toString());
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
