@@ -48,4 +48,6 @@ public class Intake extends SubsystemBase {
   public double getDashSpeed(){
     return dashSpeed;
   }
+
+  // add method that allows intake to spin upon deployment
 }

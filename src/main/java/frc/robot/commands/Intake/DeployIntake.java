@@ -22,7 +22,7 @@ public class DeployIntake extends CommandBase {
   @Override
   public void execute() {
     Robot.intake.setIntake(Robot.intake.getDashSpeed(), true);
-    
+  
   }
 
   // Called once the command ends or is interrupted.

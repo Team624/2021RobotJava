@@ -44,8 +44,9 @@ public final class Constants {
         public static final int driverUSB = 0;
         public static final int manipulatorUSB = 1;
 
-        public static final int LeftStickYID = 0;
-
+        public static final int leftStickID = 0;
+        public static final int rightStickID = ;
+        public static final int rightTriggerID = ;
         public static final int yButtonID = 4;
         public static final int xButtonID = 3;
         public static final int leftBumperID = 5;

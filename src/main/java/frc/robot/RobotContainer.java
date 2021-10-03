@@ -35,6 +35,9 @@ public class RobotContainer {
   JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
   JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
   JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
+  JoystickButton oRightTrigger = new JoystickButton(this.manipulator, Constants.OI.leftStickID);
+  JoystickButton oRightStick = new JoystickButton(this.manipulator, Constants.OI.rightStickID);
+  JoystickButton oLeftStick = new JoystickButton(this.manipulator, Constants.OI.rightTriggerID);
 
   public double GetDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);  
@@ -63,8 +66,6 @@ public class RobotContainer {
 
 
     configureButtonBindings();
-    
-
   }
 
   /**
@@ -76,6 +77,104 @@ public class RobotContainer {
   public void configureButtonBindings() {
     oButtonX.whenHeld(new DeployIntake());
     oButtonY.whenHeld(new Shoot());
+  }
+
+  public void stateMachine(){
+    if(oButtonX.press() == true){
+      if(oRightTrigger.press() == true){
+
+      }
+      else if(oButtonY.press() == true){
+
+      }
+      else{
+
+      }
+    }
+    else if(oButtonY.press() == true){
+      if(oButtonX.press() == true){
+
+      }
+      else if(oLeftBumper){
+
+      }
+      else{
+
+      }
+    }
+    else if(oLeftBumper.press() == true){
+
+    }
+    else if(oRightTrigger.press() == true){
+
+    }
+    else if(oRightStick.press() == true){
+
+    }
+    else if(oLeftStick.press() == true){
+
+    }
+    else{
+      System.out.println("You're not pressing the correct button.");
+    }
+    /*
+    else if()
+  switch(States){
+    case 0:
+      if (noButtons == true){
+        States = 0;
+        motor = 0;
+        break;
+      }else if(grabButton = true){
+        States = 1;
+        break;
+      }else if(throwButton == true){
+        States = 2;
+        break;
+      }else if(cancelBallButton == true){
+        States = 0;
+        motor = 0;
+        break;
+      }
+    case 1:
+      if (limitSwitch == false){
+        States = 1;
+        motor = -0.75;
+        break;
+      }else if(limitSwitch == true){
+        States = 0;
+        motor = 0;
+        break;
+      }else if(cancelBallButton == true){
+        States = 0;
+        motor = 0;
+        break;
+      }
+    case 2:
+      if (cancelBallButton == false){
+        States = 2;
+        motor = throttle;
+        Timer.delay(2);
+        done = true;
+        break;
+      }else if(done == true){
+        motor = 0;
+        done = false;
+        States = 0;
+        break;
+      }else if(cancelBallButton == true){
+        Timer.getFPGATimestamp();
+        States = 0;
+        motor = 0;
+        break;
+      }
+    case 3:
+      
+    case 4:
+
+    case 5:
+    }
+    /*
   }
 
   /**
