@@ -7,8 +7,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 
-import javax.swing.JToggleButton.ToggleButtonModel;
-
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
@@ -20,7 +18,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.Gains;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 
 public class Shooter extends SubsystemBase {
   private final Solenoid hoodSolenoid = new Solenoid(Constants.Solenoid.hoodID);
