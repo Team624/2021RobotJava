@@ -22,7 +22,7 @@ public class SwerveModule {
   private final CANEncoder m_driveEncoder;
   private final CANEncoder m_turningEncoder;
 
-  private final PIDController m_drivePIDController =
+  private PIDController drivePIDController =
       new PIDController(ModuleConstants.kPModuleDriveController, 0, 0);
 
   // Using a TrapezoidProfile PIDController to allow for smooth turning
@@ -94,7 +94,7 @@ public class SwerveModule {
         SwerveModuleState.optimize(desiredState, new Rotation2d(getTurnPosition()));
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
-        m_drivePIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
+        drivePIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
     // Calculate the turning motor output from the turning PID controller.
     final var turnOutput =
         m_turningPIDController.calculate(getTurnPosition(), state.angle.getRadians());
@@ -129,5 +129,9 @@ public class SwerveModule {
       angle -= (Math.PI * 2);
     
     return angle;
+  }
+
+  public void newPID(double pVal){
+    drivePIDController = new PIDController(pVal, 0, 0);
   }
 }

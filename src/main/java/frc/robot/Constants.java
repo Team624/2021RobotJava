@@ -99,9 +99,9 @@ public final class Constants {
         public static final int[] kRearRightTurningEncoderPorts = new int[] {5, 6};
     
         public static final boolean kFrontLeftTurningEncoderReversed = true;
-        public static final boolean kRearLeftTurningEncoderReversed = false;
+        public static final boolean kRearLeftTurningEncoderReversed = true;
         public static final boolean kFrontRightTurningEncoderReversed = true;
-        public static final boolean kRearRightTurningEncoderReversed = false;
+        public static final boolean kRearRightTurningEncoderReversed = true;
     
         public static final int[] kFrontLeftDriveEncoderPorts = new int[] {7, 8};
         public static final int[] kRearLeftDriveEncoderPorts = new int[] {9, 10};
@@ -119,10 +119,10 @@ public final class Constants {
         // Distance between front and back wheels on robot
         public static final SwerveDriveKinematics kDriveKinematics =
             new SwerveDriveKinematics(
-                new Translation2d(kWheelBase / 2, kTrackWidth / 2),
                 new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+                new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
+                new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
     
         public static final boolean kGyroReversed = false;
     

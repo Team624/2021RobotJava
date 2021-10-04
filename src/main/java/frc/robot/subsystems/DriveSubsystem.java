@@ -4,10 +4,9 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
@@ -15,9 +14,22 @@ import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DriveSubsystem extends SubsystemBase {
+  private double Pconstant;
+
+  private ShuffleboardTab driveTab = Shuffleboard.getTab("Drive");
+
+  private NetworkTableEntry dashTunePid = driveTab.add("Tune Drive PID", false).withPosition(0, 0).withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
+  private NetworkTableEntry PID_P = driveTab.addPersistent("PID Drive P", Constants.PID.SwerveConstants.d_kP).withPosition(0, 2).getEntry();
+
+  private NetworkTableEntry dashCurrentAngle = driveTab.add("Current Angle", 0).withPosition(1, 1).getEntry();
+
   // Robot swerve modules
   private final SwerveModule m_frontLeft =
       new SwerveModule(
@@ -67,6 +79,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    driveDash();
+    updatePID(Pconstant);
     // Update the odometry in the periodic block
     m_odometry.update(
         m_gyro.getRotation2d(),
@@ -106,8 +120,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     //System.out.println(xSpeed + " - " + ySpeed + " - " + rot);
     //System.out.println(m_frontLeft.getEncoderVal());
-    System.out.println("Front: " + m_frontLeft.getEncoderVal());
-    System.out.println("Back: " + m_rearLeft.getEncoderVal());
+    //System.out.println("Front: " + m_frontLeft.getEncoderVal());
+    //System.out.println("Back: " + m_rearLeft.getEncoderVal());
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -166,5 +180,20 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public double getTurnRate() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
+  public void driveDash(){
+    dashCurrentAngle.setDouble(m_gyro.getYaw());
+    Pconstant = PID_P.getDouble(0);
+
+  }
+
+  public void updatePID(double kP){
+    if(dashTunePid.getBoolean(false) == true){
+      m_frontLeft.newPID(kP);
+      m_rearLeft.newPID(kP);
+      m_rearRight.newPID(kP);
+      m_frontRight.newPID(kP);
+    }
   }
 }

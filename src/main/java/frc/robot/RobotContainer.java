@@ -66,9 +66,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 Robot.drivetrain.drive(
-                    0,//GetDriverRawAxis(1),
-                    0,//GetDriverRawAxis(0),
-                    .5,//GetDriverRawAxis(4),
+                    GetDriverRawAxis(1),
+                    -GetDriverRawAxis(0),
+                    GetDriverRawAxis(4),
                     true),
                     Robot.drivetrain));
 
