@@ -21,14 +21,30 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DriveSubsystem extends SubsystemBase {
-  private double Pconstant;
+  private double drivePconstant;
+  private double driveIconstant;
+  private double driveDconstant;
+
+  private double steerPconstant;
+  private double steerIconstant;
+  private double steerDconstant;
+
+  private boolean tuneDrive;
+  private boolean tuneSteer;
 
   private ShuffleboardTab driveTab = Shuffleboard.getTab("Drive");
 
-  private NetworkTableEntry dashTunePid = driveTab.add("Tune Drive PID", false).withPosition(0, 0).withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
-  private NetworkTableEntry PID_P = driveTab.addPersistent("PID Drive P", Constants.PID.SwerveConstants.d_kP).withPosition(0, 2).getEntry();
+  private NetworkTableEntry dashTuneDrivePid = driveTab.add("Tune Drive PID", false).withPosition(0, 0).withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
+  private NetworkTableEntry DRIVE_PID_P = driveTab.addPersistent("PID Drive P", Constants.PID.SwervePIDConstants.kPModuleDriveController).withPosition(0, 1).getEntry();
+  private NetworkTableEntry DRIVE_PID_I = driveTab.addPersistent("PID Drive I", Constants.PID.SwervePIDConstants.kIModuleDriveController).withPosition(0, 2).getEntry();
+  private NetworkTableEntry DRIVE_PID_D = driveTab.addPersistent("PID Drive D", Constants.PID.SwervePIDConstants.kDModuleDriveController).withPosition(0, 3).getEntry();
 
-  private NetworkTableEntry dashCurrentAngle = driveTab.add("Current Angle", 0).withPosition(1, 1).getEntry();
+  private NetworkTableEntry dashTuneSteerPid = driveTab.add("Tune Steer PID", false).withPosition(1, 0).withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
+  private NetworkTableEntry STEER_PID_P = driveTab.addPersistent("PID Steer P", Constants.PID.SwervePIDConstants.kPModuleTurningController).withPosition(1, 1).getEntry();
+  private NetworkTableEntry STEER_PID_I = driveTab.addPersistent("PID Steer I", Constants.PID.SwervePIDConstants.kIModuleTurningController).withPosition(1, 2).getEntry();
+  private NetworkTableEntry STEER_PID_D = driveTab.addPersistent("PID Steer D", Constants.PID.SwervePIDConstants.kDModuleTurningController).withPosition(1, 3).getEntry();
+
+  private NetworkTableEntry dashCurrentAngle = driveTab.add("Current Angle", 0).withPosition(2, 0).getEntry();
 
   // Robot swerve modules
   private final SwerveModule m_frontLeft =
@@ -80,7 +96,7 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     driveDash();
-    updatePID(Pconstant);
+    updatePID();
     // Update the odometry in the periodic block
     m_odometry.update(
         m_gyro.getRotation2d(),
@@ -184,16 +200,31 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void driveDash(){
     dashCurrentAngle.setDouble(m_gyro.getYaw());
-    Pconstant = PID_P.getDouble(0);
 
+    tuneDrive = dashTuneDrivePid.getBoolean(false);
+    tuneSteer = dashTuneSteerPid.getBoolean(false);
+
+    drivePconstant = DRIVE_PID_P.getDouble(0);
+    driveIconstant = DRIVE_PID_I.getDouble(0);
+    driveDconstant = DRIVE_PID_D.getDouble(0);
+
+    steerPconstant = STEER_PID_P.getDouble(0);
+    steerIconstant = STEER_PID_I.getDouble(0);
+    steerDconstant = STEER_PID_D.getDouble(0);
   }
 
-  public void updatePID(double kP){
-    if(dashTunePid.getBoolean(false) == true){
-      m_frontLeft.newPID(kP);
-      m_rearLeft.newPID(kP);
-      m_rearRight.newPID(kP);
-      m_frontRight.newPID(kP);
+  public void updatePID(){
+    if(tuneDrive == true){
+      m_frontLeft.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
+      m_rearLeft.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
+      m_rearRight.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
+      m_frontRight.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
+    }
+    if(tuneSteer == true){
+      m_frontLeft.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
+      m_rearLeft.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
+      m_rearRight.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
+      m_frontRight.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
     }
   }
 }

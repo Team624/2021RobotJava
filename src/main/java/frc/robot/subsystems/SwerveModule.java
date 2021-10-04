@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
+import frc.robot.Constants;
 import frc.robot.Constants.ModuleConstants;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
@@ -23,14 +24,14 @@ public class SwerveModule {
   private final CANEncoder m_turningEncoder;
 
   private PIDController drivePIDController =
-      new PIDController(ModuleConstants.kPModuleDriveController, 0, 0);
+      new PIDController(Constants.PID.SwervePIDConstants.kPModuleDriveController, Constants.PID.SwervePIDConstants.kPModuleDriveController, Constants.PID.SwervePIDConstants.kPModuleDriveController);
 
   // Using a TrapezoidProfile PIDController to allow for smooth turning
-  private final ProfiledPIDController m_turningPIDController =
+  private ProfiledPIDController m_turningPIDController =
       new ProfiledPIDController(
-          ModuleConstants.kPModuleTurningController,
-          0,
-          0,
+          Constants.PID.SwervePIDConstants.kPModuleTurningController,
+          Constants.PID.SwervePIDConstants.kIModuleTurningController,
+          Constants.PID.SwervePIDConstants.kDModuleTurningController,
           new TrapezoidProfile.Constraints(
               ModuleConstants.kMaxModuleAngularSpeedRadiansPerSecond,
               ModuleConstants.kMaxModuleAngularAccelerationRadiansPerSecondSquared));
@@ -131,7 +132,11 @@ public class SwerveModule {
     return angle;
   }
 
-  public void newPID(double pVal){
-    drivePIDController = new PIDController(pVal, 0, 0);
+  public void newDrivePID(double pVal, double iVal, double dVal){
+    drivePIDController = new PIDController(pVal, iVal, dVal);
+  }
+
+  public void newSteerPID(double pVal, double iVal, double dVal){
+    drivePIDController = new PIDController(pVal, iVal, dVal);
   }
 }

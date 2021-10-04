@@ -54,29 +54,14 @@ public final class Constants {
             
         }
 
-        public static class SwerveConstants{
-            public static final double d_kP = 0.00015;
-            public static final double d_kI = 0;
-            public static final double d_kD = 0;
-            public static final double d_kIz = 0;
-            public static final double d_kFF = .000168;
-            public static final double d_kMaxOutput = 1;
-            public static final double d_kMinOutput = -1;
-            public static final int d_maxRPM = 5700;
-            public static final int d_maxVel = 2000;
-            public static final int d_maxAcc = 1500;
-    
-            // PIDs for the steer motors
-            public static final double s_kP = 1;
-            public static final double s_kI = 0;
-            public static final double s_kD = 0;
-            public static final double s_kIz = 0;
-            public static final double s_kFF = 0;
-            public static final double s_kMaxOutput = 1;
-            public static final double s_kMinOutput = -1;
-            public static final int s_maxRPM = 5700;
-            public static final int s_maxVel = 2000;
-            public static final int s_maxAcc = 1500;
+        public static class SwervePIDConstants{
+            public static final double kPModuleTurningController = 0.3;
+            public static final double kIModuleTurningController = 0.0;
+            public static final double kDModuleTurningController = 0.0;
+        
+            public static final double kPModuleDriveController = 0.25;
+            public static final double kIModuleDriveController = 0.0;
+            public static final double kDModuleDriveController = 0.0;
         }
         
     }
@@ -156,10 +141,6 @@ public final class Constants {
         public static final double kTurningEncoderDistancePerPulse =
             // Assumes the encoders are on a 1:1 reduction with the module shaft.
             (2 * Math.PI) / (double) kEncoderCPR;
-    
-        public static final double kPModuleTurningController = 0.3;
-    
-        public static final double kPModuleDriveController = 0.25;
     }
 
     // COPY
