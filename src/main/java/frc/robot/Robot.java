@@ -3,13 +3,18 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Solenoid;
+package edu.wpi.first.wpilibj.templates;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Flywheel;
+
+
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -24,6 +29,16 @@ public class Robot extends TimedRobot {
 
   private Command m_autonomousCommand;
   public static RobotContainer m_robotContainer;
+
+  public void startPneumatics(){
+    Compressor c = new Compressor(0); 
+    c.start(); 
+    Solenoid s1 = new Solenoid(1);                        // Solenoid port
+    Solenoid s2 = new Solenoid(2);
+    s1.set(true);
+    s2.set(false);
+
+  }
 
   /**
    * This function is run when the robot is first started up and should be used for any

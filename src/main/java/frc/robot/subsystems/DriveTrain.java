@@ -4,8 +4,6 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.Spark;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
-
-
 public class DriveTrain extends SubsystemBase {
   
     public Spark frontLeftDrive = new Spark(Constants.CAN.FrontLeftDriveID);
