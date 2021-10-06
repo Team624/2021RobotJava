@@ -36,10 +36,6 @@ public final class Constants {
         public static final int manipulatorUSB = 1;
         public static final int LeftStickYID = 0;
 
-<<<<<<< Updated upstream
-        //no clue if this is accurate
-        public static final int xButton = 3;
-=======
         public static final int yButtonID = 4;
         public static final int xButtonID = 3;
         public static final int leftBumperID = 5;
@@ -82,7 +78,6 @@ public final class Constants {
             public static final int s_maxAcc = 1500;
         }
         
->>>>>>> Stashed changes
     }
 
 }

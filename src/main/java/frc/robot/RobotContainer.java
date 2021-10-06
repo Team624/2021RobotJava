@@ -6,29 +6,20 @@
 
 package frc.robot;
 
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-<<<<<<< Updated upstream
-import frc.robot.commands.ManualHopper;
-import frc.robot.commands.SwerveDrive;
-import frc.robot.commands.ManualFlywheel;
-import frc.robot.commands.StopHopper;
-import frc.robot.commands.StopFlywheel;
-=======
 import frc.robot.commands.Drive.StopDrive;
 import frc.robot.commands.Hopper.StopHopper;
 import frc.robot.commands.Intake.DeployIntake;
-import frc.robot.commands.Intake.ManualIntake;
 import frc.robot.commands.Intake.StopIntake;
 import frc.robot.commands.Shooter.StopShooter;
-import frc.robot.commands.Shooter.Prime;
 import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Hopper.ManualHopper;
 
 
->>>>>>> Stashed changes
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -41,16 +32,15 @@ public class RobotContainer {
   Joystick driver = new Joystick(Constants.OI.driverUSB);
   Joystick manipulator = new Joystick(Constants.OI.manipulatorUSB);
 
-<<<<<<< Updated upstream
-  JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButton);
-=======
+
+
   JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
   JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
   JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
   JoystickButton oLeftStick = new JoystickButton(this.manipulator, Constants.OI.L3BUttonID);
   JoystickButton oRightStick = new JoystickButton(this.manipulator, Constants.OI.R3BUttonID);
 
->>>>>>> Stashed changes
+
 
   public double GetDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);
@@ -79,14 +69,7 @@ public class RobotContainer {
     Robot.hopper.setDefaultCommand(new StopHopper());
     Robot.flywheel.setDefaultCommand(new StopFlywheel());
     configureButtonBindings();
-<<<<<<< Updated upstream
-=======
 
-
-  
-    
-
->>>>>>> Stashed changes
   }
 
   /**
@@ -95,7 +78,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-<<<<<<< Updated upstream
+
   private void configureButtonBindings() {
     oButtonX.whenPressed(new ManualHopper());
 =======
@@ -120,7 +103,7 @@ public class RobotContainer {
     }
     
 
->>>>>>> Stashed changes
+
   }
 
   /**
