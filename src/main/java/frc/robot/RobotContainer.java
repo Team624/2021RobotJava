@@ -63,12 +63,11 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 Robot.drivetrain.drive(
-                    GetDriverRawAxis(1),
-                    -GetDriverRawAxis(0),
-                    GetDriverRawAxis(4),
+                    .5,
+                    0,//-GetDriverRawAxis(0),
+                    0,//GetDriverRawAxis(4),
                     true),
                     Robot.drivetrain));
-
 
     configureButtonBindings();
     

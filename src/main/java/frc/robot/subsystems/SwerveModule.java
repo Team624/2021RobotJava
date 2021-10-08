@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import java.lang.Math;
 
@@ -24,7 +25,7 @@ public class SwerveModule {
   private final CANEncoder m_turningEncoder;
 
   private PIDController drivePIDController =
-      new PIDController(Constants.PID.SwervePIDConstants.kPModuleDriveController, Constants.PID.SwervePIDConstants.kPModuleDriveController, Constants.PID.SwervePIDConstants.kPModuleDriveController);
+      new PIDController(Constants.PID.SwervePIDConstants.kPModuleDriveController, Constants.PID.SwervePIDConstants.kIModuleDriveController, Constants.PID.SwervePIDConstants.kDModuleDriveController);
 
   // Using a TrapezoidProfile PIDController to allow for smooth turning
   private ProfiledPIDController m_turningPIDController =
@@ -52,6 +53,8 @@ public class SwerveModule {
 
     m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
     m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
+    m_driveMotor.setIdleMode(IdleMode.kBrake);
+    m_turningMotor.setIdleMode(IdleMode.kBrake);
 
     this.m_driveEncoder = m_driveMotor.getEncoder();
     this.m_turningEncoder = m_turningMotor.getEncoder();
@@ -96,12 +99,15 @@ public class SwerveModule {
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
         drivePIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
+    //System.out.println(desiredState.speedMetersPerSecond + " : " + getDriveVelocity());
+    System.out.println(desiredState.angle + " : " + getTurnPosition());
     // Calculate the turning motor output from the turning PID controller.
     final var turnOutput =
         m_turningPIDController.calculate(getTurnPosition(), state.angle.getRadians());
 
     // Calculate the turning motor output from the turning PID controller.
-    m_driveMotor.set(driveOutput);
+   //m_driveMotor.set(driveOutput);
+   m_driveMotor.set(driveOutput);
     m_turningMotor.set(turnOutput);
   }
 

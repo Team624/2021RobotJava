@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
@@ -31,6 +32,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   private boolean tuneDrive;
   private boolean tuneSteer;
+
+  private boolean updatedDrivePIDAlready = false;
+  private boolean updatedSteerPIDAlready = false;
 
   private ShuffleboardTab driveTab = Shuffleboard.getTab("Drive");
 
@@ -88,7 +92,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
-      new SwerveDriveOdometry(DriveConstants.kDriveKinematics, m_gyro.getRotation2d());
+      new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0,0));//m_gyro.getRotation2d());
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {}
@@ -214,17 +218,19 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void updatePID(){
-    if(tuneDrive == true){
+    if(tuneDrive == true && updatedDrivePIDAlready == false){
       m_frontLeft.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
       m_rearLeft.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
       m_rearRight.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
       m_frontRight.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
+      updatedDrivePIDAlready = true;
     }
-    if(tuneSteer == true){
+    if(tuneSteer == true && updatedSteerPIDAlready == false){
       m_frontLeft.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
       m_rearLeft.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
       m_rearRight.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
       m_frontRight.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
+      updatedSteerPIDAlready = true;
     }
   }
 }

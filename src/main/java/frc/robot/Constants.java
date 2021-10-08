@@ -56,8 +56,8 @@ public final class Constants {
 
         public static class SwervePIDConstants{
             public static final double kPModuleTurningController = 0.3;
-            public static final double kIModuleTurningController = 0.0;
-            public static final double kDModuleTurningController = 0.0;
+            public static final double kIModuleTurningController = 0.2;
+            public static final double kDModuleTurningController = 0;
         
             public static final double kPModuleDriveController = 0.25;
             public static final double kIModuleDriveController = 0.0;
