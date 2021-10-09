@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -34,6 +33,9 @@ public class DriveSubsystem extends SubsystemBase {
   private boolean tuneDrive;
   private boolean tuneSteer;
 
+  private double driveMultiplier = Constants.DriveConstants.translationMultiplier;
+  private double turnMultiplier = Constants.DriveConstants.rotationMultipler;
+
   private boolean freezeDrive = false;
 
   public boolean resetGyro = false;
@@ -60,7 +62,10 @@ public class DriveSubsystem extends SubsystemBase {
   private NetworkTableEntry STEER_PID_I = driveTab.addPersistent("PID Steer I", Constants.PID.SwervePIDConstants.kIModuleTurningController).withPosition(1, 2).getEntry();
   private NetworkTableEntry STEER_PID_D = driveTab.addPersistent("PID Steer D", Constants.PID.SwervePIDConstants.kDModuleTurningController).withPosition(1, 3).getEntry();
 
-  private NetworkTableEntry dashCurrentAngle = driveTab.add("Current Angle", 0).withPosition(2, 0).getEntry();
+  private NetworkTableEntry translationMult = driveTab.addPersistent("Translation Speed", Constants.DriveConstants.translationMultiplier).withPosition(2, 0).getEntry();
+  private NetworkTableEntry rotationMult = driveTab.addPersistent("Rotation Speed", Constants.DriveConstants.rotationMultipler).withPosition(2, 1).getEntry();
+
+  private NetworkTableEntry dashCurrentAngle = driveTab.add("Current Angle", 0).withPosition(2, 2).getEntry();
 
   // Robot swerve modules
   private final SwerveModule m_frontLeft =
@@ -161,6 +166,10 @@ public class DriveSubsystem extends SubsystemBase {
     //System.out.println(m_frontLeft.getEncoderVal());
     //System.out.println("Front: " + m_frontLeft.getEncoderVal());
     //System.out.println("Back: " + m_rearLeft.getEncoderVal());
+    xSpeed = xSpeed * translationMult.getDouble(Constants.DriveConstants.translationMultiplier);
+    ySpeed = ySpeed * translationMult.getDouble(Constants.DriveConstants.translationMultiplier);
+    rot = rot * rotationMult.getDouble(Constants.DriveConstants.rotationMultipler);
+
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -239,6 +248,8 @@ public class DriveSubsystem extends SubsystemBase {
     steerPconstant = STEER_PID_P.getDouble(0);
     steerIconstant = STEER_PID_I.getDouble(0);
     steerDconstant = STEER_PID_D.getDouble(0);
+
+
   }
 
   public void updatePID(){
