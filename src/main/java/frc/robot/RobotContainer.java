@@ -30,6 +30,7 @@ public class RobotContainer {
   Joystick manipulator = new Joystick(Constants.OI.manipulatorUSB);
 
   JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
+  JoystickButton dButtonLeftBumper = new JoystickButton(this.driver, Constants.OI.leftBumperID);
   JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
   JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
 
@@ -63,9 +64,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 Robot.drivetrain.drive(
-                    .5,
-                    0,//-GetDriverRawAxis(0),
-                    0,//GetDriverRawAxis(4),
+                    GetDriverRawAxis(1),
+                    -GetDriverRawAxis(0),
+                    GetDriverRawAxis(4),
                     true),
                     Robot.drivetrain));
 

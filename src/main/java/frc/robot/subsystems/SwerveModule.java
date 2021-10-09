@@ -92,23 +92,28 @@ public class SwerveModule {
    *
    * @param desiredState Desired state with speed and angle.
    */
-  public void setDesiredState(SwerveModuleState desiredState) {
+  public void setDesiredState(SwerveModuleState desiredState, boolean freezeSpeed) {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(getTurnPosition()));
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
-        drivePIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
+        drivePIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond) * 2;
     //System.out.println(desiredState.speedMetersPerSecond + " : " + getDriveVelocity());
-    System.out.println(desiredState.angle + " : " + getTurnPosition());
+    //System.out.println(desiredState.angle + " : " + getTurnPosition());
     // Calculate the turning motor output from the turning PID controller.
     final var turnOutput =
         m_turningPIDController.calculate(getTurnPosition(), state.angle.getRadians());
 
     // Calculate the turning motor output from the turning PID controller.
    //m_driveMotor.set(driveOutput);
-   m_driveMotor.set(driveOutput);
+   if(freezeSpeed == true){
+    m_driveMotor.set(0); 
     m_turningMotor.set(turnOutput);
+   }else{
+    m_turningMotor.set(turnOutput);
+    m_driveMotor.set(driveOutput);
+   }
   }
 
   /** Zeros all the SwerveModule encoders. */

@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -13,12 +15,11 @@ import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import com.analog.adis16470.frc.ADIS16470_IMU;
 
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DriveSubsystem extends SubsystemBase {
@@ -32,6 +33,17 @@ public class DriveSubsystem extends SubsystemBase {
 
   private boolean tuneDrive;
   private boolean tuneSteer;
+
+  private boolean freezeDrive = false;
+
+  public boolean resetGyro = false;
+
+  private SwerveModuleState[] lStates = {
+    new SwerveModuleState(), 
+    new SwerveModuleState(), 
+    new SwerveModuleState(), 
+    new SwerveModuleState()
+  };
 
   private boolean updatedDrivePIDAlready = false;
   private boolean updatedSteerPIDAlready = false;
@@ -88,7 +100,7 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.kRearRightTurningEncoderReversed);
 
   // The gyro sensor
-  private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
+  public static final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
@@ -99,6 +111,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    resetGyro();
     driveDash();
     updatePID();
     // Update the odometry in the periodic block
@@ -108,6 +121,12 @@ public class DriveSubsystem extends SubsystemBase {
         m_rearLeft.getState(),
         m_frontRight.getState(),
         m_rearRight.getState());
+  }
+
+  public void resetGyro(){
+    if(Robot.m_robotContainer.getDriverButton(Constants.OI.leftBumperID)){
+      m_gyro.reset();
+    }
   }
 
   /**
@@ -151,24 +170,29 @@ public class DriveSubsystem extends SubsystemBase {
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
     //System.out.println("Front module: "+ m_frontLeft.getEncoderVal() + ", " + swerveModuleStates[0].toString());
     //System.out.println("Back module: " + m_rearLeft.getEncoderVal() + ", " + swerveModuleStates[2].toString());
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_frontRight.setDesiredState(swerveModuleStates[1]);
-    m_rearLeft.setDesiredState(swerveModuleStates[2]);
-    m_rearRight.setDesiredState(swerveModuleStates[3]);
-  }
+    if(Math.abs(xSpeed) + Math.abs(ySpeed) + Math.abs(rot) < Constants.DriveConstants.swerveThreshold){
+      swerveModuleStates[0].speedMetersPerSecond = 0;
+      swerveModuleStates[0].angle = lStates[0].angle;
+      swerveModuleStates[1].speedMetersPerSecond = 0;
+      swerveModuleStates[1].angle = lStates[1].angle;
 
-  /**
-   * Sets the swerve ModuleStates.
-   *
-   * @param desiredStates The desired SwerveModule states.
-   */
-  public void setModuleStates(SwerveModuleState[] desiredStates) {
-    SwerveDriveKinematics.normalizeWheelSpeeds(
-        desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
-    m_frontLeft.setDesiredState(desiredStates[0]);
-    m_frontRight.setDesiredState(desiredStates[1]);
-    m_rearLeft.setDesiredState(desiredStates[2]);
-    m_rearRight.setDesiredState(desiredStates[3]);
+      swerveModuleStates[2].speedMetersPerSecond = 0;
+      swerveModuleStates[2].angle = lStates[2].angle;
+      swerveModuleStates[3].speedMetersPerSecond = 0;
+      swerveModuleStates[3].angle = lStates[3].angle;
+
+      freezeDrive = true;
+    }
+    else{
+      lStates = swerveModuleStates;
+      freezeDrive = false;
+    }
+
+    m_frontLeft.setDesiredState(swerveModuleStates[0], freezeDrive);
+    m_frontRight.setDesiredState(swerveModuleStates[1], freezeDrive);
+    m_rearLeft.setDesiredState(swerveModuleStates[2], freezeDrive);
+    m_rearRight.setDesiredState(swerveModuleStates[3], freezeDrive);    
+
   }
 
   /** Resets the drive encoders to currently read a position of 0. */
@@ -203,7 +227,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void driveDash(){
-    dashCurrentAngle.setDouble(m_gyro.getYaw());
+    dashCurrentAngle.setDouble(m_gyro.getAngle());
 
     tuneDrive = dashTuneDrivePid.getBoolean(false);
     tuneSteer = dashTuneSteerPid.getBoolean(false);

@@ -60,7 +60,7 @@ public final class Constants {
             public static final double kDModuleTurningController = 0;
         
             public static final double kPModuleDriveController = 0.25;
-            public static final double kIModuleDriveController = 0.0;
+            public static final double kIModuleDriveController = 0.5;
             public static final double kDModuleDriveController = 0.0;
         }
         
@@ -98,6 +98,8 @@ public final class Constants {
         public static final boolean kFrontRightDriveEncoderReversed = false;
         public static final boolean kRearRightDriveEncoderReversed = false;
     
+        public static final double swerveThreshold = .1;
+
         public static final double kTrackWidth = 1.0;
         // Distance between centers of right and left wheels on robot
         public static final double kWheelBase = 1.0;
