@@ -5,10 +5,6 @@
 //RobotContainer = OI, Constants = RobotMap
 
 package frc.robot;
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -76,11 +72,7 @@ public class RobotContainer {
     Robot.driveTrain.setDefaultCommand(new SwerveDrive());
     Robot.flywheel.setDefaultCommand(new StopFlywheel());
     Robot.hopper.setDefaultCommand(new StopHopper());
-<<<<<<< Updated upstream
-    Robot.flywheel.setDefaultCommand(new StopFlywheel());
-=======
     Robot.intake.setDefaultCommand(new StopIntake());
->>>>>>> Stashed changes
     configureButtonBindings();
 
   }
