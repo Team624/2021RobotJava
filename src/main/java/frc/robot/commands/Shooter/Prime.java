@@ -36,4 +36,8 @@ public class Prime extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

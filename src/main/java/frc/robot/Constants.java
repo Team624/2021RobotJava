@@ -50,7 +50,7 @@ public final class Constants {
             public static final int kPIDLoopIdx = 0;
             public static final int kTimeoutMs = 30;
             public final static Gains kGains_Velocit  = new Gains( 0.3, 0.0001, 0, 0.05,  10,  1.00);
-            
+
         }
 
         public static class SwerveConstants{
@@ -64,7 +64,7 @@ public final class Constants {
             public static final int d_maxRPM = 5700;
             public static final int d_maxVel = 2000;
             public static final int d_maxAcc = 1500;
-    
+
             // PIDs for the steer motors
             public static final double s_kP = 1;
             public static final double s_kI = 0;
@@ -77,6 +77,7 @@ public final class Constants {
             public static final int s_maxVel = 2000;
             public static final int s_maxAcc = 1500;
         }
+
         
     }
 

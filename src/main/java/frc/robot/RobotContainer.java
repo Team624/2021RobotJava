@@ -5,7 +5,10 @@
 //RobotContainer = OI, Constants = RobotMap
 
 package frc.robot;
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,10 +17,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Drive.StopDrive;
 import frc.robot.commands.Hopper.StopHopper;
 import frc.robot.commands.Intake.DeployIntake;
+import frc.robot.commands.Intake.ManualIntake;
 import frc.robot.commands.Intake.StopIntake;
 import frc.robot.commands.Shooter.StopShooter;
+import frc.robot.commands.Shooter.Prime;
 import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Hopper.ManualHopper;
+
 
 
 
@@ -39,8 +45,11 @@ public class RobotContainer {
   JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
   JoystickButton oLeftStick = new JoystickButton(this.manipulator, Constants.OI.L3BUttonID);
   JoystickButton oRightStick = new JoystickButton(this.manipulator, Constants.OI.R3BUttonID);
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 
   public double GetDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);
@@ -67,7 +76,11 @@ public class RobotContainer {
     Robot.driveTrain.setDefaultCommand(new SwerveDrive());
     Robot.flywheel.setDefaultCommand(new StopFlywheel());
     Robot.hopper.setDefaultCommand(new StopHopper());
+<<<<<<< Updated upstream
     Robot.flywheel.setDefaultCommand(new StopFlywheel());
+=======
+    Robot.intake.setDefaultCommand(new StopIntake());
+>>>>>>> Stashed changes
     configureButtonBindings();
 
   }
@@ -99,12 +112,16 @@ public class RobotContainer {
     if(oButtonX.get() && oButtonY.get()){
       oButtonY.whenHeld(new Prime());
       oButtonX.whenHeld(new DeployIntake());
+<<<<<<< Updated upstream
       
     }
     
 
 
+=======
+>>>>>>> Stashed changes
   }
+}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
