@@ -7,8 +7,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 
-import javax.swing.JToggleButton.ToggleButtonModel;
-
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
@@ -20,7 +18,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.Gains;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 
 public class Shooter extends SubsystemBase {
   private final Solenoid hoodSolenoid = new Solenoid(Constants.Solenoid.hoodID);
@@ -82,20 +79,16 @@ public class Shooter extends SubsystemBase {
     orchestra = new Orchestra(instruments);
   }
 
-
   @Override
   public void periodic() {
-    getStatus();
     shooterDash();
     updatePID();
   }
 
-  public void getStatus(){
+  public void shooterDash(){
     prime = getPrime();
     currentRPM = getRPM();
-  }
 
-  public void shooterDash(){
     Pconstant = PID_P.getDouble(0);
     Iconstant = PID_I.getDouble(0);
     Dconstant = PID_D.getDouble(0);
@@ -116,7 +109,6 @@ public class Shooter extends SubsystemBase {
 
   public void updatePID(){
     if(tunePID == true){
-      //bruh my dumbass can fix this sometime
       Gains newGains = new Gains(getP(), getI(), getD(), getF(), getIzone(), getMaxOutput());
 
       Robot.shooter.leftFlywheel.config_kF(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kF, Constants.PID.FlywheelConstants.kTimeoutMs);
