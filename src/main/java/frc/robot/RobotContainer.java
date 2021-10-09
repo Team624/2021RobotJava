@@ -10,13 +10,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Drive.StopDrive;
 import frc.robot.commands.Hopper.StopHopper;
-import frc.robot.commands.Intake.DeployIntake;
 import frc.robot.commands.Intake.StopIntake;
 import frc.robot.commands.Shooter.StopShooter;
-import frc.robot.commands.Shooter.Shoot;
-import frc.robot.commands.Hopper.ManualHopper;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 
 
@@ -33,6 +30,7 @@ public class RobotContainer {
   Joystick manipulator = new Joystick(Constants.OI.manipulatorUSB);
 
   JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
+  JoystickButton dButtonLeftBumper = new JoystickButton(this.driver, Constants.OI.leftBumperID);
   JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
   JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
 
@@ -56,11 +54,21 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    Robot.drivetrain.setDefaultCommand(new StopDrive());
     Robot.shooter.setDefaultCommand(new StopShooter());
     Robot.hopper.setDefaultCommand(new StopHopper());
     Robot.intake.setDefaultCommand(new StopIntake());
 
+    Robot.drivetrain.setDefaultCommand(
+        // A split-stick arcade command, with forward/backward controlled by the left
+        // hand, and turning controlled by the right.
+        new RunCommand(
+            () ->
+                Robot.drivetrain.drive(
+                    GetDriverRawAxis(1),
+                    -GetDriverRawAxis(0),
+                    GetDriverRawAxis(4),
+                    true),
+                    Robot.drivetrain));
 
     configureButtonBindings();
     
@@ -68,14 +76,15 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
+   * Use this method to define your butto
+   * n->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   public void configureButtonBindings() {
-    oButtonX.whenHeld(new DeployIntake());
-    oButtonY.whenHeld(new Shoot());
+    //oButtonX.whenHeld(new DeployIntake());
+    //oButtonY.whenHeld(new Shoot());
   }
 
   /**
