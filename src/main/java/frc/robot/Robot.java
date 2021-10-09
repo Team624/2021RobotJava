@@ -10,6 +10,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Compressor;
 
@@ -25,8 +26,8 @@ public class Robot extends TimedRobot {
   public static Hopper hopper = new Hopper();
   public static Shooter shooter = new Shooter();
   public static Intake intake = new Intake();
-
-  Compressor compressor = new Compressor(0);
+  public static Climber climber = new Climber();
+  public static Compressor compressor = new Compressor(0);
 
   //private Command m_autonomousCommand;
   public static RobotContainer m_robotContainer;

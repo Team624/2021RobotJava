@@ -17,6 +17,7 @@ import frc.robot.commands.Intake.StopIntake;
 import frc.robot.commands.Shooter.StopShooter;
 import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Hopper.ManualHopper;
+import frc.robot.commands.Climber.StopClimb;
 
 
 
@@ -60,6 +61,7 @@ public class RobotContainer {
     Robot.shooter.setDefaultCommand(new StopShooter());
     Robot.hopper.setDefaultCommand(new StopHopper());
     Robot.intake.setDefaultCommand(new StopIntake());
+    Robot.climber.setDefaultCommand(new StopClimb());
 
 
     configureButtonBindings();
