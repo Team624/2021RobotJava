@@ -40,13 +40,12 @@ public final class Constants {
     }
 
     public static class OI{
-        //BUTTON INDEXING STARTS AT 1 IN JAVA
         public static final int driverUSB = 0;
         public static final int manipulatorUSB = 1;
 
-        public static final int leftStickID = 0;
-        public static final int rightStickID = ;
-        public static final int rightTriggerID = ;
+        public static final int leftStickYID = 0;
+        public static final int pressRightStickID = 10;
+        public static final int pressLeftStickID = 9;
         public static final int yButtonID = 4;
         public static final int xButtonID = 3;
         public static final int leftBumperID = 5;

@@ -49,13 +49,11 @@ public class Hopper extends SubsystemBase {
   public void forwardHopper(){
     leftMotor.set(hopperSpeed);
     rightMotor.set(hopperSpeed);
-    //rightMotor.setInverted(true);
   }
 
   public void reverseHopper(){
-    leftMotor.set(hopperSpeed);
-    rightMotor.set(hopperSpeed);
-    //rightMotor.setInverted(true);
+    leftMotor.set(-hopperSpeed);
+    rightMotor.set(-hopperSpeed);
   }
 
 }
