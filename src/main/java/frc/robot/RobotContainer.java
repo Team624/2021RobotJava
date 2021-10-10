@@ -10,10 +10,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Feeder.StopFeeder;
 import frc.robot.commands.Hopper.StopHopper;
 import frc.robot.commands.Intake.StopIntake;
 import frc.robot.commands.Shooter.StopShooter;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.Shooter.Prime;
 
 
 
@@ -33,6 +35,7 @@ public class RobotContainer {
   JoystickButton dButtonLeftBumper = new JoystickButton(this.driver, Constants.OI.leftBumperID);
   JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
   JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
+  
 
   public double GetDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);  
@@ -53,26 +56,19 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
-
     Robot.shooter.setDefaultCommand(new StopShooter());
+    Robot.feeder.setDefaultCommand(new StopFeeder());
     Robot.hopper.setDefaultCommand(new StopHopper());
     Robot.intake.setDefaultCommand(new StopIntake());
-
-    Robot.drivetrain.setDefaultCommand(
-        // A split-stick arcade command, with forward/backward controlled by the left
-        // hand, and turning controlled by the right.
-        new RunCommand(
-            () ->
+    Robot.drivetrain.setDefaultCommand(new RunCommand(() ->
                 Robot.drivetrain.drive(
                     GetDriverRawAxis(1),
                     -GetDriverRawAxis(0),
                     GetDriverRawAxis(4),
                     true),
-                    Robot.drivetrain));
-
+                    Robot.drivetrain)
+    );
     configureButtonBindings();
-    
-
   }
 
   /**
@@ -84,7 +80,7 @@ public class RobotContainer {
    */
   public void configureButtonBindings() {
     //oButtonX.whenHeld(new DeployIntake());
-    //oButtonY.whenHeld(new Shoot());
+    oButtonY.whenHeld(new Prime());
   }
 
   /**

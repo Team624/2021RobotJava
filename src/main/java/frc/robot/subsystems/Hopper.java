@@ -42,8 +42,8 @@ public class Hopper extends SubsystemBase {
   }
 
   public void stopHopper(){
-    leftMotor.set(0);
-    rightMotor.set(0);
+    leftMotor.stopMotor();;
+    rightMotor.stopMotor();;
   }
 
 }

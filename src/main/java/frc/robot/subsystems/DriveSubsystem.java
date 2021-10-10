@@ -4,21 +4,23 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
-import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants;
+
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+
 import com.analog.adis16470.frc.ADIS16470_IMU;
 
 @SuppressWarnings("PMD.ExcessiveImports")
@@ -33,6 +35,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   private boolean tuneDrive;
   private boolean tuneSteer;
+
+  private double driveMultiplier;
+  private double turnMultiplier;
 
   private boolean freezeDrive = false;
 
@@ -60,51 +65,54 @@ public class DriveSubsystem extends SubsystemBase {
   private NetworkTableEntry STEER_PID_I = driveTab.addPersistent("PID Steer I", Constants.PID.SwervePIDConstants.kIModuleTurningController).withPosition(1, 2).getEntry();
   private NetworkTableEntry STEER_PID_D = driveTab.addPersistent("PID Steer D", Constants.PID.SwervePIDConstants.kDModuleTurningController).withPosition(1, 3).getEntry();
 
+  private NetworkTableEntry translationMult = driveTab.addPersistent("Translation Speed", Constants.DriveConstants.translationMultiplier).withPosition(2, 0).getEntry();
+  private NetworkTableEntry rotationMult = driveTab.addPersistent("Rotation Speed", Constants.DriveConstants.rotationMultipler).withPosition(2, 1).getEntry();
+
   private NetworkTableEntry dashCurrentAngle = driveTab.add("Current Angle", 0).withPosition(2, 0).getEntry();
-
-  // Robot swerve modules
-  private final SwerveModule m_frontLeft =
-      new SwerveModule(
-          DriveConstants.kFrontLeftDriveMotorPort,
-          DriveConstants.kFrontLeftTurningMotorPort,
-          DriveConstants.kFrontLeftDriveEncoderPorts,
-          DriveConstants.kFrontLeftTurningEncoderPorts,
-          DriveConstants.kFrontLeftDriveEncoderReversed,
-          DriveConstants.kFrontLeftTurningEncoderReversed);
-
-  private final SwerveModule m_rearLeft =
-      new SwerveModule(
-          DriveConstants.kRearLeftDriveMotorPort,
-          DriveConstants.kRearLeftTurningMotorPort,
-          DriveConstants.kRearLeftDriveEncoderPorts,
-          DriveConstants.kRearLeftTurningEncoderPorts,
-          DriveConstants.kRearLeftDriveEncoderReversed,
-          DriveConstants.kRearLeftTurningEncoderReversed);
-
-  private final SwerveModule m_frontRight =
-      new SwerveModule(
-          DriveConstants.kFrontRightDriveMotorPort,
-          DriveConstants.kFrontRightTurningMotorPort,
-          DriveConstants.kFrontRightDriveEncoderPorts,
-          DriveConstants.kFrontRightTurningEncoderPorts,
-          DriveConstants.kFrontRightDriveEncoderReversed,
-          DriveConstants.kFrontRightTurningEncoderReversed);
-
-  private final SwerveModule m_rearRight =
-      new SwerveModule(
-          DriveConstants.kRearRightDriveMotorPort,
-          DriveConstants.kRearRightTurningMotorPort,
-          DriveConstants.kRearRightDriveEncoderPorts,
-          DriveConstants.kRearRightTurningEncoderPorts,
-          DriveConstants.kRearRightDriveEncoderReversed,
-          DriveConstants.kRearRightTurningEncoderReversed);
 
   // The gyro sensor
   public static final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
 
+  // Robot swerve modules
+  private final SwerveModule m_frontLeft =
+      new SwerveModule(
+          Constants.CAN.kFrontLeftDriveMotorPort,
+          Constants.CAN.kFrontLeftTurningMotorPort,
+          Constants.DriveConstants.kFrontLeftDriveEncoderPorts,
+          Constants.DriveConstants.kFrontLeftTurningEncoderPorts,
+          Constants.DriveConstants.kFrontLeftDriveEncoderReversed,
+          Constants.DriveConstants.kFrontLeftTurningEncoderReversed);
+
+  private final SwerveModule m_rearLeft =
+      new SwerveModule(
+          Constants.CAN.kRearLeftDriveMotorPort,
+          Constants.CAN.kRearLeftTurningMotorPort,
+          Constants.DriveConstants.kRearLeftDriveEncoderPorts,
+          Constants.DriveConstants.kRearLeftTurningEncoderPorts,
+          Constants.DriveConstants.kRearLeftDriveEncoderReversed,
+          Constants.DriveConstants.kRearLeftTurningEncoderReversed);
+
+  private final SwerveModule m_frontRight =
+      new SwerveModule(
+          Constants.CAN.kFrontRightDriveMotorPort,
+          Constants.CAN.kFrontRightTurningMotorPort,
+          Constants.DriveConstants.kFrontRightDriveEncoderPorts,
+          Constants.DriveConstants.kFrontRightTurningEncoderPorts,
+          Constants.DriveConstants.kFrontRightDriveEncoderReversed,
+          Constants.DriveConstants.kFrontRightTurningEncoderReversed);
+
+  private final SwerveModule m_rearRight =
+      new SwerveModule(
+          Constants.CAN.kRearRightDriveMotorPort,
+          Constants.CAN.kRearRightTurningMotorPort,
+          Constants.DriveConstants.kRearRightDriveEncoderPorts,
+          Constants.DriveConstants.kRearRightTurningEncoderPorts,
+          Constants.DriveConstants.kRearRightDriveEncoderReversed,
+          Constants.DriveConstants.kRearRightTurningEncoderReversed);
+
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
-      new SwerveDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0,0));//m_gyro.getRotation2d());
+      new SwerveDriveOdometry(Constants.DriveConstants.kDriveKinematics, m_gyro.getRotation2d());
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {}
@@ -129,22 +137,39 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
-  /**
-   * Returns the currently-estimated pose of the robot.
-   *
-   * @return The pose.
-   */
-  public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+  public void driveDash(){
+    dashCurrentAngle.setDouble(m_gyro.getAngle());
+
+    tuneDrive = dashTuneDrivePid.getBoolean(false);
+    tuneSteer = dashTuneSteerPid.getBoolean(false);
+
+    drivePconstant = DRIVE_PID_P.getDouble(0);
+    driveIconstant = DRIVE_PID_I.getDouble(0);
+    driveDconstant = DRIVE_PID_D.getDouble(0);
+
+    steerPconstant = STEER_PID_P.getDouble(0);
+    steerIconstant = STEER_PID_I.getDouble(0);
+    steerDconstant = STEER_PID_D.getDouble(0);
+
+    driveMultiplier = translationMult.getDouble(Constants.DriveConstants.translationMultiplier);
+    turnMultiplier = rotationMult.getDouble(Constants.DriveConstants.rotationMultipler);
   }
 
-  /**
-   * Resets the odometry to the specified pose.
-   *
-   * @param pose The pose to which to set the odometry.
-   */
-  public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+  public void updatePID(){
+    if(tuneDrive == true && updatedDrivePIDAlready == false){
+      m_frontLeft.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
+      m_rearLeft.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
+      m_rearRight.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
+      m_frontRight.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
+      updatedDrivePIDAlready = true;
+    }
+    if(tuneSteer == true && updatedSteerPIDAlready == false){
+      m_frontLeft.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
+      m_rearLeft.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
+      m_rearRight.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
+      m_frontRight.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
+      updatedSteerPIDAlready = true;
+    }
   }
 
   /**
@@ -161,13 +186,17 @@ public class DriveSubsystem extends SubsystemBase {
     //System.out.println(m_frontLeft.getEncoderVal());
     //System.out.println("Front: " + m_frontLeft.getEncoderVal());
     //System.out.println("Back: " + m_rearLeft.getEncoderVal());
+    xSpeed *= driveMultiplier;
+    ySpeed *= driveMultiplier;
+    rot *= turnMultiplier;
+
     var swerveModuleStates =
-        DriveConstants.kDriveKinematics.toSwerveModuleStates(
+        Constants.DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.normalizeWheelSpeeds(
-        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+        swerveModuleStates, Constants.DriveConstants.kMaxSpeedMetersPerSecond);
     //System.out.println("Front module: "+ m_frontLeft.getEncoderVal() + ", " + swerveModuleStates[0].toString());
     //System.out.println("Back module: " + m_rearLeft.getEncoderVal() + ", " + swerveModuleStates[2].toString());
     if(Math.abs(xSpeed) + Math.abs(ySpeed) + Math.abs(rot) < Constants.DriveConstants.swerveThreshold){
@@ -217,44 +246,32 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getRotation2d().getRadians();
   }
 
+    /**
+   * Returns the currently-estimated pose of the robot.
+   *
+   * @return The pose.
+   */
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
+
+  /**
+   * Resets the odometry to the specified pose.
+   *
+   * @param pose The pose to which to set the odometry.
+   */
+  public void resetOdometry(Pose2d pose) {
+    m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+  }
+
   /**
    * Returns the turn rate of the robot.
    *
    * @return The turn rate of the robot, in degrees per second
    */
   public double getTurnRate() {
-    return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    return m_gyro.getRate() * (Constants.DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-  public void driveDash(){
-    dashCurrentAngle.setDouble(m_gyro.getAngle());
-
-    tuneDrive = dashTuneDrivePid.getBoolean(false);
-    tuneSteer = dashTuneSteerPid.getBoolean(false);
-
-    drivePconstant = DRIVE_PID_P.getDouble(0);
-    driveIconstant = DRIVE_PID_I.getDouble(0);
-    driveDconstant = DRIVE_PID_D.getDouble(0);
-
-    steerPconstant = STEER_PID_P.getDouble(0);
-    steerIconstant = STEER_PID_I.getDouble(0);
-    steerDconstant = STEER_PID_D.getDouble(0);
-  }
-
-  public void updatePID(){
-    if(tuneDrive == true && updatedDrivePIDAlready == false){
-      m_frontLeft.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
-      m_rearLeft.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
-      m_rearRight.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
-      m_frontRight.newDrivePID(drivePconstant, driveIconstant, driveDconstant);
-      updatedDrivePIDAlready = true;
-    }
-    if(tuneSteer == true && updatedSteerPIDAlready == false){
-      m_frontLeft.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
-      m_rearLeft.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
-      m_rearRight.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
-      m_frontRight.newSteerPID(steerPconstant, steerIconstant, steerDconstant);
-      updatedSteerPIDAlready = true;
-    }
-  }
+  
 }

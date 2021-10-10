@@ -10,6 +10,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Feeder;
 import edu.wpi.first.wpilibj.Compressor;
 
 /**
@@ -19,11 +20,11 @@ import edu.wpi.first.wpilibj.Compressor;
  * project.
  */
 public class Robot extends TimedRobot {
-
   public static DriveSubsystem drivetrain = new DriveSubsystem();
   public static Hopper hopper = new Hopper();
   public static Shooter shooter = new Shooter();
   public static Intake intake = new Intake();
+  public static Feeder feeder = new Feeder();
   
 
   Compressor compressor = new Compressor(0);
@@ -37,38 +38,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    compressor.setClosedLoopControl(true);
-
-    Robot.shooter.leftFlywheel.configFactoryDefault();
-    Robot.shooter.rightFlywheel.configFactoryDefault();
-
-    Robot.shooter.leftFlywheel.configNeutralDeadband(0.001);
-    Robot.shooter.rightFlywheel.configNeutralDeadband(0.001);
-
-    Robot.shooter.leftFlywheel.configNominalOutputForward(0, Constants.PID.FlywheelConstants.kTimeoutMs);
-		Robot.shooter.leftFlywheel.configNominalOutputReverse(0, Constants.PID.FlywheelConstants.kTimeoutMs);
-		Robot.shooter.leftFlywheel.configPeakOutputForward(1, Constants.PID.FlywheelConstants.kTimeoutMs);
-    Robot.shooter.leftFlywheel.configPeakOutputReverse(-1, Constants.PID.FlywheelConstants.kTimeoutMs);
-    Robot.shooter.rightFlywheel.configNominalOutputForward(0, Constants.PID.FlywheelConstants.kTimeoutMs);
-		Robot.shooter.rightFlywheel.configNominalOutputReverse(0, Constants.PID.FlywheelConstants.kTimeoutMs);
-		Robot.shooter.rightFlywheel.configPeakOutputForward(1, Constants.PID.FlywheelConstants.kTimeoutMs);
-    Robot.shooter.rightFlywheel.configPeakOutputReverse(-1, Constants.PID.FlywheelConstants.kTimeoutMs);
-    
-    Robot.shooter.leftFlywheel.config_kF(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kF, Constants.PID.FlywheelConstants.kTimeoutMs);
-		Robot.shooter.leftFlywheel.config_kP(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kP, Constants.PID.FlywheelConstants.kTimeoutMs);
-		Robot.shooter.leftFlywheel.config_kI(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kI, Constants.PID.FlywheelConstants.kTimeoutMs);
-		Robot.shooter.leftFlywheel.config_kD(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kD, Constants.PID.FlywheelConstants.kTimeoutMs);
-   
-    Robot.shooter.rightFlywheel.config_kF(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kF, Constants.PID.FlywheelConstants.kTimeoutMs);
-		Robot.shooter.rightFlywheel.config_kP(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kP, Constants.PID.FlywheelConstants.kTimeoutMs);
-		Robot.shooter.rightFlywheel.config_kI(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kI, Constants.PID.FlywheelConstants.kTimeoutMs);
-		Robot.shooter.rightFlywheel.config_kD(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kD, Constants.PID.FlywheelConstants.kTimeoutMs);
-   
-
+    compressor.setClosedLoopControl(true);   
   }
 
   /**

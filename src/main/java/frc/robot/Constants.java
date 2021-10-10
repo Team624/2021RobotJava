@@ -25,6 +25,18 @@ public final class Constants {
         public static final int rightFlywheelID = 8;
 
         public static final int intakeMotorID = 11;
+
+        public static final int feederID = 10;
+
+        public static final int kFrontLeftDriveMotorPort = 16;
+        public static final int kRearLeftDriveMotorPort = 2;
+        public static final int kFrontRightDriveMotorPort = 14;
+        public static final int kRearRightDriveMotorPort = 13;
+    
+        public static final int kFrontLeftTurningMotorPort = 1;
+        public static final int kRearLeftTurningMotorPort = 3;
+        public static final int kFrontRightTurningMotorPort = 15;
+        public static final int kRearRightTurningMotorPort = 12;
     }
 
     public static class Solenoid{
@@ -37,11 +49,13 @@ public final class Constants {
         public static final int driverUSB = 0;
         public static final int manipulatorUSB = 1;
 
-        public static final int LeftStickYID = 0;
-
         public static final int yButtonID = 4;
         public static final int xButtonID = 3;
         public static final int leftBumperID = 5;
+
+        //this is probably wrong lol
+        public static final int LeftStickYID = 1;
+		public static final int RightTriggerID = 4;
     }
 
     public static class PID{
@@ -60,24 +74,28 @@ public final class Constants {
             public static final double kDModuleTurningController = 0;
         
             public static final double kPModuleDriveController = 0.25;
-            public static final double kIModuleDriveController = 0.5;
+            public static final double kIModuleDriveController = 0.6;
             public static final double kDModuleDriveController = 0.0;
         }
         
     }
 
-    // COPY
+    public static final class ShooterSettings{
+        public static final boolean tunePID = false;
+
+        public static final double idleFlywheelSpeed = 0;
+        public static final boolean idleHoodSet = false;
+
+        public static final double autoRotateMultiplier = 1;
+    }
+
+    public static final class FeederSettings{
+        public static final double feederSpeed = .5;
+
+        public static final double shooterControlAxisThreshold = .5;
+    }
+
     public static final class DriveConstants {
-        public static final int kFrontLeftDriveMotorPort = 16;
-        public static final int kRearLeftDriveMotorPort = 2;
-        public static final int kFrontRightDriveMotorPort = 14;
-        public static final int kRearRightDriveMotorPort = 13;
-    
-        public static final int kFrontLeftTurningMotorPort = 1;
-        public static final int kRearLeftTurningMotorPort = 3;
-        public static final int kFrontRightTurningMotorPort = 15;
-        public static final int kRearRightTurningMotorPort = 12;
-    
         public static final int[] kFrontLeftTurningEncoderPorts = new int[] {0, 1};
         public static final int[] kRearLeftTurningEncoderPorts = new int[] {2, 3};
         public static final int[] kFrontRightTurningEncoderPorts = new int[] {4, 5};
@@ -98,7 +116,9 @@ public final class Constants {
         public static final boolean kFrontRightDriveEncoderReversed = false;
         public static final boolean kRearRightDriveEncoderReversed = false;
     
-        public static final double swerveThreshold = .1;
+        public static final double swerveThreshold = .175;
+        public static final double translationMultiplier = 1;
+        public static final double rotationMultipler = 1;
 
         public static final double kTrackWidth = 1.0;
         // Distance between centers of right and left wheels on robot
@@ -125,7 +145,6 @@ public final class Constants {
         public static final double kMaxSpeedMetersPerSecond = 3;
     }
 
-    // COPY
     public static final class ModuleConstants {
         public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
         public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
@@ -145,7 +164,6 @@ public final class Constants {
             (2 * Math.PI) / (double) kEncoderCPR;
     }
 
-    // COPY
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
