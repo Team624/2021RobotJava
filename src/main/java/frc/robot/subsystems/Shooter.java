@@ -5,22 +5,24 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.util.ArrayList;
-
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.Gains;
+
 import frc.robot.commands.Shooter.IdleShooter;
 import frc.robot.commands.Shooter.Prime;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import com.ctre.phoenix.music.Orchestra;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.Solenoid;
-import frc.robot.Gains;
+
+import java.util.ArrayList;
 
 public class Shooter extends SubsystemBase {
   private final Solenoid hoodSolenoid = new Solenoid(Constants.Solenoid.hoodID);
