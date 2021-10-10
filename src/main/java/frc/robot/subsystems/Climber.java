@@ -19,9 +19,9 @@ public class Climber extends SubsystemBase {
 
     private double climbSpeed;
 
-    private ShuffleboardTab hopperTab = Shuffleboard.getTab("Hopper");
+    private ShuffleboardTab climberTab = Shuffleboard.getTab("Climber");
 
-    private NetworkTableEntry dashSetClimbSpeed = hopperTab.addPersistent("Set Speed", 0).getEntry();
+    private NetworkTableEntry dashSetClimbSpeed = climberTab.addPersistent("Set Speed", 0).getEntry();
 
     /** Creates a new Climber. */
     public Climber() {}
