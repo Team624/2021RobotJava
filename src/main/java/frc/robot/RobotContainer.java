@@ -11,11 +11,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Feeder.StopFeeder;
+import frc.robot.commands.Hopper.ClearHopper;
+import frc.robot.commands.Hopper.ForwardHopper;
 import frc.robot.commands.Hopper.StopHopper;
-import frc.robot.commands.Intake.StopIntake;
-import frc.robot.commands.Shooter.StopShooter;
+import frc.robot.commands.Shooter.IdleShooter;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.Shooter.Prime;
+import frc.robot.commands.Feeder.Shoot;
+import frc.robot.commands.Intake.IdleIntake;
+import frc.robot.commands.Intake.DeployIntake;
 
 
 
@@ -31,11 +35,11 @@ public class RobotContainer {
   Joystick driver = new Joystick(Constants.OI.driverUSB);
   Joystick manipulator = new Joystick(Constants.OI.manipulatorUSB);
 
-  JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
   JoystickButton dButtonLeftBumper = new JoystickButton(this.driver, Constants.OI.leftBumperID);
+
+  JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
   JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
   JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
-  
 
   public double GetDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);  
@@ -56,10 +60,10 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
-    Robot.shooter.setDefaultCommand(new StopShooter());
+    Robot.shooter.setDefaultCommand(new IdleShooter());
     Robot.feeder.setDefaultCommand(new StopFeeder());
     Robot.hopper.setDefaultCommand(new StopHopper());
-    Robot.intake.setDefaultCommand(new StopIntake());
+    Robot.intake.setDefaultCommand(new IdleIntake());
     Robot.drivetrain.setDefaultCommand(new RunCommand(() ->
                 Robot.drivetrain.drive(
                     GetDriverRawAxis(1),
@@ -79,8 +83,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   public void configureButtonBindings() {
-    //oButtonX.whenHeld(new DeployIntake());
-    oButtonY.whenHeld(new Prime());
+    oButtonX.whenHeld(new DeployIntake());
+    oLeftBumper.whenHeld(new ClearHopper());
+    dButtonLeftBumper.whenHeld(new Prime());
+    if(GetDriverRawAxis(Constants.OI.RightTriggerID) > .5){
+      new ForwardHopper();
+      new Shoot();
+    }
   }
 
   /**

@@ -90,9 +90,23 @@ public final class Constants {
     }
 
     public static final class FeederSettings{
-        public static final double feederSpeed = .5;
+        public static final boolean reverseFeederMotor = false;
+        public static final double feederSpeed = 1;
 
         public static final double shooterControlAxisThreshold = .5;
+    }
+
+    public static final class HopperSettings{
+        public static final boolean reverseLeftHopperMotor = false;
+        public static final boolean reverseRightHopperMotor = true;
+
+        public static final double hopperSpeed = 1;
+    }
+
+    public static final class IntakeSettings{
+        public static final boolean reverseIntakeMotor = false;
+
+        public static final double intakeSpeed = 1;
     }
 
     public static final class DriveConstants {

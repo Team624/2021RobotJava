@@ -7,9 +7,9 @@ package frc.robot.commands.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class DeployIntake extends CommandBase {
-  /** Creates a new DeployIntake. */
-  public DeployIntake() {
+public class IdleIntake extends CommandBase {
+  /** Creates a new AgitateIntake. */
+  public IdleIntake() {
     addRequirements(Robot.intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -21,8 +21,7 @@ public class DeployIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.intake.fullIntake();
-    
+    Robot.intake.agitateIntake();
   }
 
   // Called once the command ends or is interrupted.

@@ -9,9 +9,6 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.Gains;
 
-import frc.robot.commands.Shooter.IdleShooter;
-import frc.robot.commands.Shooter.Prime;
-
 import edu.wpi.first.wpilibj.Solenoid;
 import com.ctre.phoenix.music.Orchestra;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -128,7 +125,6 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     shooterDash();
     updatePID();
-    setCommand();
   }
 
   public void shooterDash(){
@@ -169,17 +165,6 @@ public class Shooter extends SubsystemBase {
       Robot.shooter.rightFlywheel.config_kP(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kP, Constants.PID.FlywheelConstants.kTimeoutMs);
       Robot.shooter.rightFlywheel.config_kI(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kI, Constants.PID.FlywheelConstants.kTimeoutMs);
       Robot.shooter.rightFlywheel.config_kD(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kD, Constants.PID.FlywheelConstants.kTimeoutMs);
-    }
-  }
-
-  public void setCommand(){
-    if(manualShoot || prime)
-    {
-      new Prime();
-    }
-    else
-    {
-      new IdleShooter();
     }
   }
 

@@ -2,15 +2,16 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Intake;
+package frc.robot.commands.Hopper;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.Constants;
 
-public class DeployIntake extends CommandBase {
-  /** Creates a new DeployIntake. */
-  public DeployIntake() {
-    addRequirements(Robot.intake);
+public class ForwardHopper extends CommandBase {
+  /** Creates a new ForwardHopper. */
+  public ForwardHopper() {
+    addRequirements(Robot.hopper);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -21,8 +22,7 @@ public class DeployIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.intake.fullIntake();
-    
+    Robot.hopper.onHopper();
   }
 
   // Called once the command ends or is interrupted.
@@ -32,6 +32,10 @@ public class DeployIntake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if(Robot.m_robotContainer.GetDriverRawAxis(Constants.OI.RightTriggerID) < .5){
+      return true;
+    }else{
+      return false;
+    }
   }
 }

@@ -30,7 +30,10 @@ public class Feeder extends SubsystemBase {
   private NetworkTableEntry dashSpeed = feederTab.addPersistent("Feeder Speed", 0).withPosition(0, 1).getEntry();
 
   /** Creates a new Feeder. */
-  public Feeder() {}
+  public Feeder() {
+    feederMotor.setInverted(Constants.FeederSettings.reverseFeederMotor);
+    feederSpeed = Constants.FeederSettings.feederSpeed;
+  }
 
   @Override
   public void periodic() {

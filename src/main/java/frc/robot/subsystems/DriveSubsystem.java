@@ -20,7 +20,9 @@ import com.analog.adis16470.frc.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.networktables.NetworkTable;
 
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DriveSubsystem extends SubsystemBase {
@@ -38,19 +40,17 @@ public class DriveSubsystem extends SubsystemBase {
   private double driveMultiplier;
   private double turnMultiplier;
 
+  private double primeTurn = 0;
+
   private boolean freezeDrive = false;
 
   public boolean resetGyro = false;
 
-  private SwerveModuleState[] lStates = {
-    new SwerveModuleState(), 
-    new SwerveModuleState(), 
-    new SwerveModuleState(), 
-    new SwerveModuleState()
-  };
-
   private boolean updatedDrivePIDAlready = false;
   private boolean updatedSteerPIDAlready = false;
+
+  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  private NetworkTable table = inst.getTable("SmartDashboard");
 
   private ShuffleboardTab driveTab = Shuffleboard.getTab("Drive");
 
@@ -71,6 +71,13 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The gyro sensor
   public static final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
+
+  private SwerveModuleState[] lStates = {
+    new SwerveModuleState(), 
+    new SwerveModuleState(), 
+    new SwerveModuleState(), 
+    new SwerveModuleState()
+  };
 
   // Robot swerve modules
   private final SwerveModule m_frontLeft =
@@ -121,6 +128,7 @@ public class DriveSubsystem extends SubsystemBase {
     resetGyro();
     driveDash();
     updatePID();
+
     // Update the odometry in the periodic block
     m_odometry.update(
         m_gyro.getRotation2d(),
@@ -137,6 +145,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void driveDash(){
+    primeTurn = table.getEntry("-turret-y_offset").getDouble(0);
     dashCurrentAngle.setDouble(m_gyro.getAngle());
 
     tuneDrive = dashTuneDrivePid.getBoolean(false);
@@ -181,6 +190,9 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    if(Robot.m_robotContainer.getDriverButton(4)){
+      rot += primeTurn;
+    }
     //System.out.println(xSpeed + " - " + ySpeed + " - " + rot);
     //System.out.println(m_frontLeft.getEncoderVal());
     //System.out.println("Front: " + m_frontLeft.getEncoderVal());
