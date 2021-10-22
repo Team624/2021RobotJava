@@ -22,6 +22,7 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
     Robot.feeder.feed();
   }
 
@@ -32,10 +33,6 @@ public class Shoot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Robot.m_robotContainer.GetDriverRawAxis(Constants.OI.RightTriggerID) < .5){
-      return true;
-    }else{
-      return false;
-    }
+    return false;
   }
 }

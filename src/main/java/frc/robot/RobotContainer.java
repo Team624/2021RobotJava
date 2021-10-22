@@ -20,6 +20,7 @@ import frc.robot.commands.Shooter.Prime;
 import frc.robot.commands.Feeder.Shoot;
 import frc.robot.commands.Intake.IdleIntake;
 import frc.robot.commands.Intake.DeployIntake;
+import frc.robot.commands.Shooter.StopShooter;
 
 
 
@@ -36,10 +37,14 @@ public class RobotContainer {
   Joystick manipulator = new Joystick(Constants.OI.manipulatorUSB);
 
   JoystickButton dButtonLeftBumper = new JoystickButton(this.driver, Constants.OI.leftBumperID);
+  JoystickButton dButtonA = new JoystickButton(this.driver, Constants.OI.aButtonID);
+  JoystickButton dButtonX = new JoystickButton(this.driver, Constants.OI.xButtonID);
+  JoystickButton dButtonY = new JoystickButton(this.driver, Constants.OI.yButtonID);
 
+  JoystickButton oButtonLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
+  JoystickButton oButtonA = new JoystickButton(this.manipulator, Constants.OI.aButtonID);
   JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
   JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
-  JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
 
   public double GetDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);  
@@ -60,7 +65,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
-    Robot.shooter.setDefaultCommand(new IdleShooter());
+    Robot.shooter.setDefaultCommand(new StopShooter());
     Robot.feeder.setDefaultCommand(new StopFeeder());
     Robot.hopper.setDefaultCommand(new StopHopper());
     Robot.intake.setDefaultCommand(new IdleIntake());
@@ -84,12 +89,9 @@ public class RobotContainer {
    */
   public void configureButtonBindings() {
     oButtonX.whenHeld(new DeployIntake());
-    oLeftBumper.whenHeld(new ClearHopper());
-    dButtonLeftBumper.whenHeld(new Prime());
-    if(GetDriverRawAxis(Constants.OI.RightTriggerID) > .5){
-      new ForwardHopper();
-      new Shoot();
-    }
+    oButtonLeftBumper.whenHeld(new Prime());
+    oButtonA.whenHeld(new ForwardHopper());
+    oButtonA.whenHeld(new Shoot());
   }
 
   /**

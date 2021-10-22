@@ -19,14 +19,14 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class Feeder extends SubsystemBase {
-  private final CANSparkMax feederMotor = new CANSparkMax(Constants.CAN.LeftHopperID, MotorType.kBrushless);
+  private final CANSparkMax feederMotor = new CANSparkMax(Constants.CAN.feederID, MotorType.kBrushless);
 
   private double feederSpeed = Constants.FeederSettings.feederSpeed;
   private double dashFeederSpeed;
   private boolean useDash;
 
   private ShuffleboardTab feederTab = Shuffleboard.getTab("Feeder");
-  private NetworkTableEntry dashSetFeederSpeed = feederTab.addPersistent("Set Feeder Speed", false).withPosition(0, 1).getEntry();
+  private NetworkTableEntry dashSetFeederSpeed = feederTab.addPersistent("Set Feeder Speed", false).withPosition(0, 0).getEntry();
   private NetworkTableEntry dashSpeed = feederTab.addPersistent("Feeder Speed", 0).withPosition(0, 1).getEntry();
 
   /** Creates a new Feeder. */
@@ -62,6 +62,7 @@ public class Feeder extends SubsystemBase {
   }
 
   public void feed(){
+    System.out.println("should be feeding");
     feederMotor.set(feederSpeed);
   }
 

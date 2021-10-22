@@ -14,10 +14,12 @@ import com.ctre.phoenix.music.Orchestra;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.networktables.NetworkTableEntry;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,8 @@ public class Shooter extends SubsystemBase {
   private boolean autoHood;
   //What should rpm be right now?
   private double autoRPM;
+  //are we auto shooting (for swerve)
+  private boolean isAutoShooting;
 
   //What is the idle fly speed
   private double idleFly = Constants.ShooterSettings.idleFlywheelSpeed;
@@ -46,6 +50,8 @@ public class Shooter extends SubsystemBase {
   //Should we tune PID's?
   private boolean tunePID;
 
+  private double camDistance;
+  public double camAdjust;
 
   //What should the rpm be now?
   private double setRPM;
@@ -61,6 +67,12 @@ public class Shooter extends SubsystemBase {
   private double Fconstant;
   private int I_Zone;
   private double MaxOutput;
+
+  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  private NetworkTable table = inst.getTable("SmartDashboard");
+
+  private NetworkTableEntry yDistEntry = table.getEntry("-turret-y_offset");
+  private NetworkTableEntry xAdjustEntry = table.getEntry("-turret-y_offset");
 
   private ShuffleboardTab shooterTab = Shuffleboard.getTab("Shooter");
 
@@ -87,6 +99,7 @@ public class Shooter extends SubsystemBase {
   public static Orchestra orchestra;
   /** Creates a new Shooter. */
   public Shooter() {
+
     leftFlywheel.setInverted(true);
 
     leftFlywheel.configFactoryDefault();
@@ -128,6 +141,9 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shooterDash(){
+    camDistance = yDistEntry.getDouble(0);
+    camAdjust = xAdjustEntry.getDouble(0);
+
     prime = getPrime();
     currentRPM = getRPM();
 
@@ -169,6 +185,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void stopAll(){
+    isAutoShooting = false;
     setRPM = 0;
     prime = false;
     leftFlywheel.set(TalonFXControlMode.Velocity, 0);
@@ -177,6 +194,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void idleShoot(){
+    isAutoShooting = false;
     setRPM = idleFly;
     prime = false;
     leftFlywheel.set(TalonFXControlMode.Velocity, idleFly);
@@ -185,6 +203,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void autoShoot(){
+    isAutoShooting = true;
     setRPM = autoRPM;
     prime = true;
     leftFlywheel.set(TalonFXControlMode.Velocity, autoRPM);
@@ -194,11 +213,29 @@ public class Shooter extends SubsystemBase {
   }
 
   public void manualShoot(){
+    isAutoShooting = false;
     setRPM = manualRPM;
     prime = true;
     leftFlywheel.set(TalonFXControlMode.Velocity, manualRPM);
     rightFlywheel.set(TalonFXControlMode.Velocity, manualRPM);
     hoodSolenoid.set(manualHood);
+  }
+
+  public void setAutoStates(double setRPM, boolean setHood){
+    autoRPM = setRPM;
+    autoHood = setHood;
+  }
+
+  public double getCamOff(){
+    return camAdjust;
+  }
+
+  public double getCamVal(){
+    return camDistance;
+  }
+
+  public boolean isAutoShoot(){
+    return isAutoShooting;
   }
 
   public double getRPM(){

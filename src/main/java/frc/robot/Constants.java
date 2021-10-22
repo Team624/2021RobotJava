@@ -49,6 +49,7 @@ public final class Constants {
         public static final int driverUSB = 0;
         public static final int manipulatorUSB = 1;
 
+        public static final int aButtonID = 1;
         public static final int yButtonID = 4;
         public static final int xButtonID = 3;
         public static final int leftBumperID = 5;
@@ -104,12 +105,14 @@ public final class Constants {
     }
 
     public static final class IntakeSettings{
-        public static final boolean reverseIntakeMotor = false;
+        public static final boolean reverseIntakeMotor = true;
 
         public static final double intakeSpeed = 1;
     }
 
     public static final class DriveConstants {
+        public static final double shooterOffsetConst = .1;
+
         public static final int[] kFrontLeftTurningEncoderPorts = new int[] {0, 1};
         public static final int[] kRearLeftTurningEncoderPorts = new int[] {2, 3};
         public static final int[] kFrontRightTurningEncoderPorts = new int[] {4, 5};

@@ -64,6 +64,7 @@ public class Intake extends SubsystemBase {
 
   public void stopIntake(){
     intakeMotor.set(TalonSRXControlMode.PercentOutput, 0);
+    intakeSolenoid.set(false);
   }
 
   public double getDashSpeed(){

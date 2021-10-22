@@ -39,6 +39,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   private double driveMultiplier;
   private double turnMultiplier;
+  private double shootMultipler;
 
   private double primeTurn = 0;
 
@@ -66,8 +67,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   private NetworkTableEntry translationMult = driveTab.addPersistent("Translation Speed", Constants.DriveConstants.translationMultiplier).withPosition(2, 0).getEntry();
   private NetworkTableEntry rotationMult = driveTab.addPersistent("Rotation Speed", Constants.DriveConstants.rotationMultipler).withPosition(2, 1).getEntry();
+  private NetworkTableEntry shootMult = driveTab.addPersistent("Shoot Rot Speed", Constants.DriveConstants.shooterOffsetConst).withPosition(2, 3).getEntry();
 
-  private NetworkTableEntry dashCurrentAngle = driveTab.add("Current Angle", 0).withPosition(2, 0).getEntry();
+  private NetworkTableEntry dashCurrentAngle = driveTab.add("Current Angle", 0).withPosition(2, 2).getEntry();
 
   // The gyro sensor
   public static final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
@@ -161,6 +163,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     driveMultiplier = translationMult.getDouble(Constants.DriveConstants.translationMultiplier);
     turnMultiplier = rotationMult.getDouble(Constants.DriveConstants.rotationMultipler);
+    shootMultipler = shootMult.getDouble(Constants.DriveConstants.shooterOffsetConst);
+  }
+
+  public double getShooterOffset(){
+    return Robot.shooter.getCamOff();
   }
 
   public void updatePID(){
@@ -190,6 +197,10 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    if(Robot.shooter.isAutoShoot()){
+      System.out.println(getShooterOffset());
+      rot = rot + (getShooterOffset() * shootMultipler);
+    } 
     if(Robot.m_robotContainer.getDriverButton(4)){
       rot += primeTurn;
     }
