@@ -2,15 +2,15 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Hopper;
+package frc.robot.commands.Feeder;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class StopHopper extends CommandBase {
-  /** Creates a new StopHopper. */
-  public StopHopper() {
-    addRequirements(Robot.hopper);
+public class IdleFeeder extends CommandBase {
+  /** Creates a new IdleFeeder. */
+  public IdleFeeder() {
+    addRequirements(Robot.feeder);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -21,8 +21,15 @@ public class StopHopper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Stopping");
-    Robot.hopper.stopHopper();
+    feederLogic();
+  }
+
+  public void feederLogic(){
+    if(Robot.analog.getValue() > 900){
+      Robot.feeder.stopFeeder();
+    }else{
+      Robot.feeder.feed();
+    }
   }
 
   // Called once the command ends or is interrupted.

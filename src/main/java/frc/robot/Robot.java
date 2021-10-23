@@ -12,6 +12,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Feeder;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -28,6 +29,8 @@ public class Robot extends TimedRobot {
   
 
   Compressor compressor = new Compressor(0);
+
+  public static AnalogInput analog = new AnalogInput(1);
 
   //private Command m_autonomousCommand;
   public static RobotContainer m_robotContainer;

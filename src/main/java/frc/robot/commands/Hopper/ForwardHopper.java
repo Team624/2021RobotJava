@@ -22,7 +22,6 @@ public class ForwardHopper extends CommandBase {
   @Override
   public void execute() {
     Robot.hopper.onHopper();
-    System.out.println("button pressed");
   }
 
   // Called once the command ends or is interrupted.

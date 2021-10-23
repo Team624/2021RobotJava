@@ -62,7 +62,6 @@ public class Feeder extends SubsystemBase {
   }
 
   public void feed(){
-    System.out.println("should be feeding");
     feederMotor.set(feederSpeed);
   }
 

@@ -197,13 +197,6 @@ public class DriveSubsystem extends SubsystemBase {
    */
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    if(Robot.shooter.isAutoShoot()){
-      System.out.println(getShooterOffset());
-      rot = rot + (getShooterOffset() * shootMultipler);
-    } 
-    if(Robot.m_robotContainer.getDriverButton(4)){
-      rot += primeTurn;
-    }
     //System.out.println(xSpeed + " - " + ySpeed + " - " + rot);
     //System.out.println(m_frontLeft.getEncoderVal());
     //System.out.println("Front: " + m_frontLeft.getEncoderVal());

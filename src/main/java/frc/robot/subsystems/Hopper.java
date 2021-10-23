@@ -37,6 +37,7 @@ public class Hopper extends SubsystemBase {
   @Override
   public void periodic() {
     hopperDash();
+    updateHopperSpeed();
     // This method will be called once per scheduler run
   }
 

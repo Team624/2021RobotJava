@@ -10,17 +10,15 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Feeder.StopFeeder;
-import frc.robot.commands.Hopper.ClearHopper;
 import frc.robot.commands.Hopper.ForwardHopper;
-import frc.robot.commands.Hopper.StopHopper;
-import frc.robot.commands.Shooter.IdleShooter;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.Shooter.Prime;
 import frc.robot.commands.Feeder.Shoot;
 import frc.robot.commands.Intake.IdleIntake;
 import frc.robot.commands.Intake.DeployIntake;
 import frc.robot.commands.Shooter.StopShooter;
+import frc.robot.commands.Feeder.IdleFeeder;
+import frc.robot.commands.Hopper.IdleHopper;
 
 
 
@@ -66,8 +64,8 @@ public class RobotContainer {
 
   public RobotContainer() {
     Robot.shooter.setDefaultCommand(new StopShooter());
-    Robot.feeder.setDefaultCommand(new StopFeeder());
-    Robot.hopper.setDefaultCommand(new StopHopper());
+    Robot.feeder.setDefaultCommand(new IdleFeeder());
+    Robot.hopper.setDefaultCommand(new IdleHopper());
     Robot.intake.setDefaultCommand(new IdleIntake());
     Robot.drivetrain.setDefaultCommand(new RunCommand(() ->
                 Robot.drivetrain.drive(

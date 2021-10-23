@@ -7,9 +7,9 @@ package frc.robot.commands.Hopper;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class StopHopper extends CommandBase {
-  /** Creates a new StopHopper. */
-  public StopHopper() {
+public class IdleHopper extends CommandBase {
+  /** Creates a new IdleHopper. */
+  public IdleHopper() {
     addRequirements(Robot.hopper);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -21,8 +21,15 @@ public class StopHopper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Stopping");
-    Robot.hopper.stopHopper();
+    hopperLogic();
+  }
+
+  public void hopperLogic(){
+    if(Robot.analog.getValue() > 900){
+      Robot.hopper.stopHopper();
+    }else{
+      Robot.hopper.onHopper();
+    }
   }
 
   // Called once the command ends or is interrupted.
