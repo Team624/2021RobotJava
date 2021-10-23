@@ -15,10 +15,12 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.Shooter.Prime;
 import frc.robot.commands.Feeder.Shoot;
 import frc.robot.commands.Intake.IdleIntake;
+import frc.robot.commands.Intake.ManualIntake;
 import frc.robot.commands.Intake.DeployIntake;
 import frc.robot.commands.Shooter.StopShooter;
 import frc.robot.commands.Feeder.IdleFeeder;
 import frc.robot.commands.Hopper.IdleHopper;
+import frc.robot.commands.Hopper.ClearHopper;
 
 
 
@@ -40,9 +42,13 @@ public class RobotContainer {
   JoystickButton dButtonY = new JoystickButton(this.driver, Constants.OI.yButtonID);
 
   JoystickButton oButtonLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
+  JoystickButton oButtonRightBumper = new JoystickButton(this.manipulator, Constants.OI.rightBumperID);
   JoystickButton oButtonA = new JoystickButton(this.manipulator, Constants.OI.aButtonID);
   JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
   JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
+  JoystickButton oLeftStickButton = new JoystickButton(this.manipulator, Constants.OI.leftStickButtonID);
+  JoystickButton oRightStickButton = new JoystickButton(this.manipulator, Constants.OI.rightStickButtonID);
+
 
   public double GetDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);  
@@ -90,6 +96,8 @@ public class RobotContainer {
     oButtonLeftBumper.whenHeld(new Prime());
     oButtonA.whenHeld(new ForwardHopper());
     oButtonA.whenHeld(new Shoot());
+    oButtonRightBumper.whenHeld(new ClearHopper());
+    oLeftStickButton.whenHeld(new ManualIntake());
   }
 
   /**

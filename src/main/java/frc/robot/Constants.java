@@ -45,7 +45,7 @@ public final class Constants {
     }
 
     public static class OI{
-        //BUTTON INDEXING STARTS AT 1 IN JAVA
+        //BUTTON INDEXING STARTS AT 1 IN JAVA SMH MY HEAD BRUH
         public static final int driverUSB = 0;
         public static final int manipulatorUSB = 1;
 
@@ -53,8 +53,11 @@ public final class Constants {
         public static final int yButtonID = 4;
         public static final int xButtonID = 3;
         public static final int leftBumperID = 5;
+        public static final int rightBumperID = 6;
 
-        //this is probably wrong lol
+        public static final int leftStickButtonID = 9;
+        public static final int rightStickButtonID = 10;
+
         public static final int LeftStickYID = 1;
 		public static final int RightTriggerID = 4;
     }
@@ -92,16 +95,17 @@ public final class Constants {
 
     public static final class FeederSettings{
         public static final boolean reverseFeederMotor = false;
-        public static final double feederSpeed = 1;
+        public static final double feederSpeed = .5;
 
         public static final double shooterControlAxisThreshold = .5;
+        public static final int autoLoadThreshold = 900;
     }
 
     public static final class HopperSettings{
         public static final boolean reverseLeftHopperMotor = false;
         public static final boolean reverseRightHopperMotor = true;
 
-        public static final double hopperSpeed = 1;
+        public static final double hopperSpeed = .5;
     }
 
     public static final class IntakeSettings{

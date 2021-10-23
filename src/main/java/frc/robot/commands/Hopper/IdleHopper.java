@@ -5,6 +5,7 @@
 package frc.robot.commands.Hopper;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class IdleHopper extends CommandBase {
@@ -25,7 +26,7 @@ public class IdleHopper extends CommandBase {
   }
 
   public void hopperLogic(){
-    if(Robot.analog.getValue() > 900){
+    if(Robot.analog.getValue() > Constants.FeederSettings.autoLoadThreshold){
       Robot.hopper.stopHopper();
     }else{
       Robot.hopper.onHopper();

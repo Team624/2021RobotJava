@@ -5,6 +5,7 @@
 package frc.robot.commands.Feeder;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class IdleFeeder extends CommandBase {
@@ -25,7 +26,7 @@ public class IdleFeeder extends CommandBase {
   }
 
   public void feederLogic(){
-    if(Robot.analog.getValue() > 900){
+    if(Robot.analog.getValue() > Constants.FeederSettings.autoLoadThreshold){
       Robot.feeder.stopFeeder();
     }else{
       Robot.feeder.feed();
