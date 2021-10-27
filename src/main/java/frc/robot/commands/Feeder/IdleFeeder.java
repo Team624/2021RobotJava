@@ -11,7 +11,7 @@ import frc.robot.Robot;
 public class IdleFeeder extends CommandBase {
   /** Creates a new IdleFeeder. */
   public IdleFeeder() {
-    addRequirements(Robot.feeder);
+    addRequirements(Robot.m_robotContainer.feeder);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -27,9 +27,9 @@ public class IdleFeeder extends CommandBase {
 
   public void feederLogic(){
     if(Robot.analog.getValue() > Constants.FeederSettings.autoLoadThreshold){
-      Robot.feeder.stopFeeder();
+      Robot.m_robotContainer.feeder.stopFeeder();
     }else{
-      Robot.feeder.feed();
+      Robot.m_robotContainer.feeder.feed();
     }
   }
 

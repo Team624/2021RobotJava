@@ -10,7 +10,7 @@ import frc.robot.Robot;
 public class ClearHopper extends CommandBase {
   /** Creates a new ManualHopper. */
   public ClearHopper() {
-    addRequirements(Robot.hopper);
+    addRequirements(Robot.m_robotContainer.hopper);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -21,7 +21,7 @@ public class ClearHopper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.hopper.reverseHopper();
+    Robot.m_robotContainer.hopper.reverseHopper();
   }
 
   // Called once the command ends or is interrupted.

@@ -11,7 +11,7 @@ import frc.robot.Robot;
 public class IdleHopper extends CommandBase {
   /** Creates a new IdleHopper. */
   public IdleHopper() {
-    addRequirements(Robot.hopper);
+    addRequirements(Robot.m_robotContainer.hopper);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -27,9 +27,9 @@ public class IdleHopper extends CommandBase {
 
   public void hopperLogic(){
     if(Robot.analog.getValue() > Constants.FeederSettings.autoLoadThreshold){
-      Robot.hopper.stopHopper();
+      Robot.m_robotContainer.hopper.stopHopper();
     }else{
-      Robot.hopper.onHopper();
+      Robot.m_robotContainer.hopper.onHopper();
     }
   }
 

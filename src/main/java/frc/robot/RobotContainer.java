@@ -22,6 +22,8 @@ import frc.robot.commands.Drivetrain.TrackingSwerve;
 import frc.robot.commands.Feeder.IdleFeeder;
 import frc.robot.commands.Hopper.IdleHopper;
 import frc.robot.commands.Hopper.ClearHopper;
+import frc.robot.subsystems.*;
+
 
 
 
@@ -32,6 +34,12 @@ import frc.robot.commands.Hopper.ClearHopper;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+  public DriveSubsystem drivetrain;
+  public Intake intake;
+  public Hopper hopper;
+  public Shooter shooter;
+  public Feeder feeder;
 
   // The robot's subsystems and commands are defined here...
   Joystick driver = new Joystick(Constants.OI.driverUSB);
@@ -70,17 +78,23 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
-    Robot.shooter.setDefaultCommand(new StopShooter());
-    Robot.feeder.setDefaultCommand(new IdleFeeder());
-    Robot.hopper.setDefaultCommand(new IdleHopper());
-    Robot.intake.setDefaultCommand(new IdleIntake());
-    Robot.drivetrain.setDefaultCommand(new RunCommand(() ->
-                Robot.drivetrain.drive(
+    drivetrain = new DriveSubsystem();
+    hopper = new Hopper();
+    shooter = new Shooter();
+    intake = new Intake();
+    feeder = new Feeder();
+
+    shooter.setDefaultCommand(new StopShooter());
+    feeder.setDefaultCommand(new IdleFeeder());
+    hopper.setDefaultCommand(new IdleHopper());
+    intake.setDefaultCommand(new IdleIntake());
+    drivetrain.setDefaultCommand(new RunCommand(() ->
+                drivetrain.drive(
                     GetDriverRawAxis(1),
                     -GetDriverRawAxis(0),
                     GetDriverRawAxis(4),
                     true),
-                    Robot.drivetrain)
+                    drivetrain)
     );
     configureButtonBindings();
   }

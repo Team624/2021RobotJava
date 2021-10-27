@@ -10,7 +10,7 @@ import frc.robot.Robot;
 public class ForwardHopper extends CommandBase {
   /** Creates a new ForwardHopper. */
   public ForwardHopper() {
-    addRequirements(Robot.hopper);
+    addRequirements(Robot.m_robotContainer.hopper);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -21,7 +21,7 @@ public class ForwardHopper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.hopper.onHopper();
+    Robot.m_robotContainer.hopper.onHopper();
   }
 
   // Called once the command ends or is interrupted.

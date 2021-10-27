@@ -10,7 +10,7 @@ import frc.robot.Robot;
 public class ManualIntake extends CommandBase {
   /** Creates a new ManualIntake. */
   public ManualIntake() {
-    addRequirements(Robot.intake);
+    addRequirements(Robot.m_robotContainer.intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -21,7 +21,7 @@ public class ManualIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.intake.agitateIntake();
+    Robot.m_robotContainer.intake.agitateIntake();
   }
 
   // Called once the command ends or is interrupted.

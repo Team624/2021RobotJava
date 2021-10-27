@@ -24,7 +24,7 @@ public class TrackingSwerve extends CommandBase {
 
   /** Creates a new TrackingSwerve. */
   public TrackingSwerve() {
-    addRequirements(Robot.drivetrain);
+    addRequirements(Robot.m_robotContainer.drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -40,7 +40,7 @@ public class TrackingSwerve extends CommandBase {
     measurement = table.getEntry("-turret-feedback").getDouble(0);
     rot = -m_trackingPIDController.calculate(measurement, 0.0);
     
-    Robot.drivetrain.drive(Robot.m_robotContainer.GetDriverRawAxis(1), -Robot.m_robotContainer.GetDriverRawAxis(0), rot + Robot.m_robotContainer.GetDriverRawAxis(4), true);
+    Robot.m_robotContainer.drivetrain.drive(Robot.m_robotContainer.GetDriverRawAxis(1), -Robot.m_robotContainer.GetDriverRawAxis(0), rot + Robot.m_robotContainer.GetDriverRawAxis(4), true);
   }
 
   // Called once the command ends or is interrupted.

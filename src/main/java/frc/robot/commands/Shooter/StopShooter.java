@@ -10,7 +10,7 @@ import frc.robot.Robot;
 public class StopShooter extends CommandBase {
   /** Creates a new StopShooter. */
   public StopShooter() {
-    addRequirements(Robot.shooter);
+    addRequirements(Robot.m_robotContainer.shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -21,7 +21,7 @@ public class StopShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.shooter.stopAll();
+    Robot.m_robotContainer.shooter.stopAll();
   }
 
   // Called once the command ends or is interrupted.

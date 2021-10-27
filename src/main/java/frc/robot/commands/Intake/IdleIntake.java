@@ -10,7 +10,7 @@ import frc.robot.Robot;
 public class IdleIntake extends CommandBase {
   /** Creates a new AgitateIntake. */
   public IdleIntake() {
-    addRequirements(Robot.intake);
+    addRequirements(Robot.m_robotContainer.intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -21,7 +21,7 @@ public class IdleIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.intake.stopIntake();
+    Robot.m_robotContainer.intake.stopIntake();
   }
 
   // Called once the command ends or is interrupted.

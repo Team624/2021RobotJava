@@ -10,7 +10,7 @@ import frc.robot.Robot;
 public class StopFeeder extends CommandBase {
   /** Creates a new StopFeeder. */
   public StopFeeder() {
-    addRequirements(Robot.feeder);
+    addRequirements(Robot.m_robotContainer.feeder);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -21,7 +21,7 @@ public class StopFeeder extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.feeder.stopFeeder();
+    Robot.m_robotContainer.feeder.stopFeeder();
   }
 
   // Called once the command ends or is interrupted.

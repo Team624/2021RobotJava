@@ -6,11 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Hopper;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Feeder;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.commands.Feeder.Shoot;
@@ -28,14 +23,6 @@ import edu.wpi.first.wpilibj.Timer;
  * project.
  */
 public class Robot extends TimedRobot {
-
-  public static DriveSubsystem drivetrain = new DriveSubsystem();
-  public static Hopper hopper = new Hopper();
-  public static Shooter shooter = new Shooter();
-  public static Intake intake = new Intake();
-  public static Feeder feeder = new Feeder();
-  
-
   Compressor compressor = new Compressor(0);
 
   public static AnalogInput analog = new AnalogInput(1);
@@ -97,7 +84,7 @@ public class Robot extends TimedRobot {
       new StopShooter();
       new StopFeeder();
       new IdleHopper();
-      drivetrain.drive(.1, .1, 0, true);
+      m_robotContainer.drivetrain.drive(.1, .1, 0, true);
     }
   }
 

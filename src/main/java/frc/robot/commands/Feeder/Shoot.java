@@ -10,7 +10,7 @@ import frc.robot.Robot;
 public class Shoot extends CommandBase {
   /** Creates a new Feed. */
   public Shoot() {
-    addRequirements(Robot.feeder);
+    addRequirements(Robot.m_robotContainer.feeder);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -22,7 +22,7 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
     
-    Robot.feeder.feed();
+    Robot.m_robotContainer.feeder.feed();
   }
 
   // Called once the command ends or is interrupted.

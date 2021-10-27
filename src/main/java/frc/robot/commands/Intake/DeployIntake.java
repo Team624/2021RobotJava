@@ -10,7 +10,7 @@ import frc.robot.Robot;
 public class DeployIntake extends CommandBase {
   /** Creates a new DeployIntake. */
   public DeployIntake() {
-    addRequirements(Robot.intake);
+    addRequirements(Robot.m_robotContainer.intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -22,7 +22,7 @@ public class DeployIntake extends CommandBase {
   @Override
   public void execute() {
     System.out.println("Intaking");
-    Robot.intake.fullIntake();
+    Robot.m_robotContainer.intake.fullIntake();
     
   }
 
