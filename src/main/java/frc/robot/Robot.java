@@ -13,6 +13,13 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Feeder;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.AnalogInput;
+import frc.robot.commands.Feeder.Shoot;
+import frc.robot.commands.Feeder.StopFeeder;
+import frc.robot.commands.Hopper.ForwardHopper;
+import frc.robot.commands.Hopper.IdleHopper;
+import frc.robot.commands.Shooter.Prime;
+import frc.robot.commands.Shooter.StopShooter;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -21,6 +28,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
  * project.
  */
 public class Robot extends TimedRobot {
+
   public static DriveSubsystem drivetrain = new DriveSubsystem();
   public static Hopper hopper = new Hopper();
   public static Shooter shooter = new Shooter();
@@ -46,7 +54,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    compressor.setClosedLoopControl(true);   
+    compressor.setClosedLoopControl(true);
+  
   }
 
   /**
@@ -74,12 +83,23 @@ public class Robot extends TimedRobot {
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
-  public void autonomousInit() {
-  }
+  public void autonomousInit() {}
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    if(Timer.getFPGATimestamp() < 2.5){
+      new Prime();
+    }else if(Timer.getFPGATimestamp() < 7.5 && Timer.getFPGATimestamp() > 2.5){
+      new Shoot();
+      new ForwardHopper();
+    }else if(Timer.getFPGATimestamp() < 9 && Timer.getFPGATimestamp() > 7.5){
+      new StopShooter();
+      new StopFeeder();
+      new IdleHopper();
+      drivetrain.drive(.1, .1, 0, true);
+    }
+  }
 
   @Override
   public void teleopInit() {

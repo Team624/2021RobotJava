@@ -17,7 +17,7 @@ public class TrackingSwerve extends CommandBase {
   private double measurement;
 
   private final PIDController m_trackingPIDController =
-      new PIDController(Constants.PID.SwervePIDConstants.kPTrackingController, 0, 0);
+      new PIDController(Constants.PID.SwervePIDConstants.kPTrackingController, Constants.PID.SwervePIDConstants.kITrackingController, 0);
 
   NetworkTableInstance inst = NetworkTableInstance.getDefault();
   NetworkTable table = inst.getTable("SmartDashboard");

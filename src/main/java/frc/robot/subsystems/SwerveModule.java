@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.Constants.ModuleConstants;
 
 import edu.wpi.first.wpilibj.geometry.Rotation2d;

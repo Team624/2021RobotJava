@@ -74,6 +74,7 @@ public final class Constants {
 
         public static class SwervePIDConstants{
             public static final double kPTrackingController = .001;
+            public static final double kITrackingController = .001;
 
             public static final double kPModuleTurningController = 0.3;
             public static final double kIModuleTurningController = 0;
