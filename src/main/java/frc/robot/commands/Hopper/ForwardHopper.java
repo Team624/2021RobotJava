@@ -2,17 +2,15 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Shooter;
-
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+package frc.robot.commands.Hopper;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class Shoot extends CommandBase {
-  /** Creates a new ManualShoot. */
-  public Shoot() {
-    addRequirements(Robot.shooter);
+public class ForwardHopper extends CommandBase {
+  /** Creates a new ForwardHopper. */
+  public ForwardHopper() {
+    addRequirements(Robot.hopper);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -23,10 +21,7 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Robot.shooter.getManualShoot()){
-      Robot.shooter.manualFlywheel(TalonFXControlMode.Velocity);
-      Robot.shooter.manualActuate();
-    }
+    Robot.hopper.onHopper();
   }
 
   // Called once the command ends or is interrupted.

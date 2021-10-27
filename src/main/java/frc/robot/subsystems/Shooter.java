@@ -5,19 +5,23 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.util.ArrayList;
-
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.Gains;
+
+import edu.wpi.first.wpilibj.Solenoid;
 import com.ctre.phoenix.music.Orchestra;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.Solenoid;
-import frc.robot.Gains;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
+import java.util.ArrayList;
 
 public class Shooter extends SubsystemBase {
   private final Solenoid hoodSolenoid = new Solenoid(Constants.Solenoid.hoodID);
@@ -26,20 +30,35 @@ public class Shooter extends SubsystemBase {
   
   //Are we shooting manually?
   private boolean manualShoot;
-  //Should hood be up right now?
-  private boolean setHood;
-  //What should rpm be right now?
-  private double setRPM;
   //Does dash say to put hood up while manual shooting?
   private boolean manualHood;
   //What RPM does the manual dash say?
   private double manualRPM;
-  //What is rpm right now?
+
+  //Should hood be up right now?
+  private boolean autoHood;
+  //What should rpm be right now?
+  private double autoRPM;
+  //are we auto shooting (for swerve)
+  private boolean isAutoShooting;
+
+  //What is the idle fly speed
+  private double idleFly = Constants.ShooterSettings.idleFlywheelSpeed;
+  //What is the idle hood set
+  private boolean idleHood = Constants.ShooterSettings.idleHoodSet;
+
+  //Should we tune PID's?
+  private boolean tunePID;
+
+  private double camDistance;
+
+  //What should the rpm be now?
+  private double setRPM;
+  //What is rpm now?
   private double currentRPM;
-  //Should we be priming right now?
+  //Are we priming now?
   private boolean prime;
 
-  private boolean tunePID;
 
   private double Pconstant;
   private double Iconstant;
@@ -47,6 +66,11 @@ public class Shooter extends SubsystemBase {
   private double Fconstant;
   private int I_Zone;
   private double MaxOutput;
+
+  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  private NetworkTable table = inst.getTable("SmartDashboard");
+
+  private NetworkTableEntry yDistEntry = table.getEntry("-turret-y_offset");
 
   private ShuffleboardTab shooterTab = Shuffleboard.getTab("Shooter");
 
@@ -67,11 +91,40 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry PID_Izone = shooterTab.addPersistent("PID I Range", Constants.PID.FlywheelConstants.kGains_Velocit.kIzone).withPosition(4, 2).getEntry();
   private NetworkTableEntry PID_MaxOutput = shooterTab.addPersistent("PID Peak Output", Constants.PID.FlywheelConstants.kGains_Velocit.kPeakOutput).withPosition(5, 2).getEntry();
 
+  private NetworkTableEntry dashIdleRPM = shooterTab.addPersistent("Idle Flywheel", Constants.ShooterSettings.idleFlywheelSpeed).withPosition(0, 3).getEntry();
+  private NetworkTableEntry dashIdleHood = shooterTab.addPersistent("Idle Hood", Constants.ShooterSettings.idleHoodSet).withPosition(1, 3).getEntry();
+
   public static Orchestra orchestra;
   /** Creates a new Shooter. */
   public Shooter() {
+
     leftFlywheel.setInverted(true);
 
+    leftFlywheel.configFactoryDefault();
+    rightFlywheel.configFactoryDefault();
+
+    leftFlywheel.configNeutralDeadband(0.001);
+    rightFlywheel.configNeutralDeadband(0.001);
+
+    leftFlywheel.configNominalOutputForward(0, Constants.PID.FlywheelConstants.kTimeoutMs);
+		leftFlywheel.configNominalOutputReverse(0, Constants.PID.FlywheelConstants.kTimeoutMs);
+		leftFlywheel.configPeakOutputForward(1, Constants.PID.FlywheelConstants.kTimeoutMs);
+    leftFlywheel.configPeakOutputReverse(-1, Constants.PID.FlywheelConstants.kTimeoutMs);
+    rightFlywheel.configNominalOutputForward(0, Constants.PID.FlywheelConstants.kTimeoutMs);
+		rightFlywheel.configNominalOutputReverse(0, Constants.PID.FlywheelConstants.kTimeoutMs);
+		rightFlywheel.configPeakOutputForward(1, Constants.PID.FlywheelConstants.kTimeoutMs);
+    rightFlywheel.configPeakOutputReverse(-1, Constants.PID.FlywheelConstants.kTimeoutMs);
+    
+    leftFlywheel.config_kF(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kF, Constants.PID.FlywheelConstants.kTimeoutMs);
+		leftFlywheel.config_kP(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kP, Constants.PID.FlywheelConstants.kTimeoutMs);
+		leftFlywheel.config_kI(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kI, Constants.PID.FlywheelConstants.kTimeoutMs);
+		leftFlywheel.config_kD(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kD, Constants.PID.FlywheelConstants.kTimeoutMs);
+   
+    rightFlywheel.config_kF(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kF, Constants.PID.FlywheelConstants.kTimeoutMs);
+		rightFlywheel.config_kP(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kP, Constants.PID.FlywheelConstants.kTimeoutMs);
+		rightFlywheel.config_kI(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kI, Constants.PID.FlywheelConstants.kTimeoutMs);
+    rightFlywheel.config_kD(Constants.PID.FlywheelConstants.kPIDLoopIdx, Constants.PID.FlywheelConstants.kGains_Velocit.kD, Constants.PID.FlywheelConstants.kTimeoutMs);
+    
     //music code
     ArrayList<TalonFX> instruments = new ArrayList<TalonFX>();
     instruments.add(leftFlywheel);
@@ -86,6 +139,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shooterDash(){
+    camDistance = yDistEntry.getDouble(0);
+
     prime = getPrime();
     currentRPM = getRPM();
 
@@ -104,12 +159,15 @@ public class Shooter extends SubsystemBase {
     dashCurrentRPM.setDouble(currentRPM);
     dashPriming.setBoolean(prime);
 
-    tunePID = dashTunePid.getBoolean(false);
+    tunePID = dashTunePid.getBoolean(Constants.ShooterSettings.tunePID);
+
+    idleFly = dashIdleRPM.getDouble(Constants.ShooterSettings.idleFlywheelSpeed);
+    idleHood = dashIdleHood.getBoolean(Constants.ShooterSettings.idleHoodSet);
   }
 
   public void updatePID(){
     if(tunePID == true){
-      Gains newGains = new Gains(getP(), getI(), getD(), getF(), getIzone(), getMaxOutput());
+      Gains newGains = new Gains(Pconstant, Iconstant, Dconstant, Fconstant, I_Zone, MaxOutput);
 
       Robot.shooter.leftFlywheel.config_kF(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kF, Constants.PID.FlywheelConstants.kTimeoutMs);
       Robot.shooter.leftFlywheel.config_kP(Constants.PID.FlywheelConstants.kPIDLoopIdx, newGains.kP, Constants.PID.FlywheelConstants.kTimeoutMs);
@@ -123,85 +181,65 @@ public class Shooter extends SubsystemBase {
     }
   }
 
-  public void stopAll(TalonFXControlMode mode){
-    stopFlywheel(mode);
-    autoActuate(false);
+  public void stopAll(){
+    isAutoShooting = false;
+    setRPM = 0;
+    prime = false;
+    leftFlywheel.set(TalonFXControlMode.Velocity, 0);
+    rightFlywheel.set(TalonFXControlMode.Velocity, 0);
+    hoodSolenoid.set(false);
   }
 
-  public void stopFlywheel(TalonFXControlMode mode){
-    leftFlywheel.set(mode, 0);
-    rightFlywheel.set(mode, 0);
+  public void idleShoot(){
+    isAutoShooting = false;
+    setRPM = idleFly;
+    prime = false;
+    leftFlywheel.set(TalonFXControlMode.Velocity, idleFly);
+    rightFlywheel.set(TalonFXControlMode.Velocity, idleFly);
+    hoodSolenoid.set(idleHood);
   }
 
-  public void autoFlywheel(TalonFXControlMode mode, double speed){
-    setRPM = speed;
-    leftFlywheel.set(mode, speed);
-    rightFlywheel.set(mode, speed);
+  public void autoShoot(){
+    isAutoShooting = true;
+    setRPM = autoRPM;
+    prime = true;
+    leftFlywheel.set(TalonFXControlMode.Velocity, autoRPM);
+    rightFlywheel.set(TalonFXControlMode.Velocity, autoRPM);
+    hoodSolenoid.set(autoHood);  
   }
 
-  public void manualFlywheel(TalonFXControlMode mode){
+  public void manualShoot(){
+    isAutoShooting = false;
     setRPM = manualRPM;
-    leftFlywheel.set(mode, manualRPM);
-    rightFlywheel.set(mode, manualRPM);
-  }
-
-  public void manualActuate(){
+    prime = true;
+    leftFlywheel.set(TalonFXControlMode.Velocity, manualRPM);
+    rightFlywheel.set(TalonFXControlMode.Velocity, manualRPM);
     hoodSolenoid.set(manualHood);
   }
 
-  public void autoActuate(boolean actuate){
-    hoodSolenoid.set(actuate);
+  public void setAutoStates(double setRPM, boolean setHood){
+    autoRPM = setRPM;
+    autoHood = setHood;
   }
 
-  public boolean getPrime(){
-    return Robot.m_robotContainer.getManipulatorButton(Constants.OI.yButtonID);
+  public double getCamVal(){
+    return camDistance;
+  }
+
+  public boolean isAutoShoot(){
+    return isAutoShooting;
   }
 
   public double getRPM(){
     return leftFlywheel.getSelectedSensorVelocity();
   }
 
-  public double getSetRPM(){
-    return setRPM;
+  public boolean getPrime(){
+    return Robot.m_robotContainer.getManipulatorButton(Constants.OI.yButtonID);
   }
 
-  public boolean getSetHood(){
-    return setHood;
-  }
-
-  public boolean getDashHood(){
-    return manualHood;
-  }
-
-  public double getDashRPM(){
-    return manualRPM;
-  }
-
-  public boolean getManualShoot(){
+  public boolean getManual(){
     return manualShoot;
-  }
-
-  public double getP(){
-    return Pconstant;
-  }
-
-  public double getI(){
-    return Iconstant;
-  }
-
-  public double getD(){
-    return Dconstant;
-  }
-
-  public double getF(){
-    return Fconstant;
-  }
-
-  public int getIzone(){
-    return I_Zone;
-  }
-  public double getMaxOutput(){
-    return MaxOutput;
   }
 
   public void play(){

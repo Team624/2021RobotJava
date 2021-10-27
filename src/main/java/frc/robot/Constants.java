@@ -25,6 +25,18 @@ public final class Constants {
         public static final int rightFlywheelID = 8;
 
         public static final int intakeMotorID = 11;
+
+        public static final int feederID = 10;
+
+        public static final int kFrontLeftDriveMotorPort = 16;
+        public static final int kRearLeftDriveMotorPort = 2;
+        public static final int kFrontRightDriveMotorPort = 14;
+        public static final int kRearRightDriveMotorPort = 13;
+    
+        public static final int kFrontLeftTurningMotorPort = 1;
+        public static final int kRearLeftTurningMotorPort = 3;
+        public static final int kFrontRightTurningMotorPort = 15;
+        public static final int kRearRightTurningMotorPort = 12;
     }
 
     public static class Solenoid{
@@ -33,15 +45,21 @@ public final class Constants {
     }
 
     public static class OI{
-        //BUTTON INDEXING STARTS AT 1 IN JAVA
+        //BUTTON INDEXING STARTS AT 1 IN JAVA SMH MY HEAD BRUH
         public static final int driverUSB = 0;
         public static final int manipulatorUSB = 1;
 
-        public static final int LeftStickYID = 0;
-
+        public static final int aButtonID = 1;
         public static final int yButtonID = 4;
         public static final int xButtonID = 3;
         public static final int leftBumperID = 5;
+        public static final int rightBumperID = 6;
+
+        public static final int leftStickButtonID = 9;
+        public static final int rightStickButtonID = 10;
+
+        public static final int LeftStickYID = 1;
+		public static final int RightTriggerID = 4;
     }
 
     public static class PID{
@@ -55,29 +73,54 @@ public final class Constants {
         }
 
         public static class SwervePIDConstants{
+            public static final double kPTrackingController = .001;
+
             public static final double kPModuleTurningController = 0.3;
-            public static final double kIModuleTurningController = 0.2;
+            public static final double kIModuleTurningController = 0;
             public static final double kDModuleTurningController = 0;
         
-            public static final double kPModuleDriveController = 0.25;
-            public static final double kIModuleDriveController = 0.6;
+
+            public static final double kPModuleDriveController = 0.3;
+            public static final double kIModuleDriveController = 0.0;
             public static final double kDModuleDriveController = 0.0;
+            public static final double kFModuleDriveController = 1.8;
         }
         
     }
 
-    // COPY
+    public static final class ShooterSettings{
+        public static final boolean tunePID = false;
+
+        public static final double idleFlywheelSpeed = 0;
+        public static final boolean idleHoodSet = false;
+
+        public static final double autoRotateMultiplier = 1;
+    }
+
+    public static final class FeederSettings{
+        public static final boolean reverseFeederMotor = false;
+        public static final double feederSpeed = .5;
+
+        public static final double shooterControlAxisThreshold = .5;
+        public static final int autoLoadThreshold = 900;
+    }
+
+    public static final class HopperSettings{
+        public static final boolean reverseLeftHopperMotor = false;
+        public static final boolean reverseRightHopperMotor = true;
+
+        public static final double hopperSpeed = .5;
+    }
+
+    public static final class IntakeSettings{
+        public static final boolean reverseIntakeMotor = true;
+
+        public static final double intakeSpeed = 1;
+    }
+
     public static final class DriveConstants {
-        public static final int kFrontLeftDriveMotorPort = 16;
-        public static final int kRearLeftDriveMotorPort = 2;
-        public static final int kFrontRightDriveMotorPort = 14;
-        public static final int kRearRightDriveMotorPort = 13;
-    
-        public static final int kFrontLeftTurningMotorPort = 1;
-        public static final int kRearLeftTurningMotorPort = 3;
-        public static final int kFrontRightTurningMotorPort = 15;
-        public static final int kRearRightTurningMotorPort = 12;
-    
+        public static final double shooterOffsetConst = .1;
+
         public static final int[] kFrontLeftTurningEncoderPorts = new int[] {0, 1};
         public static final int[] kRearLeftTurningEncoderPorts = new int[] {2, 3};
         public static final int[] kFrontRightTurningEncoderPorts = new int[] {4, 5};
@@ -127,7 +170,6 @@ public final class Constants {
         public static final double kMaxSpeedMetersPerSecond = 3;
     }
 
-    // COPY
     public static final class ModuleConstants {
         public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
         public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
@@ -147,7 +189,6 @@ public final class Constants {
             (2 * Math.PI) / (double) kEncoderCPR;
     }
 
-    // COPY
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
@@ -165,7 +206,7 @@ public final class Constants {
     }
 
     public static final class TrackingConstants {
-        public static final double kPTrackingController = 0;
+        
     }
 
 }

@@ -6,9 +6,11 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.CANSparkMax;
 import frc.robot.Constants;
+
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -18,22 +20,36 @@ public class Hopper extends SubsystemBase {
   private final CANSparkMax rightMotor = new CANSparkMax(Constants.CAN.RightHopperID, MotorType.kBrushless);
 
   private double hopperSpeed;
+  private double dashHopperSpeed;
+  private boolean useDash;
 
   private ShuffleboardTab hopperTab = Shuffleboard.getTab("Hopper");
-  private NetworkTableEntry dashSetHopperSpeed = hopperTab.addPersistent("Hopper Speed", 0).withPosition(0, 0).getEntry();
+  private NetworkTableEntry dashSpeed = hopperTab.add("Hopper Speed", 0).withPosition(0, 0).getEntry();
+  private NetworkTableEntry dashSetHopperSpeed = hopperTab.add("Set Hopper Speed", false).withPosition(0, 1).getEntry();
   
   /** Creates a new Hopper. */
-  public Hopper() {}
+  public Hopper() {
+    leftMotor.setInverted(Constants.HopperSettings.reverseLeftHopperMotor);
+    rightMotor.setInverted(Constants.HopperSettings.reverseRightHopperMotor);
+    hopperSpeed = Constants.HopperSettings.hopperSpeed;
+  }
 
   @Override
   public void periodic() {
-    rightMotor.setInverted(true);
     hopperDash();
+    updateHopperSpeed();
     // This method will be called once per scheduler run
   }
 
   public void hopperDash(){
-    hopperSpeed = dashSetHopperSpeed.getDouble(0);
+    dashHopperSpeed = dashSpeed.getDouble(0);
+    useDash = dashSetHopperSpeed.getBoolean(false);
+  }
+
+  public void updateHopperSpeed(){
+    if(useDash){
+      hopperSpeed = dashHopperSpeed;
+    }
   }
 
   public void onHopper(){
@@ -41,9 +57,14 @@ public class Hopper extends SubsystemBase {
     rightMotor.set(hopperSpeed);
   }
 
+  public void reverseHopper(){
+    leftMotor.set(-hopperSpeed);
+    rightMotor.set(-hopperSpeed);
+  }
+
   public void stopHopper(){
-    leftMotor.set(0);
-    rightMotor.set(0);
+    leftMotor.stopMotor();;
+    rightMotor.stopMotor();;
   }
 
 }

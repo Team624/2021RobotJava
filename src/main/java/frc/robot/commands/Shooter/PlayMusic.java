@@ -7,22 +7,22 @@ package frc.robot.commands.Shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class StopShooter extends CommandBase {
-  /** Creates a new StopShooter. */
-  public StopShooter() {
+public class PlayMusic extends CommandBase {
+  /** Creates a new PlayMusic. */
+  public PlayMusic() {
     addRequirements(Robot.shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    Robot.shooter.play();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    Robot.shooter.stopAll();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override

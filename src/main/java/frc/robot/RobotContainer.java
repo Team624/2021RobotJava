@@ -10,10 +10,18 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Hopper.StopHopper;
-import frc.robot.commands.Intake.StopIntake;
-import frc.robot.commands.Shooter.StopShooter;
+import frc.robot.commands.Hopper.ForwardHopper;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.Shooter.Prime;
+import frc.robot.commands.Feeder.Shoot;
+import frc.robot.commands.Intake.IdleIntake;
+import frc.robot.commands.Intake.ManualIntake;
+import frc.robot.commands.Intake.DeployIntake;
+import frc.robot.commands.Shooter.StopShooter;
+import frc.robot.commands.Drivetrain.TrackingSwerve;
+import frc.robot.commands.Feeder.IdleFeeder;
+import frc.robot.commands.Hopper.IdleHopper;
+import frc.robot.commands.Hopper.ClearHopper;
 
 
 
@@ -29,10 +37,19 @@ public class RobotContainer {
   Joystick driver = new Joystick(Constants.OI.driverUSB);
   Joystick manipulator = new Joystick(Constants.OI.manipulatorUSB);
 
-  JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
   JoystickButton dButtonLeftBumper = new JoystickButton(this.driver, Constants.OI.leftBumperID);
+  JoystickButton dButtonA = new JoystickButton(this.driver, Constants.OI.aButtonID);
+  JoystickButton dButtonX = new JoystickButton(this.driver, Constants.OI.xButtonID);
+  JoystickButton dButtonY = new JoystickButton(this.driver, Constants.OI.yButtonID);
+
+  JoystickButton oButtonLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
+  JoystickButton oButtonRightBumper = new JoystickButton(this.manipulator, Constants.OI.rightBumperID);
+  JoystickButton oButtonA = new JoystickButton(this.manipulator, Constants.OI.aButtonID);
+  JoystickButton oButtonX = new JoystickButton(this.manipulator, Constants.OI.xButtonID);
   JoystickButton oButtonY = new JoystickButton(this.manipulator, Constants.OI.yButtonID);
-  JoystickButton oLeftBumper = new JoystickButton(this.manipulator, Constants.OI.leftBumperID);
+  JoystickButton oLeftStickButton = new JoystickButton(this.manipulator, Constants.OI.leftStickButtonID);
+  JoystickButton oRightStickButton = new JoystickButton(this.manipulator, Constants.OI.rightStickButtonID);
+
 
   public double GetDriverRawAxis(int axis){
       return this.driver.getRawAxis(axis);  
@@ -53,26 +70,19 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   public RobotContainer() {
-
     Robot.shooter.setDefaultCommand(new StopShooter());
-    Robot.hopper.setDefaultCommand(new StopHopper());
-    Robot.intake.setDefaultCommand(new StopIntake());
-
-    Robot.drivetrain.setDefaultCommand(
-        // A split-stick arcade command, with forward/backward controlled by the left
-        // hand, and turning controlled by the right.
-        new RunCommand(
-            () ->
+    Robot.feeder.setDefaultCommand(new IdleFeeder());
+    Robot.hopper.setDefaultCommand(new IdleHopper());
+    Robot.intake.setDefaultCommand(new IdleIntake());
+    Robot.drivetrain.setDefaultCommand(new RunCommand(() ->
                 Robot.drivetrain.drive(
                     GetDriverRawAxis(1),
                     -GetDriverRawAxis(0),
                     GetDriverRawAxis(4),
                     true),
-                    Robot.drivetrain));
-
+                    Robot.drivetrain)
+    );
     configureButtonBindings();
-    
-
   }
 
   /**
@@ -83,8 +93,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   public void configureButtonBindings() {
-    //oButtonX.whenHeld(new DeployIntake());
-    //oButtonY.whenHeld(new Shoot());
+    oButtonX.whenHeld(new DeployIntake());
+    oButtonLeftBumper.whenHeld(new Prime());
+    oButtonLeftBumper.whenHeld(new TrackingSwerve());
+    oButtonA.whenHeld(new ForwardHopper());
+    oButtonA.whenHeld(new Shoot());
+    oButtonRightBumper.whenHeld(new ClearHopper());
+    oLeftStickButton.whenHeld(new ManualIntake());
+
   }
 
   /**

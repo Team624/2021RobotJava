@@ -2,15 +2,15 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Hopper;
+package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class ManualHopper extends CommandBase {
-  /** Creates a new ManualHopper. */
-  public ManualHopper() {
-    addRequirements(Robot.hopper);
+public class IdleIntake extends CommandBase {
+  /** Creates a new AgitateIntake. */
+  public IdleIntake() {
+    addRequirements(Robot.intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -21,7 +21,7 @@ public class ManualHopper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.hopper.onHopper();
+    Robot.intake.stopIntake();
   }
 
   // Called once the command ends or is interrupted.
