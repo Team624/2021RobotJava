@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Robot;
 import frc.robot.Constants;
-
+import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
@@ -73,6 +73,7 @@ public class DriveSubsystem extends SubsystemBase {
     new SwerveModuleState(), 
     new SwerveModuleState()
   };
+
 
   // Robot swerve modules
   private final SwerveModule m_frontLeft =
@@ -193,6 +194,7 @@ public class DriveSubsystem extends SubsystemBase {
     ySpeed *= driveMultiplier;
     rot *= turnMultiplier;
 
+
     var swerveModuleStates =
         Constants.DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -266,6 +268,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+
   }
 
   public double getFTerm(){
