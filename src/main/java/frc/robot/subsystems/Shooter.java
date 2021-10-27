@@ -51,7 +51,6 @@ public class Shooter extends SubsystemBase {
   private boolean tunePID;
 
   private double camDistance;
-  public double camAdjust;
 
   //What should the rpm be now?
   private double setRPM;
@@ -72,7 +71,6 @@ public class Shooter extends SubsystemBase {
   private NetworkTable table = inst.getTable("SmartDashboard");
 
   private NetworkTableEntry yDistEntry = table.getEntry("-turret-y_offset");
-  private NetworkTableEntry xAdjustEntry = table.getEntry("-turret-y_offset");
 
   private ShuffleboardTab shooterTab = Shuffleboard.getTab("Shooter");
 
@@ -142,7 +140,6 @@ public class Shooter extends SubsystemBase {
 
   public void shooterDash(){
     camDistance = yDistEntry.getDouble(0);
-    camAdjust = xAdjustEntry.getDouble(0);
 
     prime = getPrime();
     currentRPM = getRPM();
@@ -208,8 +205,7 @@ public class Shooter extends SubsystemBase {
     prime = true;
     leftFlywheel.set(TalonFXControlMode.Velocity, autoRPM);
     rightFlywheel.set(TalonFXControlMode.Velocity, autoRPM);
-    hoodSolenoid.set(autoHood);
-    
+    hoodSolenoid.set(autoHood);  
   }
 
   public void manualShoot(){
@@ -224,10 +220,6 @@ public class Shooter extends SubsystemBase {
   public void setAutoStates(double setRPM, boolean setHood){
     autoRPM = setRPM;
     autoHood = setHood;
-  }
-
-  public double getCamOff(){
-    return camAdjust;
   }
 
   public double getCamVal(){

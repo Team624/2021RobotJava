@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Constants.ModuleConstants;
 
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -101,7 +102,7 @@ public class SwerveModule {
         SwerveModuleState.optimize(desiredState, new Rotation2d(getTurnPosition()));
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
-        drivePIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond) * 2;
+        drivePIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond * Constants.PID.SwervePIDConstants.kFModuleDriveController);
     //System.out.println(desiredState.speedMetersPerSecond + " : " + getDriveVelocity());
     //System.out.println(desiredState.angle + " : " + getTurnPosition());
     // Calculate the turning motor output from the turning PID controller.

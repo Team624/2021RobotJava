@@ -18,6 +18,7 @@ import frc.robot.commands.Intake.IdleIntake;
 import frc.robot.commands.Intake.ManualIntake;
 import frc.robot.commands.Intake.DeployIntake;
 import frc.robot.commands.Shooter.StopShooter;
+import frc.robot.commands.Drivetrain.TrackingSwerve;
 import frc.robot.commands.Feeder.IdleFeeder;
 import frc.robot.commands.Hopper.IdleHopper;
 import frc.robot.commands.Hopper.ClearHopper;
@@ -94,10 +95,12 @@ public class RobotContainer {
   public void configureButtonBindings() {
     oButtonX.whenHeld(new DeployIntake());
     oButtonLeftBumper.whenHeld(new Prime());
+    oButtonLeftBumper.whenHeld(new TrackingSwerve());
     oButtonA.whenHeld(new ForwardHopper());
     oButtonA.whenHeld(new Shoot());
     oButtonRightBumper.whenHeld(new ClearHopper());
     oLeftStickButton.whenHeld(new ManualIntake());
+
   }
 
   /**

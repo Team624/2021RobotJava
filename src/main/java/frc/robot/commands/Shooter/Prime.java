@@ -79,8 +79,37 @@ public class Prime extends CommandBase {
       Robot.shooter.setAutoStates(8350, true);
     }else if(camDistance <= 10.401 && camDistance > 10.05){
       Robot.shooter.setAutoStates(8400, true);
+    }else if(camDistance <= 10.71 && camDistance > 10.401){
+      Robot.shooter.setAutoStates(8450, true);
+    }else if(camDistance <= 11.04 && camDistance > 10.05){
+      Robot.shooter.setAutoStates(8500, true);
+    }else if(camDistance <= 11.337 && camDistance > 11.04){
+      Robot.shooter.setAutoStates(8550, true);
+    }else if(camDistance <= 11.59 && camDistance > 11.337){
+      Robot.shooter.setAutoStates(8600, true);
+    }else if(camDistance <= 11.86 && camDistance > 11.59){
+      Robot.shooter.setAutoStates(8650, true);
+    }else if(camDistance <= 12.2 && camDistance > 11.86){
+      Robot.shooter.setAutoStates(8700, true);
+    }else if(camDistance <= 12.55 && camDistance > 12.2){
+      Robot.shooter.setAutoStates(8750, true);
+    }else if(camDistance <= 12.9221 && camDistance > 12.55){
+      Robot.shooter.setAutoStates(8850, true);
+    }else if(camDistance <= 13.24 && camDistance > 12.9221){
+      Robot.shooter.setAutoStates(8900, true);
+    }else if(camDistance <= 13.62 && camDistance > 13.24){
+      Robot.shooter.setAutoStates(9150, true);
+    }else if(camDistance <= 13.92 && camDistance > 13.62){
+      Robot.shooter.setAutoStates(9200, true);
+    }else if(camDistance <= 14.13 && camDistance > 13.92){
+      Robot.shooter.setAutoStates(9300, true);
+    }else if(camDistance <= 14.32 && camDistance > 14.13){
+      Robot.shooter.setAutoStates(9450, true);
+    }else if(camDistance <= 14.57 && camDistance > 14.32){
+      Robot.shooter.setAutoStates(9600, true);
     }else{
-      Robot.shooter.setAutoStates(9000, true);
+      Robot.shooter.setAutoStates(9700, true);
+
     }
   }
 

@@ -20,15 +20,14 @@ import com.analog.adis16470.frc.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.networktables.NetworkTable;
 
 @SuppressWarnings("PMD.ExcessiveImports")
 public class DriveSubsystem extends SubsystemBase {
   private double drivePconstant;
   private double driveIconstant;
   private double driveDconstant;
+  private double driveFconstant;
 
   private double steerPconstant;
   private double steerIconstant;
@@ -39,9 +38,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   private double driveMultiplier;
   private double turnMultiplier;
-  private double shootMultipler;
-
-  private double primeTurn = 0;
 
   private boolean freezeDrive = false;
 
@@ -50,15 +46,13 @@ public class DriveSubsystem extends SubsystemBase {
   private boolean updatedDrivePIDAlready = false;
   private boolean updatedSteerPIDAlready = false;
 
-  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  private NetworkTable table = inst.getTable("SmartDashboard");
-
   private ShuffleboardTab driveTab = Shuffleboard.getTab("Drive");
 
   private NetworkTableEntry dashTuneDrivePid = driveTab.add("Tune Drive PID", false).withPosition(0, 0).withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
   private NetworkTableEntry DRIVE_PID_P = driveTab.addPersistent("PID Drive P", Constants.PID.SwervePIDConstants.kPModuleDriveController).withPosition(0, 1).getEntry();
   private NetworkTableEntry DRIVE_PID_I = driveTab.addPersistent("PID Drive I", Constants.PID.SwervePIDConstants.kIModuleDriveController).withPosition(0, 2).getEntry();
   private NetworkTableEntry DRIVE_PID_D = driveTab.addPersistent("PID Drive D", Constants.PID.SwervePIDConstants.kDModuleDriveController).withPosition(0, 3).getEntry();
+  private NetworkTableEntry DRIVE_PID_F = driveTab.addPersistent("PID Drive F", Constants.PID.SwervePIDConstants.kDModuleDriveController).withPosition(0, 4).getEntry();
 
   private NetworkTableEntry dashTuneSteerPid = driveTab.add("Tune Steer PID", false).withPosition(1, 0).withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
   private NetworkTableEntry STEER_PID_P = driveTab.addPersistent("PID Steer P", Constants.PID.SwervePIDConstants.kPModuleTurningController).withPosition(1, 1).getEntry();
@@ -67,7 +61,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   private NetworkTableEntry translationMult = driveTab.addPersistent("Translation Speed", Constants.DriveConstants.translationMultiplier).withPosition(2, 0).getEntry();
   private NetworkTableEntry rotationMult = driveTab.addPersistent("Rotation Speed", Constants.DriveConstants.rotationMultipler).withPosition(2, 1).getEntry();
-  private NetworkTableEntry shootMult = driveTab.addPersistent("Shoot Rot Speed", Constants.DriveConstants.shooterOffsetConst).withPosition(2, 3).getEntry();
 
   private NetworkTableEntry dashCurrentAngle = driveTab.add("Current Angle", 0).withPosition(2, 2).getEntry();
 
@@ -129,7 +122,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     resetGyro();
     driveDash();
-    updatePID();
+    //updatePID();
 
     // Update the odometry in the periodic block
     m_odometry.update(
@@ -147,7 +140,6 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void driveDash(){
-    primeTurn = table.getEntry("-turret-y_offset").getDouble(0);
     dashCurrentAngle.setDouble(m_gyro.getAngle());
 
     tuneDrive = dashTuneDrivePid.getBoolean(false);
@@ -156,6 +148,7 @@ public class DriveSubsystem extends SubsystemBase {
     drivePconstant = DRIVE_PID_P.getDouble(0);
     driveIconstant = DRIVE_PID_I.getDouble(0);
     driveDconstant = DRIVE_PID_D.getDouble(0);
+    driveFconstant = DRIVE_PID_F.getDouble(0);
 
     steerPconstant = STEER_PID_P.getDouble(0);
     steerIconstant = STEER_PID_I.getDouble(0);
@@ -163,11 +156,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     driveMultiplier = translationMult.getDouble(Constants.DriveConstants.translationMultiplier);
     turnMultiplier = rotationMult.getDouble(Constants.DriveConstants.rotationMultipler);
-    shootMultipler = shootMult.getDouble(Constants.DriveConstants.shooterOffsetConst);
-  }
-
-  public double getShooterOffset(){
-    return Robot.shooter.getCamOff();
   }
 
   public void updatePID(){
@@ -214,6 +202,7 @@ public class DriveSubsystem extends SubsystemBase {
         swerveModuleStates, Constants.DriveConstants.kMaxSpeedMetersPerSecond);
     //System.out.println("Front module: "+ m_frontLeft.getEncoderVal() + ", " + swerveModuleStates[0].toString());
     //System.out.println("Back module: " + m_rearLeft.getEncoderVal() + ", " + swerveModuleStates[2].toString());
+    System.out.println("Current: " + m_frontLeft.getDriveVelocity() + " : " + swerveModuleStates[0].speedMetersPerSecond);
     if(Math.abs(xSpeed) + Math.abs(ySpeed) + Math.abs(rot) < Constants.DriveConstants.swerveThreshold){
       swerveModuleStates[0].speedMetersPerSecond = 0;
       swerveModuleStates[0].angle = lStates[0].angle;
@@ -277,6 +266,13 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+  }
+
+  public double getFTerm(){
+    if(driveFconstant == 0){
+      return 1;
+    }
+    return driveFconstant;
   }
 
   /**
